@@ -4,7 +4,7 @@
 
 This repository contains the OpenAPI 3.0.3 specification for the Instatus API. 
 
-Instatus helps you:
+[Instatus](https://instatus.com) helps you:
 1. Monitor your services (soon)
 2. Fix incidents with your team (soon)
 3. Share your status with customers
@@ -25,13 +25,15 @@ Instatus helps you:
 
 All endpoints are under the URL https://api.instatus.com. They generally follow the REST architecture.
 
-Requests must be encoded as JSON with the `Content-Type: application/json` header.
+Requests must be encoded as JSON with this header: `Content-Type: application/json`.
 
-Requests must provide an API token through the Authorization header. You can get your key from User settings in developer settings section: (dashboard.instatus.com/developer)[https://dashboard.instatus.com/developer]
+Requests must provide an API token through the Authorization header. 
 
 ```
 Authorization: Bearer <API_KEY>
 ```
+
+You can get your key from User settings in developer settings section: [dashboard.instatus.com/developer](https://dashboard.instatus.com/developer)
 
 Responses from the Instatus API, including errors, are encoded as JSON.
 
@@ -64,12 +66,12 @@ To get started with the Instatus API:
 
 1. Obtain your API key from the Instatus dashboard
 2. Review the API specification in either YAML or JSON format
-3. Make your first API call using your preferred HTTP client (We love (Insomnia)[https://insomnia.rest?ref=instatus])
+3. Make your first API call using your preferred HTTP client (We love [Insomnia](https://insomnia.rest?ref=instatus))
 
 ## Support
 
-- Help: (instatus.com/help)[https://instatus.com/help]
-- API docs: (instatus.com/help/api)[https://instatus.com/help/api]
-- Support email: (support@instatus.com)[mailto:support@instatus.com]
+- Help: [instatus.com/help](https://instatus.com/help)
+- API docs: [instatus.com/help/api](https://instatus.com/help/api)
+- Support email: [support@instatus.com](mailto:support@instatus.com)
 
 For any questions or issues, please contact  or refer to the (official documentation).
