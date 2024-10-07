@@ -11,7 +11,7 @@ This repository contains the [OpenAPI](https://www.openapis.org/) 3.0.3 specific
 
 1. Obtain your API key from the Instatus dashboard: [dashboard.instatus.com/developer](https://dashboard.instatus.com/developer)
 2. Review the API specification in either YAML or JSON format
-3. Make your first API call using your preferred HTTP client (We love [Insomnia](https://insomnia.rest?ref=instatus))
+3. Make your first API call using your preferred HTTP client (We love [Insomnia](https://insomnia.rest))
 
 ## Usage
 
