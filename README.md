@@ -1,19 +1,18 @@
 # Instatus API Documentation
 
-
-
 ## Overview
 
-This repository contains the OpenAPI 3.0.3 specification for the Instatus API. Instatus is a service for managing status pages, components, incidents, and more.
+This repository contains the OpenAPI 3.0.3 specification for the Instatus API. 
 
-
+Instatus helps you:
+1. Monitor your services (soon)
+2. Fix incidents with your team (soon)
+3. Share your status with customers
 
 ## API Specification
 
 - **Version**: 2.0.0
 - **Base URL**: https://api.instatus.com
-
-
 
 ## Key Features
 
@@ -22,11 +21,17 @@ This repository contains the OpenAPI 3.0.3 specification for the Instatus API. I
 - Authentication via API token
 
 
+## Usage
 
-## Authentication
+All endpoints are under the URL https://api.instatus.com. They generally follow the REST architecture.
 
-All requests to the Instatus API must provide an API token through the Authorization header. You can obtain your API key from the User settings in the developer settings section: https://dashboard.instatus.com/developer
+Requests must be encoded as JSON with the `Content-Type: application/json` header.
+Requests must provide an API token through the Authorization header. You can obtain your API key from the User settings in the developer settings section: https://dashboard.instatus.com/developer
+```
+Authorization: Bearer <API_KEY>
+```
 
+Responses from the Instatus API, including errors, are encoded as JSON.
 
 
 ## Main Resources
@@ -45,12 +50,10 @@ The API provides endpoints for managing:
 10. Metrics
 
 
-
 ## File Structure
 
 - `instatus.yaml`: The OpenAPI specification in YAML format
 - `instatus.json`: The OpenAPI specification in JSON format
-
 
 
 ## Getting Started
@@ -59,8 +62,12 @@ To get started with the Instatus API:
 
 1. Obtain your API key from the Instatus dashboard
 2. Review the API specification in either YAML or JSON format
-3. Make your first API call using your preferred HTTP client
+3. Make your first API call using your preferred HTTP client (We love (Insomnia)[https://insomnia.rest?ref=instatus])
 
 ## Support
 
-For any questions or issues, please contact Instatus support or refer to the official documentation.
+- Help: (instatus.com/help)[https://instatus.com/help]
+- API docs: (instatus.com/help/api)[https://instatus.com/help/api]
+- Support email: (support@instatus.com)[mailto:support@instatus.com]
+
+For any questions or issues, please contact  or refer to the (official documentation).
