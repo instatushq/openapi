@@ -2316,10 +2316,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserProfile"
-                  }
+                  "$ref": "#/components/schemas/UserProfile"
                 }
               }
             }
@@ -5925,80 +5922,8 @@
       "TeammateDetail": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
           "email": {
             "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "avatar": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "temp": {
-            "type": "string",
-            "nullable": true
-          },
-          "slug": {
-            "type": "string",
-            "nullable": true
-          },
-          "use24HourTime": {
-            "type": "boolean"
-          },
-          "enableMagicLinkResendAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "oldEmail": {
-            "type": "string",
-            "nullable": true
-          },
-          "revokeEmailToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "revokeEmailTokenExpiresAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "affiliateId": {
-            "type": "string",
-            "nullable": true
-          },
-          "affiliateToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "use2FA": {
-            "type": "boolean"
-          },
-          "authFactorId": {
-            "type": "string",
-            "nullable": true
-          },
-          "mobileConnectionTokenExpiresAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
           }
         }
       },
