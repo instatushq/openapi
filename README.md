@@ -1,4 +1,4 @@
-# Instatus OpenAPI Specification
+# Instatus OpenAPI Spec
 
 This repository contains the [OpenAPI](https://www.openapis.org/) 3.0.3 specification for the [Instatus API](https://instatus.com/help/api).
 
@@ -37,8 +37,8 @@ Authorization: Bearer <API_KEY>
 
 ## Files
 
-- `instatus.yaml`: The OpenAPI specification in YAML format
-- `instatus.json`: The OpenAPI specification in JSON format
+- `instatus.yaml`
+- `instatus.json`
 
 ## Get help
 
