@@ -26,7 +26,9 @@ Instatus helps you:
 All endpoints are under the URL https://api.instatus.com. They generally follow the REST architecture.
 
 Requests must be encoded as JSON with the `Content-Type: application/json` header.
-Requests must provide an API token through the Authorization header. You can obtain your API key from the User settings in the developer settings section: https://dashboard.instatus.com/developer
+
+Requests must provide an API token through the Authorization header. You can get your key from User settings in developer settings section: (dashboard.instatus.com/developer)[https://dashboard.instatus.com/developer]
+
 ```
 Authorization: Bearer <API_KEY>
 ```
