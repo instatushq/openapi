@@ -13,7 +13,7 @@ This repository contains the [OpenAPI](https://www.openapis.org/) 3.0.3 specific
 2. Review the API specification in either YAML or JSON format
 3. Make your first API call using your preferred HTTP client (We love [Insomnia](https://insomnia.rest))
 
-## Usage
+## API requests
 
 - Requests must be encoded as JSON with this header: `Content-Type: application/json`.
 - Requests must provide an API token through the Authorization header.
