@@ -1298,6 +1298,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/RemovedSubscriber'
 
+    /v2/{page_id}/subscribers:
+    get:
+      summary: Get subscribers
+      description: |
+        Retrieve a list of subscribers for a specific status page.
+        The default page number is 1.
+        The default per_page number is 50 and the maximum is 100 items per page.
+      tags:
+        - Subscribers
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+          description: Number of items per page
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Filter subscribers by email address or phone number
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscriber'
+
   # Metrics 
   /v1/{page_id}/metrics:
     get:
