@@ -76,9 +76,7 @@
       "get": {
         "summary": "Get your status pages",
         "description": "Retrieve a list of your status pages or Get your status page secure link\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n\nIf your account has member / owner access to a private status page with secure links enabled, \nyou're allowed to get the secure link to your page. (you will get a secureLink property in the response)\n",
-        "tags": [
-          "Status Pages"
-        ],
+        "tags": ["Status Pages"],
         "parameters": [
           {
             "in": "query",
@@ -121,9 +119,7 @@
       "post": {
         "summary": "Create a status page",
         "description": "Create a new status page",
-        "tags": [
-          "Status Pages"
-        ],
+        "tags": ["Status Pages"],
         "requestBody": {
           "required": true,
           "content": {
@@ -152,9 +148,7 @@
       "put": {
         "summary": "Update a status page",
         "description": "Update an existing status page",
-        "tags": [
-          "Status Pages"
-        ],
+        "tags": ["Status Pages"],
         "parameters": [
           {
             "in": "path",
@@ -192,9 +186,7 @@
       "delete": {
         "summary": "Delete a status page",
         "description": "Delete an existing status page",
-        "tags": [
-          "Status Pages"
-        ],
+        "tags": ["Status Pages"],
         "parameters": [
           {
             "in": "path",
@@ -229,9 +221,7 @@
       "get": {
         "summary": "Get all your status page components",
         "description": "Retrieve a list of components for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Components"
-        ],
+        "tags": ["Components"],
         "parameters": [
           {
             "in": "path",
@@ -281,9 +271,7 @@
       "post": {
         "summary": "Create a component",
         "description": "Create a new component for a specific status page",
-        "tags": [
-          "Components"
-        ],
+        "tags": ["Components"],
         "parameters": [
           {
             "in": "path",
@@ -323,9 +311,7 @@
       "get": {
         "summary": "Get a component",
         "description": "Retrieve a specific component",
-        "tags": [
-          "Components"
-        ],
+        "tags": ["Components"],
         "parameters": [
           {
             "in": "path",
@@ -362,9 +348,7 @@
       "put": {
         "summary": "Update a component",
         "description": "Update an existing component",
-        "tags": [
-          "Components"
-        ],
+        "tags": ["Components"],
         "parameters": [
           {
             "in": "path",
@@ -410,10 +394,8 @@
       },
       "delete": {
         "summary": "Delete a component",
-        "description": "Delete an existing component",
-        "tags": [
-          "Components"
-        ],
+        "description": "Delete an existing component, (Will not delete child components)",
+        "tags": ["Components"],
         "parameters": [
           {
             "in": "path",
@@ -457,9 +439,7 @@
       "get": {
         "summary": "Get all page incidents",
         "description": "Retrieve a list of incidents for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Incidents"
-        ],
+        "tags": ["Incidents"],
         "parameters": [
           {
             "in": "path",
@@ -495,7 +475,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Comma-separated list of statuses to include"
+            "description": "Comma-separated list of statuses to **include**\nKnowing Statuses are: `INVESTIGATING`, `IDENTIFIED`, `MONITORING`, `RESOLVED`"
           },
           {
             "in": "query",
@@ -503,7 +483,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "Comma-separated list of statuses to exclude"
+            "description": "Comma-separated list of statuses to **exclude**\nKnowing Statuses are: `INVESTIGATING`, `IDENTIFIED`, `MONITORING`, `RESOLVED`"
           }
         ],
         "responses": {
@@ -525,9 +505,7 @@
       "post": {
         "summary": "Add an incident",
         "description": "Create a new incident for a specific status page",
-        "tags": [
-          "Incidents"
-        ],
+        "tags": ["Incidents"],
         "parameters": [
           {
             "in": "path",
@@ -567,9 +545,7 @@
       "get": {
         "summary": "Get an incident",
         "description": "Retrieve a specific incident",
-        "tags": [
-          "Incidents"
-        ],
+        "tags": ["Incidents"],
         "parameters": [
           {
             "in": "path",
@@ -606,9 +582,7 @@
       "put": {
         "summary": "Update incident",
         "description": "Update an existing incident",
-        "tags": [
-          "Incidents"
-        ],
+        "tags": ["Incidents"],
         "parameters": [
           {
             "in": "path",
@@ -655,9 +629,7 @@
       "delete": {
         "summary": "Delete incident",
         "description": "Delete an existing incident",
-        "tags": [
-          "Incidents"
-        ],
+        "tags": ["Incidents"],
         "parameters": [
           {
             "in": "path",
@@ -701,9 +673,7 @@
       "post": {
         "summary": "Add an incident with a template",
         "description": "Create a new incident using a template",
-        "tags": [
-          "Incidents"
-        ],
+        "tags": ["Incidents"],
         "parameters": [
           {
             "in": "path",
@@ -742,9 +712,7 @@
       "get": {
         "summary": "Get an incident update",
         "description": "Retrieve a specific incident update",
-        "tags": [
-          "Incident Updates"
-        ],
+        "tags": ["Incident Updates"],
         "parameters": [
           {
             "in": "path",
@@ -790,9 +758,7 @@
       "put": {
         "summary": "Edit an incident update",
         "description": "Update an existing incident update",
-        "tags": [
-          "Incident Updates"
-        ],
+        "tags": ["Incident Updates"],
         "parameters": [
           {
             "in": "path",
@@ -848,9 +814,7 @@
       "delete": {
         "summary": "Delete an incident update",
         "description": "Delete an existing incident update",
-        "tags": [
-          "Incident Updates"
-        ],
+        "tags": ["Incident Updates"],
         "parameters": [
           {
             "in": "path",
@@ -903,9 +867,7 @@
       "post": {
         "summary": "Add an incident update",
         "description": "Create a new incident update",
-        "tags": [
-          "Incident Updates"
-        ],
+        "tags": ["Incident Updates"],
         "parameters": [
           {
             "in": "path",
@@ -954,9 +916,7 @@
       "post": {
         "summary": "Resolve an incident with a template",
         "description": "Resolve an incident using a template",
-        "tags": [
-          "Incident Updates"
-        ],
+        "tags": ["Incident Updates"],
         "parameters": [
           {
             "in": "path",
@@ -1004,9 +964,7 @@
       "get": {
         "summary": "Get all page maintenances",
         "description": "Retrieve a list of maintenances for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Maintenances"
-        ],
+        "tags": ["Maintenances"],
         "parameters": [
           {
             "in": "path",
@@ -1056,9 +1014,7 @@
       "post": {
         "summary": "Add a maintenance",
         "description": "Create a new maintenance for a specific status page",
-        "tags": [
-          "Maintenances"
-        ],
+        "tags": ["Maintenances"],
         "parameters": [
           {
             "in": "path",
@@ -1098,9 +1054,7 @@
       "get": {
         "summary": "Get a maintenance",
         "description": "Retrieve a specific maintenance",
-        "tags": [
-          "Maintenances"
-        ],
+        "tags": ["Maintenances"],
         "parameters": [
           {
             "in": "path",
@@ -1137,9 +1091,7 @@
       "put": {
         "summary": "Update maintenance",
         "description": "Update an existing maintenance",
-        "tags": [
-          "Maintenances"
-        ],
+        "tags": ["Maintenances"],
         "parameters": [
           {
             "in": "path",
@@ -1186,9 +1138,7 @@
       "delete": {
         "summary": "Delete maintenance",
         "description": "Delete an existing maintenance",
-        "tags": [
-          "Maintenances"
-        ],
+        "tags": ["Maintenances"],
         "parameters": [
           {
             "in": "path",
@@ -1232,9 +1182,7 @@
       "get": {
         "summary": "Get a maintenance update",
         "description": "Retrieve a specific maintenance update",
-        "tags": [
-          "Maintenance Updates"
-        ],
+        "tags": ["Maintenance Updates"],
         "parameters": [
           {
             "in": "path",
@@ -1280,9 +1228,7 @@
       "put": {
         "summary": "Edit a maintenance update",
         "description": "Update an existing maintenance update",
-        "tags": [
-          "Maintenance Updates"
-        ],
+        "tags": ["Maintenance Updates"],
         "parameters": [
           {
             "in": "path",
@@ -1338,9 +1284,7 @@
       "delete": {
         "summary": "Delete a maintenance update",
         "description": "Delete an existing maintenance update",
-        "tags": [
-          "Maintenance Updates"
-        ],
+        "tags": ["Maintenance Updates"],
         "parameters": [
           {
             "in": "path",
@@ -1393,9 +1337,7 @@
       "post": {
         "summary": "Add a maintenance update",
         "description": "Create a new maintenance update",
-        "tags": [
-          "Maintenance Updates"
-        ],
+        "tags": ["Maintenance Updates"],
         "parameters": [
           {
             "in": "path",
@@ -1444,9 +1386,7 @@
       "get": {
         "summary": "Get all page templates",
         "description": "Retrieve a list of templates for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Templates"
-        ],
+        "tags": ["Templates"],
         "parameters": [
           {
             "in": "path",
@@ -1496,9 +1436,7 @@
       "post": {
         "summary": "Add a template",
         "description": "Create a new template for a specific status page",
-        "tags": [
-          "Templates"
-        ],
+        "tags": ["Templates"],
         "parameters": [
           {
             "in": "path",
@@ -1538,9 +1476,7 @@
       "get": {
         "summary": "Get a template",
         "description": "Retrieve a specific template",
-        "tags": [
-          "Templates"
-        ],
+        "tags": ["Templates"],
         "parameters": [
           {
             "in": "path",
@@ -1577,9 +1513,7 @@
       "put": {
         "summary": "Update template",
         "description": "Update an existing template",
-        "tags": [
-          "Templates"
-        ],
+        "tags": ["Templates"],
         "parameters": [
           {
             "in": "path",
@@ -1626,9 +1560,7 @@
       "delete": {
         "summary": "Delete template",
         "description": "Delete an existing template",
-        "tags": [
-          "Templates"
-        ],
+        "tags": ["Templates"],
         "parameters": [
           {
             "in": "path",
@@ -1667,9 +1599,7 @@
       "get": {
         "summary": "Get teammates",
         "description": "Retrieve a list of team members for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Teammates"
-        ],
+        "tags": ["Teammates"],
         "parameters": [
           {
             "in": "path",
@@ -1719,9 +1649,7 @@
       "post": {
         "summary": "Add a team member",
         "description": "Add a new team member to a specific status page",
-        "tags": [
-          "Teammates"
-        ],
+        "tags": ["Teammates"],
         "parameters": [
           {
             "in": "path",
@@ -1761,9 +1689,7 @@
       "delete": {
         "summary": "Delete a team member",
         "description": "Remove a team member from a specific status page",
-        "tags": [
-          "Teammates"
-        ],
+        "tags": ["Teammates"],
         "parameters": [
           {
             "in": "path",
@@ -1807,9 +1733,7 @@
       "get": {
         "summary": "Get subscribers",
         "description": "Retrieve a list of subscribers for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Subscribers"
-        ],
+        "tags": ["Subscribers"],
         "parameters": [
           {
             "in": "path",
@@ -1838,6 +1762,14 @@
               "maximum": 100
             },
             "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter subscribers by email address or phone number"
           }
         ],
         "responses": {
@@ -1859,9 +1791,7 @@
       "post": {
         "summary": "Add a subscriber",
         "description": "Add a new subscriber to a specific status page",
-        "tags": [
-          "Subscribers"
-        ],
+        "tags": ["Subscribers"],
         "parameters": [
           {
             "in": "path",
@@ -1901,9 +1831,7 @@
       "delete": {
         "summary": "Remove a subscriber",
         "description": "Remove a subscriber from a specific status page",
-        "tags": [
-          "Subscribers"
-        ],
+        "tags": ["Subscribers"],
         "parameters": [
           {
             "in": "path",
@@ -1942,9 +1870,7 @@
       "get": {
         "summary": "Get subscribers",
         "description": "Retrieve a list of subscribers for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Subscribers"
-        ],
+        "tags": ["Subscribers"],
         "parameters": [
           {
             "in": "path",
@@ -2004,9 +1930,7 @@
       "get": {
         "summary": "Get all metrics",
         "description": "Retrieve a list of metrics for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Metrics"
-        ],
+        "tags": ["Metrics"],
         "parameters": [
           {
             "in": "path",
@@ -2056,9 +1980,7 @@
       "post": {
         "summary": "Add a metric",
         "description": "Add a new metric to a specific status page",
-        "tags": [
-          "Metrics"
-        ],
+        "tags": ["Metrics"],
         "parameters": [
           {
             "in": "path",
@@ -2098,9 +2020,7 @@
       "get": {
         "summary": "Get a metric",
         "description": "Retrieve a specific metric",
-        "tags": [
-          "Metrics"
-        ],
+        "tags": ["Metrics"],
         "parameters": [
           {
             "in": "path",
@@ -2137,9 +2057,7 @@
       "put": {
         "summary": "Update a metric",
         "description": "Update an existing metric",
-        "tags": [
-          "Metrics"
-        ],
+        "tags": ["Metrics"],
         "parameters": [
           {
             "in": "path",
@@ -2186,9 +2104,7 @@
       "delete": {
         "summary": "Delete a metric",
         "description": "Delete an existing metric",
-        "tags": [
-          "Metrics"
-        ],
+        "tags": ["Metrics"],
         "parameters": [
           {
             "in": "path",
@@ -2225,9 +2141,7 @@
       "post": {
         "summary": "Add a datapoint to a metric",
         "description": "Add a single datapoint to a specific metric",
-        "tags": [
-          "Metrics"
-        ],
+        "tags": ["Metrics"],
         "parameters": [
           {
             "in": "path",
@@ -2276,9 +2190,7 @@
       "post": {
         "summary": "Add multiple datapoints to a metric",
         "description": "Add multiple datapoints to a specific metric",
-        "tags": [
-          "Metrics"
-        ],
+        "tags": ["Metrics"],
         "parameters": [
           {
             "in": "path",
@@ -2328,9 +2240,7 @@
       "delete": {
         "summary": "Delete datapoints from a metric",
         "description": "Delete all datapoints from a specific metric",
-        "tags": [
-          "Metrics"
-        ],
+        "tags": ["Metrics"],
         "parameters": [
           {
             "in": "path",
@@ -2369,9 +2279,7 @@
       "get": {
         "summary": "Get your user profile",
         "description": "Retrieve the profile information of the authenticated user",
-        "tags": [
-          "User Profile"
-        ],
+        "tags": ["User Profile"],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -2390,9 +2298,7 @@
       "get": {
         "summary": "Get public status summary",
         "description": "Retrieve the current status summary of the status page \n- The base url is your status page url\n- An example is https://instat.us/summary.json\n",
-        "tags": [
-          "Public Data"
-        ],
+        "tags": ["Public Data"],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -2411,9 +2317,7 @@
       "get": {
         "summary": "Get all your status page audience groups",
         "description": "Retrieve a list of audience groups for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
-        "tags": [
-          "Audience Groups"
-        ],
+        "tags": ["Audience Groups"],
         "parameters": [
           {
             "in": "path",
@@ -2463,9 +2367,7 @@
       "post": {
         "summary": "Create an audience group",
         "description": "Create a new audience group for a specific status page",
-        "tags": [
-          "Audience Groups"
-        ],
+        "tags": ["Audience Groups"],
         "parameters": [
           {
             "in": "path",
@@ -2505,9 +2407,7 @@
       "get": {
         "summary": "Get an audience group",
         "description": "Retrieve a specific audience group",
-        "tags": [
-          "Audience Groups"
-        ],
+        "tags": ["Audience Groups"],
         "parameters": [
           {
             "in": "path",
@@ -2544,9 +2444,7 @@
       "put": {
         "summary": "Update an audience group",
         "description": "Update an existing audience group",
-        "tags": [
-          "Audience Groups"
-        ],
+        "tags": ["Audience Groups"],
         "parameters": [
           {
             "in": "path",
@@ -2593,9 +2491,7 @@
       "delete": {
         "summary": "Delete an audience group",
         "description": "Delete an existing audience group",
-        "tags": [
-          "Audience Groups"
-        ],
+        "tags": ["Audience Groups"],
         "parameters": [
           {
             "in": "path",
@@ -2634,9 +2530,7 @@
       "post": {
         "summary": "Regenerate your secure link",
         "description": "Regenerate the secure link for a specific status page",
-        "tags": [
-          "Private Pages"
-        ],
+        "tags": ["Private Pages"],
         "parameters": [
           {
             "in": "path",
@@ -2665,9 +2559,7 @@
     "/monitors/check_inserted_logs": {
       "get": {
         "summary": "Check Inserted Logs",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -2690,9 +2582,8 @@
     "/{page_id}/monitors": {
       "get": {
         "summary": "Get Monitors",
-        "tags": [
-          "Monitors"
-        ],
+        "description": "Retrieve a list of monitors for a specific status page",
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -2724,12 +2615,8 @@
             "name": "status",
             "schema": {
               "type": "string",
-              "enum": [
-                "UP",
-                "DOWN",
-                "UNKNOWN",
-                "DEGRADED"
-              ]
+              "enum": ["UP", "DOWN", "UNKNOWN", "DEGRADED"],
+              "description": "`UP` - Monitor is running normally\n`DOWN` - Monitor has failed\n`UNKNOWN` - Monitor state can't be determined\n`DEGRADED` - Monitor is experiencing issues"
             }
           }
         ],
@@ -2770,9 +2657,7 @@
     "/monitors": {
       "post": {
         "summary": "Create a Monitor",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "requestBody": {
           "required": true,
           "content": {
@@ -2797,12 +2682,60 @@
         }
       }
     },
+    "/monitors/{id}/group": {
+      "put": {
+        "summary": "Update a Monitor's Group",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "parentId": {
+                    "type": "string",
+                    "description": "The id of the parent monitor group to add the monitor to, leave as null to unparent the monitor completely.",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/monitors/{id}": {
       "put": {
         "summary": "Update a Monitor",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -2838,9 +2771,7 @@
       },
       "delete": {
         "summary": "Delete a Monitor",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -2859,431 +2790,6 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/monitors/{id}/logs": {
-      "get": {
-        "summary": "Get Monitor Logs",
-        "description": "Retrieve logs for a specific monitor",
-        "tags": [
-          "Monitors"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "The ID of the monitor"
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "schema": {
-              "type": "integer",
-              "default": 100,
-              "maximum": 1000
-            },
-            "description": "The number of items per page. Cannot exceed 1000."
-          },
-          {
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "type": "integer",
-              "default": 1
-            },
-            "description": "The page number to retrieve."
-          },
-          {
-            "in": "query",
-            "name": "monitorId",
-            "schema": {
-              "type": "string"
-            },
-            "description": "The ID of the monitor."
-          },
-          {
-            "in": "query",
-            "name": "location",
-            "schema": {
-              "type": "string"
-            },
-            "description": "The location of the monitor."
-          },
-          {
-            "in": "query",
-            "name": "createdAt",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "gte": {
-                      "type": "string"
-                    },
-                    "lte": {
-                      "type": "string"
-                    }
-                  }
-                }
-              ]
-            },
-            "description": "The creation date. Can be a string, a number, or an object with gte and lte fields."
-          },
-          {
-            "in": "query",
-            "name": "isSuccessful",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Whether the check was successful."
-          },
-          {
-            "in": "query",
-            "name": "isSSLCheck",
-            "schema": {
-              "type": "boolean"
-            },
-            "description": "Whether the check is an SSL check."
-          },
-          {
-            "in": "query",
-            "name": "httpStatusCode",
-            "schema": {
-              "type": "string"
-            },
-            "description": "The HTTP status code of the response."
-          },
-          {
-            "in": "query",
-            "name": "status",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "UP",
-                "DOWN",
-                "UNKNOWN",
-                "DEGRADED"
-              ]
-            },
-            "description": "The status of the monitor."
-          },
-          {
-            "in": "query",
-            "name": "dnsTime",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Time taken for DNS resolution."
-          },
-          {
-            "in": "query",
-            "name": "tcpTime",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Time taken for TCP connection."
-          },
-          {
-            "in": "query",
-            "name": "tlsTime",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Time taken for TLS handshake."
-          },
-          {
-            "in": "query",
-            "name": "firstByteTime",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Time taken for the first byte to be received."
-          },
-          {
-            "in": "query",
-            "name": "downloadTime",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Time taken for the download."
-          },
-          {
-            "in": "query",
-            "name": "responseTime",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Total response time."
-          },
-          {
-            "in": "query",
-            "name": "performanceTime",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Performance time."
-          },
-          {
-            "in": "query",
-            "name": "accessabilityScore",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Accessibility score."
-          },
-          {
-            "in": "query",
-            "name": "seoScore",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "SEO score."
-          },
-          {
-            "in": "query",
-            "name": "bestPracticesScore",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Best practices score."
-          },
-          {
-            "in": "query",
-            "name": "successfulAssertions",
-            "schema": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "object"
-                }
-              ]
-            },
-            "description": "Number of successful assertions."
-          },
-          {
-            "in": "query",
-            "name": "sort",
-            "schema": {
-              "type": "string",
-              "default": "chronologically"
-            },
-            "description": "Field to sort by."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "monitorLogs": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/MonitorLog"
-                      }
-                    },
-                    "total": {
-                      "type": "integer"
-                    },
-                    "page": {
-                      "type": "integer"
-                    },
-                    "totalPages": {
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "type": "integer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/monitors/{id}/run": {
-      "get": {
-        "summary": "Run Monitor Check",
-        "tags": [
-          "Monitors"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "location",
-            "description": "The location of the monitor. Must be one of the specified values.",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "US_EAST_1",
-                "EU_CENTRAL_1",
-                "AP_NORTHEAST_1",
-                "AP_SOUTHEAST_2"
-              ]
-            }
-          },
-          {
-            "in": "query",
-            "name": "retry",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
-          },
-          {
-            "in": "query",
-            "name": "monitorLogId",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    },
                     "message": {
                       "type": "string"
                     }
@@ -3298,9 +2804,7 @@
     "/monitor-alerts": {
       "post": {
         "summary": "Create Monitor Alert",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "requestBody": {
           "required": true,
           "content": {
@@ -3328,16 +2832,14 @@
     "/monitor-alerts/{id}": {
       "put": {
         "summary": "Update Monitor Alert",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/MonitorAlertType"
             }
           }
         ],
@@ -3366,9 +2868,7 @@
       },
       "delete": {
         "summary": "Delete Monitor Alert",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -3401,9 +2901,7 @@
     "/{page_id}/monitor-alerts": {
       "get": {
         "summary": "Get Monitor Alerts",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -3467,9 +2965,7 @@
     "/monitors-groups": {
       "post": {
         "summary": "Create Monitor Group",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "requestBody": {
           "required": true,
           "content": {
@@ -3497,9 +2993,7 @@
     "/monitors-groups/{id}": {
       "put": {
         "summary": "Update Monitor Group",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -3535,9 +3029,7 @@
       },
       "delete": {
         "summary": "Delete Monitor Group",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -3570,9 +3062,7 @@
     "/monitors-groups/{id}/monitors": {
       "post": {
         "summary": "Add Monitors to Group",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -3623,9 +3113,7 @@
     "/monitors-groups/{id}/run": {
       "get": {
         "summary": "Run Monitor Group Check",
-        "tags": [
-          "Monitors"
-        ],
+        "tags": ["Monitors"],
         "parameters": [
           {
             "in": "path",
@@ -3640,12 +3128,7 @@
             "name": "location",
             "schema": {
               "type": "string",
-              "enum": [
-                "US_EAST_1",
-                "EU_CENTRAL_1",
-                "AP_NORTHEAST_1",
-                "AP_SOUTHEAST_2"
-              ]
+              "$ref": "#/components/schemas/MonitorLocation"
             }
           },
           {
@@ -3689,9 +3172,7 @@
     "/{page_id}/routing-rules": {
       "get": {
         "summary": "Get Routing Rules",
-        "tags": [
-          "Routing Rules"
-        ],
+        "tags": ["Routing Rules"],
         "parameters": [
           {
             "in": "path",
@@ -3720,9 +3201,7 @@
       "post": {
         "summary": "Create Routing Rule",
         "description": "Keep in mind in actions `targetId` can be a workspace member email or a team id depending on the type of the action.",
-        "tags": [
-          "Routing Rules"
-        ],
+        "tags": ["Routing Rules"],
         "requestBody": {
           "required": true,
           "content": {
@@ -3750,9 +3229,7 @@
     "/routing-rules/{id}": {
       "put": {
         "summary": "Update Routing Rule",
-        "tags": [
-          "Routing Rules"
-        ],
+        "tags": ["Routing Rules"],
         "parameters": [
           {
             "in": "path",
@@ -3788,9 +3265,7 @@
       },
       "delete": {
         "summary": "Delete Routing Rule",
-        "tags": [
-          "Routing Rules"
-        ],
+        "tags": ["Routing Rules"],
         "parameters": [
           {
             "in": "path",
@@ -3818,9 +3293,7 @@
     "/{page_id}/escalation-policies": {
       "get": {
         "summary": "Get Escalation Policies",
-        "tags": [
-          "Escalation Policies"
-        ],
+        "tags": ["Escalation Policies"],
         "parameters": [
           {
             "in": "path",
@@ -3848,9 +3321,7 @@
     "/escalation-policies": {
       "post": {
         "summary": "Create Escalation Policy",
-        "tags": [
-          "Escalation Policies"
-        ],
+        "tags": ["Escalation Policies"],
         "requestBody": {
           "required": true,
           "content": {
@@ -3878,9 +3349,7 @@
     "/escalation-policies/{id}": {
       "put": {
         "summary": "Update Escalation Policy",
-        "tags": [
-          "Escalation Policies"
-        ],
+        "tags": ["Escalation Policies"],
         "parameters": [
           {
             "in": "path",
@@ -3916,9 +3385,7 @@
       },
       "delete": {
         "summary": "Delete Escalation Policy",
-        "tags": [
-          "Escalation Policies"
-        ],
+        "tags": ["Escalation Policies"],
         "parameters": [
           {
             "in": "path",
@@ -3946,9 +3413,7 @@
     "/on-call-schedules": {
       "post": {
         "summary": "Create On-call Schedule",
-        "tags": [
-          "On Call Schedules"
-        ],
+        "tags": ["On Call Schedules"],
         "requestBody": {
           "required": true,
           "content": {
@@ -3976,9 +3441,7 @@
     "/on-call-schedules/{id}": {
       "put": {
         "summary": "Update On-call Schedule",
-        "tags": [
-          "On Call Schedules"
-        ],
+        "tags": ["On Call Schedules"],
         "parameters": [
           {
             "in": "path",
@@ -4014,9 +3477,7 @@
       },
       "delete": {
         "summary": "Delete On-call Schedule",
-        "tags": [
-          "On Call Schedules"
-        ],
+        "tags": ["On Call Schedules"],
         "parameters": [
           {
             "in": "path",
@@ -4077,20 +3538,38 @@
       },
       "IncidentStatus": {
         "type": "string",
+        "enum": ["INVESTIGATING", "IDENTIFIED", "MONITORING", "RESOLVED"]
+      },
+      "IncidentImpact": {
+        "type": "string",
         "enum": [
-          "INVESTIGATING",
-          "IDENTIFIED",
-          "MONITORING",
-          "RESOLVED"
+          "OPERATIONAL",
+          "DEGRADEDPERFORMANCE",
+          "PARTIALOUTAGE",
+          "MAJOROUTAGE"
         ]
       },
       "MaintenanceStatus": {
         "type": "string",
+        "enum": ["NOTSTARTEDYET", "INPROGRESS", "COMPLETED"]
+      },
+      "TemplateStatus": {
+        "type": "string",
+        "description": "The status of the notice when it's created using the template.\n**Incident Options:**\n\n- `INVESTIGATING`\n- `IDENTIFIED`\n- `MONITORING`\n- `RESOLVED`\n\n**Maintenance options:**\n - `NOTSTARTEDYET`\n- `INPROGRESS`\n- `COMPLETED`",
         "enum": [
+          "INVESTIGATING",
+          "IDENTIFIED",
+          "MONITORING",
+          "RESOLVED",
           "NOTSTARTEDYET",
           "INPROGRESS",
           "COMPLETED"
         ]
+      },
+      "TemplateOrigin": {
+        "type": "string",
+        "description": "The origin of the template.\n- `MANUAL`: The template was created manually by the user.\n- `INTEGRATION`: The template was created by an integration.\n- `MONITOR`: The template was created by a monitor.",
+        "enum": ["MANUAL", "INTEGRATION", "MONITOR"]
       },
       "Error": {
         "type": "object",
@@ -4172,43 +3651,51 @@
             "nullable": true
           },
           "language": {
-            "type": "string"
+            "type": "string",
+            "description": "The language of the status page in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.)."
           },
           "useLargeHeader": {
             "type": "boolean"
           },
           "brandColor": {
+            "description": "The brand color of the status page, in hex format.",
             "type": "string"
           },
           "okColor": {
+            "description": "The color for operational, in hex format.",
             "type": "string"
           },
           "disruptedColor": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The color for partial outage, in hex format."
           },
           "degradedColor": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The color for degraded performance, in hex format."
           },
           "downColor": {
+            "description": "The color for major outage, in hex format.",
             "type": "string",
             "nullable": true
           },
           "noticeColor": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The color for maintenances, in hex format."
           },
           "unknownColor": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The color for unknown status, in hex format."
           },
           "googleAnalytics": {
             "type": "string",
             "nullable": true
           },
           "smsService": {
-            "type": "string",
+            "$ref": "#/components/schemas/SmsService",
             "nullable": true
           },
           "htmlInMeta": {
@@ -4262,13 +3749,13 @@
           }
         }
       },
+      "SmsService": {
+        "type": "string",
+        "enum": ["twilio", "vonage", "esendex", "messagebird", "sns"]
+      },
       "CreateStatusPageRequest": {
         "type": "object",
-        "required": [
-          "email",
-          "name",
-          "subdomain"
-        ],
+        "required": ["email", "name", "subdomain"],
         "properties": {
           "email": {
             "type": "string",
@@ -4278,10 +3765,12 @@
             "type": "string"
           },
           "subdomain": {
+            "description": "The subdomain of the status page, make sure it's unique and follows the slug format.",
             "type": "string"
           },
           "components": {
             "type": "array",
+            "description": "The names of the components to add to the status page.",
             "items": {
               "type": "string"
             }
@@ -4296,27 +3785,34 @@
             "type": "string"
           },
           "language": {
-            "type": "string"
+            "type": "string",
+            "description": "The language of the status page in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.)."
           },
           "useLargeHeader": {
             "type": "boolean"
           },
           "brandColor": {
+            "description": "The brand color of the status page, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "okColor": {
+            "description": "The color for operational, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "disruptedColor": {
+            "description": "The color for partial outage, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "degradedColor": {
+            "description": "The color for degraded performance, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "downColor": {
+            "description": "The color for major outage, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "noticeColor": {
+            "description": "The color for maintenances, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "unknownColor": {
@@ -4329,7 +3825,8 @@
             "type": "boolean"
           },
           "smsService": {
-            "type": "string"
+            "$ref": "#/components/schemas/SmsService",
+            "description": "The SMS service to use for notifications, You will need to fill the parameters related to the selected service."
           },
           "twilioSid": {
             "type": "string"
@@ -4387,6 +3884,7 @@
           },
           "cssGlobal": {
             "type": "string",
+            "description": "Global CSS to apply to the status page.",
             "nullable": true
           },
           "launchDate": {
@@ -4394,12 +3892,15 @@
             "nullable": true
           },
           "dateFormat": {
+            "description": "Formats to display dates on the page, please refer to [date-fns formatting](https://date-fns.org/docs/format)",
             "type": "string"
           },
           "dateFormatShort": {
+            "description": "Formats to display the shortened date on the page, please refer to [date-fns formatting](https://date-fns.org/docs/format)",
             "type": "string"
           },
           "timeFormat": {
+            "description": "Formats to display time on the page, please refer to [date-fns formatting](https://date-fns.org/docs/format)",
             "type": "string"
           }
         }
@@ -4429,7 +3930,8 @@
             "type": "string"
           },
           "language": {
-            "type": "string"
+            "type": "string",
+            "description": "The language of the status page in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.)."
           },
           "publicEmail": {
             "type": "string"
@@ -4438,21 +3940,27 @@
             "type": "boolean"
           },
           "brandColor": {
+            "description": "The brand color of the status page, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "okColor": {
+            "description": "The color for operational, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "disruptedColor": {
+            "description": "The color for partial outage, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "degradedColor": {
+            "description": "The color for degraded performance, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "downColor": {
+            "description": "The color for major outage, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "noticeColor": {
+            "description": "The color for maintenances, This only accepts hex colors or rgb(r,g,b).",
             "type": "string"
           },
           "unknownColor": {
@@ -4465,7 +3973,8 @@
             "type": "boolean"
           },
           "smsService": {
-            "type": "string"
+            "$ref": "#/components/schemas/SmsService",
+            "description": "The SMS service to use for notifications, You will need to fill the parameters related to the selected service."
           },
           "twilioSid": {
             "type": "string"
@@ -4586,7 +4095,8 @@
           },
           "language": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The language of the status page in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.)."
           },
           "googleAnalytics": {
             "type": "string",
@@ -4616,26 +4126,32 @@
             "nullable": true
           },
           "brandColor": {
+            "description": "The brand color of the status page, in hex format.",
             "type": "string",
             "nullable": true
           },
           "okColor": {
+            "description": "The color for operational, in hex format.",
             "type": "string",
             "nullable": true
           },
           "disruptedColor": {
+            "description": "The color for partial outage, in hex format.",
             "type": "string",
             "nullable": true
           },
           "downColor": {
+            "description": "The color for major outage, in hex format.",
             "type": "string",
             "nullable": true
           },
           "degradedColor": {
+            "description": "The color for degraded performance, in hex format.",
             "type": "string",
             "nullable": true
           },
           "noticeColor": {
+            "description": "The color for maintenances, in hex format.",
             "type": "string",
             "nullable": true
           },
@@ -4717,7 +4233,8 @@
             "type": "string"
           },
           "uniqueEmail": {
-            "type": "string"
+            "type": "string",
+            "description": "The unique email address for the component, this is used to send notifications to the component. send an email titled `DOWN` to set it to major outage and `UP` for operational"
           },
           "description": {
             "type": "string"
@@ -4727,11 +4244,21 @@
           },
           "order": {
             "type": "integer",
-            "nullable": true
+            "nullable": true,
+            "description": "The order of the component on the status page."
           },
           "group": {
-            "type": "string",
-            "nullable": true
+            "type": "object",
+            "$ref": "#/components/schemas/Component",
+            "description": "This will be null if the component has no parent.",
+            "nullable": true,
+            "properties": {
+              "isParent": {
+                "type": "boolean",
+                "value": true,
+                "description": "Will always be true"
+              }
+            }
           },
           "nameTranslationId": {
             "type": "string",
@@ -4742,7 +4269,8 @@
             "nullable": true
           },
           "showUptime": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to show the percentage and uptime bar for the component."
           },
           "createdAt": {
             "type": "string",
@@ -4762,10 +4290,12 @@
           },
           "groupId": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The id of the parent component for this component."
           },
           "nameHtml": {
             "type": "string",
+            "description": "The HTML version of the component name.",
             "nullable": true
           },
           "nameHtmlTranslationId": {
@@ -4774,6 +4304,7 @@
           },
           "descriptionHtml": {
             "type": "string",
+            "description": "The HTML version of the component description.",
             "nullable": true
           },
           "descriptionHtmlTranslationId": {
@@ -4803,20 +4334,6 @@
             "format": "date-time",
             "nullable": true
           },
-          "nameTranslation": {
-            "type": "object",
-            "nullable": true
-          },
-          "descriptionTranslation": {
-            "type": "object",
-            "nullable": true
-          },
-          "incidents": {
-            "type": "array",
-            "items": {
-              "type": "object"
-            }
-          },
           "translations": {
             "$ref": "#/components/schemas/Translations"
           }
@@ -4835,13 +4352,21 @@
             "$ref": "#/components/schemas/ComponentStatus"
           },
           "order": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The order of the component on the status page."
           },
           "showUptime": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to show the percentage and uptime bar for the component."
           },
           "grouped": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the component is a parent component or not, If set to true, make sure to set the group parent id in the `group` field."
+          },
+          "group": {
+            "type": "string",
+            "nullable": true,
+            "description": "The id of the component to group under."
           },
           "archived": {
             "type": "boolean"
@@ -4864,10 +4389,12 @@
             "$ref": "#/components/schemas/ComponentStatus"
           },
           "order": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The order of the component on the status page."
           },
           "showUptime": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to show the percentage and uptime bar for the component."
           },
           "grouped": {
             "type": "boolean"
@@ -4894,12 +4421,19 @@
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident started."
+          },
+          "duration": {
+            "type": "integer",
+            "description": "The duration of the incident in minutes from beginning to resolution.\nnull if the incident is not yet resolved.",
+            "nullable": true
           },
           "resolved": {
             "type": "string",
             "format": "date-time",
-            "nullable": true
+            "nullable": true,
+            "description": "The date and time the incident was resolved.\nnull if the incident is not yet resolved."
           },
           "updates": {
             "type": "array",
@@ -4934,19 +4468,23 @@
             "$ref": "#/components/schemas/IncidentStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident update happened."
           },
           "ended": {
             "type": "string",
             "format": "date-time",
-            "nullable": true
+            "nullable": true,
+            "description": "The date and time the incident update resolved.\nWill have a value if the incident update `status` is `RESOLVED`."
           },
           "duration": {
             "type": "integer",
+            "description": "The duration of the incident update in minutes from beginning to resolution.",
             "nullable": true
           },
           "createdAt": {
@@ -4968,7 +4506,8 @@
             "$ref": "#/components/schemas/IncidentStatus"
           },
           "showUptime": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to show the percentage and uptime bar for the component."
           },
           "site": {
             "$ref": "#/components/schemas/IncidentSite"
@@ -5001,6 +4540,38 @@
           }
         }
       },
+      "IncidentComponentStatuses": {
+        "type": "array",
+        "description": "The statuses of the components that are affected by the incident update.\n**Make sure the components are also included in the `components` field.**",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "The id of the component that is affected by the incident update.",
+              "type": "string"
+            },
+            "status": {
+              "$ref": "#/components/schemas/ComponentStatus"
+            }
+          }
+        }
+      },
+      "MaintenanceComponentStatuses": {
+        "type": "array",
+        "description": "The statuses of the components that are affected by the maintenance update.\n**Make sure the components are also included in the `components` field.**",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "description": "The id of the component that is affected by the maintenance update.",
+              "type": "string"
+            },
+            "status": {
+              "$ref": "#/components/schemas/ComponentStatus"
+            }
+          }
+        }
+      },
       "CreateIncidentRequest": {
         "type": "object",
         "properties": {
@@ -5012,33 +4583,30 @@
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that are affected by the incident.",
             "items": {
               "type": "string"
             }
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident started, If left empty the time will be set to the current time."
           },
           "status": {
             "$ref": "#/components/schemas/IncidentStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
+          },
+          "shouldPublish": {
+            "type": "boolean",
+            "description": "Whether to publish the incident to the page.",
+            "default": true
           },
           "statuses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "status": {
-                  "$ref": "#/components/schemas/IncidentStatus"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/IncidentComponentStatuses"
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
@@ -5053,33 +4621,25 @@
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that are affected by the incident.",
             "items": {
               "type": "string"
             }
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident started."
           },
           "status": {
             "$ref": "#/components/schemas/IncidentStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "statuses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "status": {
-                  "$ref": "#/components/schemas/IncidentStatus"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/IncidentComponentStatuses"
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
@@ -5100,18 +4660,21 @@
             "nullable": true
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "status": {
             "$ref": "#/components/schemas/IncidentStatus"
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident started, If left empty the time will be set to the current time."
           },
           "resolved": {
             "type": "string",
             "format": "date-time",
+            "description": "The date and time the incident was resolved.\nnull if the incident is not yet resolved.",
             "nullable": true
           },
           "duration": {
@@ -5130,11 +4693,16 @@
             "type": "boolean"
           },
           "impact": {
-            "type": "string"
+            "$ref": "#/components/schemas/IncidentImpact"
           },
           "appId": {
             "type": "string",
             "nullable": true
+          },
+          "updates": {
+            "items": {
+              "$ref": "#/components/schemas/IncidentUpdateDetailed"
+            }
           },
           "siteId": {
             "type": "string"
@@ -5160,11 +4728,13 @@
             "$ref": "#/components/schemas/IncidentStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the subscribers of the page and the affected components were notified."
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident update happened."
           },
           "incident": {
             "$ref": "#/components/schemas/IncidentBrief"
@@ -5185,7 +4755,8 @@
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident started."
           },
           "status": {
             "$ref": "#/components/schemas/IncidentStatus"
@@ -5211,7 +4782,8 @@
             "$ref": "#/components/schemas/ComponentStatus"
           },
           "showUptime": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to show the percentage and uptime bar for the component."
           },
           "site": {
             "$ref": "#/components/schemas/SiteBrief"
@@ -5266,33 +4838,25 @@
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that are affected by the incident.",
             "items": {
               "type": "string"
             }
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident update happened, If left empty the time will be set to the current time."
           },
           "status": {
             "$ref": "#/components/schemas/IncidentStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "statuses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "status": {
-                  "$ref": "#/components/schemas/IncidentStatus"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/IncidentComponentStatuses"
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
@@ -5307,33 +4871,25 @@
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that are affected by the incident.",
             "items": {
               "type": "string"
             }
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident update happened."
           },
           "status": {
             "$ref": "#/components/schemas/IncidentStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "statuses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "status": {
-                  "$ref": "#/components/schemas/IncidentStatus"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/IncidentComponentStatuses"
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
@@ -5361,7 +4917,8 @@
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the incident update happened, If left empty the time will be set to the current time."
           },
           "ended": {
             "type": "string",
@@ -5409,29 +4966,37 @@
           },
           "start": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the maintenance will start."
           },
           "duration": {
             "type": "integer",
+            "description": "The duration of the maintenance in minutes from beginning to the resolution.\nnull if the maintenance is not yet ended.",
             "nullable": true
           },
           "notifyStart": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components when the maintenance **starts**."
           },
           "notifyEnd": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components when the maintenance **ends**."
           },
           "notifyEarly": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components before the maintenance starts."
           },
           "notifyMinutes": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The number of minutes before the maintenance starts that the subscribers will be notified."
           },
           "autoStart": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to automatically start the maintenance automatically when the date and time reaches the `start` date and time."
           },
           "autoEnd": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to automatically end the maintenance automatically when the date and time« reaches the `end` date and time."
           },
           "updates": {
             "type": "array",
@@ -5466,11 +5031,13 @@
             "$ref": "#/components/schemas/MaintenanceStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the maintenance update happened."
           },
           "ended": {
             "type": "string",
@@ -5498,58 +5065,68 @@
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that are affected by the maintenance.",
             "items": {
               "type": "string"
             }
           },
           "start": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the maintenance will start in ISO-8601 format (UTC Timezone), If left empty the time will be set to the current time."
           },
           "end": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the maintenance will end in ISO-8601 format (UTC Timezone), If left empty the time will be set to the current time."
           },
           "status": {
-            "$ref": "#/components/schemas/MaintenanceStatus"
+            "$ref": "#/components/schemas/MaintenanceStatus",
+            "description": "The status of the maintenance."
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "duration": {
-            "type": "integer"
+            "type": "integer",
+            "description": "How many minutes the maintenance will last since the `start` date and time if `autoEnd` is set to `true`."
           },
           "notifyStart": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components when the maintenance **starts**."
           },
           "notifyEnd": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components when the maintenance **ends**."
           },
           "notifyEarly": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components before the maintenance starts."
           },
           "notifyMinutes": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The number of minutes before the maintenance starts that the subscribers will be notified."
           },
           "autoStart": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to automatically start the maintenance automatically when the date and time reaches the `start` date and time."
           },
           "autoEnd": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to automatically end the maintenance automatically when the date and time« reaches the `end` date and time."
+          },
+          "isCollapsed": {
+            "type": "boolean",
+            "description": "Whether the maintenance is collapsed or not on the page."
+          },
+          "expandAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the maintenance will expand at in ISO-8601 format (UTC Timezone)."
           },
           "statuses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "status": {
-                  "$ref": "#/components/schemas/MaintenanceStatus"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/MaintenanceComponentStatuses"
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
@@ -5558,46 +5135,64 @@
       },
       "UpdateMaintenanceRequest": {
         "type": "object",
+        "required": [
+          "message",
+          "components",
+          "start",
+          "end",
+          "status",
+          "notify",
+          "statuses",
+          "duration",
+          "autoStart",
+          "autoEnd"
+        ],
         "properties": {
           "name": {
             "type": "string"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "The message of the maintenance."
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that are affected by the maintenance.",
             "items": {
               "type": "string"
             }
           },
           "start": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the maintenance will start."
           },
           "end": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the maintenance will end."
           },
           "status": {
             "$ref": "#/components/schemas/MaintenanceStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
+          },
+          "autoStart": {
+            "type": "boolean",
+            "description": "Whether to automatically start the maintenance automatically when the date and time reaches the `start` date and time."
+          },
+          "autoEnd": {
+            "type": "boolean",
+            "description": "Whether to automatically end the maintenance automatically when the date and time« reaches the `end` date and time."
+          },
+          "duration": {
+            "type": "integer",
+            "description": "How many minutes the maintenance will last since the `start` date and time if `autoEnd` is set to `true`."
           },
           "statuses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "status": {
-                  "$ref": "#/components/schemas/MaintenanceStatus"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/MaintenanceComponentStatuses"
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
@@ -5617,11 +5212,13 @@
             "type": "string"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the subscribers of the page and the affected components were notified about the maintenance update."
           },
           "started": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The date and time the maintenance update happened."
           },
           "status": {
             "$ref": "#/components/schemas/MaintenanceStatus"
@@ -5666,6 +5263,7 @@
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that are affected by the maintenance update.",
             "items": {
               "type": "string"
             }
@@ -5682,21 +5280,11 @@
             "$ref": "#/components/schemas/MaintenanceStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components about the maintenance update."
           },
           "statuses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "status": {
-                  "$ref": "#/components/schemas/MaintenanceStatus"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/MaintenanceComponentStatuses"
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
@@ -5711,6 +5299,7 @@
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that are affected by the maintenance update.",
             "items": {
               "type": "string"
             }
@@ -5730,18 +5319,7 @@
             "type": "boolean"
           },
           "statuses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "status": {
-                  "$ref": "#/components/schemas/MaintenanceStatus"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/MaintenanceComponentStatuses"
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
@@ -5756,12 +5334,11 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "INCIDENT",
-              "MAINTENANCE"
-            ]
+            "description": "Whether this template is used to create incidents or maintenances.",
+            "enum": ["INCIDENT", "MAINTENANCE"]
           },
           "name": {
+            "description": "The name of the notice it creates.",
             "type": "string"
           },
           "nameTranslationId": {
@@ -5769,6 +5346,7 @@
             "nullable": true
           },
           "message": {
+            "description": "The message for the first update of the notice it creates.",
             "type": "string"
           },
           "messageTranslationId": {
@@ -5783,10 +5361,11 @@
             "nullable": true
           },
           "status": {
-            "type": "string"
+            "$ref": "#/components/schemas/TemplateStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "createdAt": {
             "type": "string",
@@ -5802,6 +5381,9 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "origin": {
+            "$ref": "#/components/schemas/TemplateOrigin"
           },
           "components": {
             "type": "array",
@@ -5821,7 +5403,8 @@
             "type": "string"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "$ref": "#/components/schemas/ComponentStatus"
           },
           "componentId": {
             "type": "string"
@@ -5842,33 +5425,37 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "INCIDENT",
-              "MAINTENANCE"
-            ]
+            "description": "Whether this template is used to create incidents or maintenances.",
+            "enum": ["INCIDENT", "MAINTENANCE"]
           },
           "name": {
+            "description": "The name of the notice it creates.",
             "type": "string"
           },
           "message": {
+            "description": "The message for the first update of the notice it creates.",
             "type": "string"
           },
           "status": {
-            "type": "string"
+            "$ref": "#/components/schemas/TemplateStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components when a notice is created using this template."
           },
           "components": {
             "type": "array",
+            "description": "The list of components that are affected by the incident or maintenance.",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
+                  "description": "The id of the component that is affected by the incident or maintenance.",
                   "type": "string"
                 },
                 "status": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ComponentStatus",
+                  "description": "The status of the component that is affected by the incident or maintenance."
                 }
               }
             }
@@ -5883,33 +5470,37 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [
-              "INCIDENT",
-              "MAINTENANCE"
-            ]
+            "description": "Whether this template is used to create incidents or maintenances.",
+            "enum": ["INCIDENT", "MAINTENANCE"]
           },
           "name": {
+            "description": "The name of the notice it creates.",
             "type": "string"
           },
           "message": {
+            "description": "The message for the first update of the notice it creates.",
             "type": "string"
           },
           "status": {
-            "type": "string"
+            "$ref": "#/components/schemas/TemplateStatus"
           },
           "notify": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to notify the subscribers of the page and the affected components."
           },
           "components": {
             "type": "array",
+            "description": "The list of components that are affected by the incident or maintenance.",
             "items": {
               "type": "object",
               "properties": {
                 "id": {
+                  "description": "The id of the component that is affected by the incident or maintenance.",
                   "type": "string"
                 },
                 "status": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ComponentStatus",
+                  "description": "The status of the component that is affected by the incident or maintenance."
                 }
               }
             }
@@ -5963,13 +5554,18 @@
             "type": "string"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the user, Will be null if the user did not set their name.",
+            "nullable": true
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "The email of the user."
           },
           "avatar": {
-            "type": "string"
+            "type": "string",
+            "nullable": true,
+            "description": "The avatar of the user, Will be null if the user did not set their avatar. Default avatars are not included in the response."
           }
         }
       },
@@ -5977,7 +5573,24 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "The email of the teammate you wish to add."
+          },
+          "permission": {
+            "$ref": "#/components/schemas/TeammatePermission"
+          },
+          "audienceGroups": {
+            "type": "array",
+            "description": "The ids of the audience groups you wish to add the teammate to.",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "team": {
+            "type": "string",
+            "description": "The id of the team you want to include the teammate in.",
+            "nullable": true
           }
         }
       },
@@ -5989,6 +5602,11 @@
           }
         }
       },
+      "TeammatePermission": {
+        "type": "string",
+        "enum": ["FULL", "READ", "WRITE", "MEMBER", "EDITOR"],
+        "description": "The permissions of the teammate."
+      },
       "Subscriber": {
         "type": "object",
         "properties": {
@@ -5997,28 +5615,35 @@
           },
           "email": {
             "type": "string",
+            "description": "The email of the subscriber.",
             "nullable": true
           },
           "phone": {
             "type": "string",
+            "description": "The phone number of the subscriber.",
             "nullable": true
           },
           "webhook": {
             "type": "string",
+            "description": "The webhook URL of the subscriber.",
             "nullable": true
           },
           "webhookEmail": {
             "type": "string",
+            "description": "The webhook email of the webhook subscriber. This is used to send email to the subscriber when a webhook does not receive a positive response.",
             "nullable": true
           },
           "confirmed": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the subscriber is confirmed or not."
           },
           "all": {
+            "description": "Whether the subscriber is subscribed to all components on the page or not.",
             "type": "boolean"
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that the subscriber is subscribed to.",
             "items": {
               "type": "string"
             }
@@ -6029,20 +5654,40 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "The email of the subscriber."
+          },
+          "phone": {
+            "type": "string",
+            "description": "The phone number of the subscriber."
+          },
+          "webhook": {
+            "type": "string",
+            "description": "The webhook URL of the subscriber."
+          },
+          "webhookEmail": {
+            "type": "string",
+            "description": "The webhook email of the webhook subscriber. This is used to send email to the subscriber when a webhook request does not receive a positive response."
           },
           "all": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the subscriber is subscribed to all components on the page or not."
           },
           "autoConfirm": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the subscriber is automatically confirmed or will receive an email to confirm their subscription."
           },
           "components": {
             "type": "array",
+            "description": "The ids of the components that the subscriber will be subscribed to, Leave as null if `all` is set to true.",
             "nullable": true,
             "items": {
               "type": "string"
             }
+          },
+          "language": {
+            "type": "string",
+            "description": "The language of the subscriber in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.)."
           }
         }
       },
@@ -6054,20 +5699,25 @@
           },
           "name": {
             "type": "string",
+            "description": "The name of the subscriber.",
             "nullable": true
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "The email of the subscriber.",
+            "nullable": true
           },
           "phone": {
             "type": "string",
             "nullable": true
           },
           "confirmed": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the subscriber is confirmed or not, Used to check if the user has confirmed their email address."
           },
           "all": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the subscriber is subscribed to all components on the page or not."
           },
           "createdAt": {
             "type": "string",
@@ -6108,7 +5758,8 @@
             "nullable": true
           },
           "language": {
-            "type": "string"
+            "type": "string",
+            "description": "The language of the subscriber in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.)."
           },
           "company": {
             "type": "string",
@@ -6130,6 +5781,7 @@
             "type": "integer"
           },
           "approved": {
+            "description": "Whether the subscriber is approved or not by Instatus.",
             "type": "boolean"
           },
           "importedFromStatuspage": {
@@ -6151,7 +5803,7 @@
             "nullable": true
           },
           "webhookHttpMethod": {
-            "type": "string"
+            "$ref": "#/components/schemas/httpMethod"
           },
           "webhookHeaders": {
             "type": "object",
@@ -6225,20 +5877,20 @@
             "type": "string"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the metric."
           },
           "active": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the metric is shown under the status page's system metrics section."
           },
           "order": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The order of the metric on the status page."
           },
           "suffix": {
-            "type": "string"
-          },
-          "lastDataAt": {
-            "type": "integer",
-            "format": "int64"
+            "type": "string",
+            "description": "The suffix of the metric. This is used to display the metric value in the format of `value suffix` e.g. `100ms` where `ms` is the suffix."
           },
           "data": {
             "type": "array",
@@ -6256,24 +5908,25 @@
           },
           "timestamp": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "description": "The timestamp of the datapoint in milliseconds."
           },
           "value": {
-            "type": "number"
+            "type": "number",
+            "description": "The value of the datapoint, during the time of the `timestamp`."
           }
         }
       },
       "AddMetricRequest": {
         "type": "object",
         "properties": {
-          "subdomain": {
-            "type": "string"
-          },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the metric."
           },
           "suffix": {
-            "type": "string"
+            "type": "string",
+            "description": "The suffix of the metric. This is used to display the metric value in the format of `value suffix` e.g. `100ms` where `ms` is the suffix."
           }
         }
       },
@@ -6281,10 +5934,12 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the metric."
           },
           "suffix": {
-            "type": "string"
+            "type": "string",
+            "description": "The suffix of the metric. This is used to display the metric value in the format of `value suffix` e.g. `100ms` where `ms` is the suffix."
           }
         }
       },
@@ -6293,10 +5948,12 @@
         "properties": {
           "timestamp": {
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "description": "The timestamp of the datapoint in milliseconds."
           },
           "value": {
-            "type": "number"
+            "type": "number",
+            "description": "The value of the datapoint, during the time of the `timestamp`."
           }
         }
       },
@@ -6305,6 +5962,7 @@
         "properties": {
           "data": {
             "type": "array",
+            "description": "The list of datapoints to add to the metric, Make sure the timestamps are at least 30 seconds apart.",
             "items": {
               "$ref": "#/components/schemas/AddDatapointRequest"
             }
@@ -6326,6 +5984,13 @@
         "type": "object",
         "properties": {
           "name": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer",
+            "nullable": true
+          },
+          "suffix": {
             "type": "string"
           },
           "site": {
@@ -6394,11 +6059,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "UP",
-              "HASISSUES",
-              "UNDERMAINTENANCE"
-            ]
+            "enum": ["UP", "HASISSUES", "UNDERMAINTENANCE"]
           }
         }
       },
@@ -6413,16 +6074,10 @@
             "format": "date-time"
           },
           "status": {
-            "type": "string",
-            "enum": [
-              "INVESTIGATING",
-              "IDENTIFIED",
-              "MONITORING",
-              "RESOLVED"
-            ]
+            "$ref": "#/components/schemas/IncidentStatus"
           },
           "impact": {
-            "type": "string"
+            "$ref": "#/components/schemas/IncidentImpact"
           },
           "url": {
             "type": "string",
@@ -6442,11 +6097,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "NOTSTARTEDYET",
-              "INPROGRESS",
-              "COMPLETED"
-            ]
+            "enum": ["NOTSTARTEDYET", "INPROGRESS", "COMPLETED"]
           },
           "duration": {
             "type": "string"
@@ -6630,13 +6281,14 @@
         "type": "object",
         "properties": {
           "pageId": {
-            "type": "string"
+            "type": "string",
+            "description": "The id of the status page of the monitor."
           },
           "url": {
             "type": "string"
           },
           "httpMethod": {
-            "type": "string"
+            "$ref": "#/components/schemas/httpMethod"
           },
           "body": {
             "type": "string",
@@ -6666,7 +6318,7 @@
             }
           },
           "type": {
-            "type": "string"
+            "$ref": "#/components/schemas/MonitorType"
           },
           "assertions": {
             "type": "array",
@@ -6680,7 +6332,7 @@
                   "type": "string"
                 },
                 "comparison": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ComparisonType"
                 },
                 "selector": {
                   "type": "string",
@@ -6694,6 +6346,7 @@
           },
           "alerts": {
             "type": "array",
+            "description": "The ids of the alerts to send when the monitor triggers an alert.",
             "items": {
               "type": "string"
             }
@@ -6702,22 +6355,11 @@
             "type": "string"
           },
           "locations": {
-            "type": "string",
-            "enum": [
-              "US_EAST_1",
-              "EU_CENTRAL_1",
-              "AP_NORTHEAST_1",
-              "AP_SOUTHEAST_2"
-            ]
+            "$ref": "#/components/schemas/MonitorLocation"
           },
           "checksInterval": {
-            "type": "integer"
-          },
-          "createComponent": {
-            "type": "boolean"
-          },
-          "createMetric": {
-            "type": "boolean"
+            "type": "integer",
+            "description": "The interval in seconds between each monitor check."
           },
           "onFail": {
             "type": "object",
@@ -6763,17 +6405,31 @@
           }
         }
       },
+      "httpMethod": {
+        "type": "string",
+        "enum": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"]
+      },
+      "MonitorType": {
+        "type": "string",
+        "enum": ["HTTP", "PING", "TCP", "DNS", "HTTP_API"]
+      },
+      "MonitorLocation": {
+        "type": "string",
+        "enum": ["US_EAST_1", "EU_CENTRAL_1", "AP_NORTHEAST_1"]
+      },
       "CreateMonitorRequest": {
         "type": "object",
+        "required": ["pageId", "url", "httpMethod"],
         "properties": {
           "pageId": {
-            "type": "string"
+            "type": "string",
+            "description": "The id of the status page of the monitor to create the monitor on."
           },
           "url": {
             "type": "string"
           },
           "httpMethod": {
-            "type": "string"
+            "$ref": "#/components/schemas/httpMethod"
           },
           "body": {
             "type": "string",
@@ -6803,7 +6459,7 @@
             }
           },
           "type": {
-            "type": "string"
+            "$ref": "#/components/schemas/MonitorType"
           },
           "assertions": {
             "type": "array",
@@ -6814,10 +6470,21 @@
                   "type": "string"
                 },
                 "type": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": [
+                    "AVAILABLE",
+                    "BODY",
+                    "PING",
+                    "TCP",
+                    "DNS",
+                    "STATUSCODE",
+                    "JSONBODY",
+                    "HEADERS",
+                    "RESPONSETIME"
+                  ]
                 },
                 "comparison": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ComparisonType"
                 },
                 "selector": {
                   "type": "string",
@@ -6831,6 +6498,7 @@
           },
           "alerts": {
             "type": "array",
+            "description": "The ids of the alerts to send when the monitor triggers an alert.",
             "items": {
               "type": "string"
             }
@@ -6839,22 +6507,19 @@
             "type": "string"
           },
           "locations": {
-            "type": "string",
-            "enum": [
-              "US_EAST_1",
-              "EU_CENTRAL_1",
-              "AP_NORTHEAST_1",
-              "AP_SOUTHEAST_2"
-            ]
+            "$ref": "#/components/schemas/MonitorLocation"
           },
           "checksInterval": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The interval in seconds between each monitor check."
           },
           "createComponent": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to create a component that will follow the status of the monitor on the status page."
           },
           "createMetric": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to create a metric that will show the response time of the monitor on the status page."
           },
           "onFail": {
             "type": "object",
@@ -6925,12 +6590,7 @@
           },
           "location": {
             "type": "string",
-            "enum": [
-              "US_EAST_1",
-              "EU_CENTRAL_1",
-              "AP_NORTHEAST_1",
-              "AP_SOUTHEAST_2"
-            ]
+            "$ref": "#/components/schemas/Monitor"
           },
           "createdAt": {
             "type": "string",
@@ -6947,12 +6607,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "UP",
-              "DOWN",
-              "UNKNOWN",
-              "DEGRADED"
-            ]
+            "enum": ["UP", "DOWN", "UNKNOWN", "DEGRADED"]
           },
           "dnsTime": {
             "type": "number",
@@ -7002,16 +6657,7 @@
             "format": "uri"
           },
           "method": {
-            "type": "string",
-            "enum": [
-              "GET",
-              "POST",
-              "PUT",
-              "DELETE",
-              "PATCH",
-              "HEAD",
-              "OPTIONS"
-            ]
+            "$ref": "#/components/schemas/httpMethod"
           },
           "requestHeaders": {
             "type": "object",
@@ -7043,7 +6689,7 @@
                   "type": "string"
                 },
                 "comparison": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ComparisonType"
                 },
                 "value": {
                   "type": "string"
@@ -7085,44 +6731,41 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "string",
-            "enum": [
-              "INCIDENT",
-              "EMAIL",
-              "SMS",
-              "SLACK",
-              "DISCORD",
-              "MICROSOFT_TEAMS",
-              "PHONE_CALL",
-              "WEBHOOK"
-            ]
+            "$ref": "#/components/schemas/MonitorAlertType"
           },
           "pageId": {
-            "type": "string"
+            "type": "string",
+            "description": "The id of the status page of the monitor to create the monitor alert on."
           },
           "recipient": {
-            "type": "string"
+            "$ref": "#/components/schemas/MonitorAlertRecipient"
           },
           "recipientWorkspace": {
             "type": "string"
           },
           "whenFails": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to send an alert when the monitor fails."
           },
           "whenRecovers": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to send an alert when the monitor recovers from a failure or degraded state."
           },
           "whenDegrades": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to send an alert when the monitor degrades."
           },
           "whenSslExpires": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to send an alert when the SSL certificate expires."
           },
           "sslExpiresInDays": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The number of days left until the SSL certificate expires so the alert will trigger, for example if this value is 30 then the alert will trigger 30 days before the certificate expires."
           },
           "monitors": {
             "type": "array",
+            "description": "The ids of the monitors this alert will trigger based on.",
             "items": {
               "type": "string"
             }
@@ -7136,10 +6779,11 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "string"
+            "$ref": "#/components/schemas/MonitorAlertType"
           },
           "monitors": {
             "type": "array",
+            "description": "The ids of the monitors this alert will trigger based on.",
             "items": {
               "type": "string"
             }
@@ -7167,46 +6811,30 @@
             "type": "string"
           },
           "type": {
-            "type": "string",
-            "enum": [
-              "INCIDENT",
-              "EMAIL",
-              "SMS",
-              "SLACK",
-              "DISCORD",
-              "MICROSOFT_TEAMS",
-              "PHONE_CALL",
-              "WEBHOOK"
-            ]
+            "$ref": "#/components/schemas/MonitorAlertType"
           },
           "recipient": {
-            "type": "string"
+            "$ref": "#/components/schemas/MonitorAlertRecipient"
           },
           "whenFails": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to send an alert when the monitor fails."
           },
           "whenRecovers": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to send an alert when the monitor recovers from a failure or degraded state."
           },
           "whenDegrades": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to send an alert when the monitor degrades."
           },
           "whenSslExpires": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether to send an alert when the SSL certificate expires."
           },
           "sslExpiresInDays": {
-            "type": "integer"
-          },
-          "monitors": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string"
-                }
-              }
-            }
+            "type": "integer",
+            "description": "The number of days left until the SSL certificate expires so the alert will trigger, for example if this value is 30 then the alert will trigger 30 days before the certificate expires."
           },
           "createdAt": {
             "type": "string",
@@ -7221,11 +6849,29 @@
           }
         }
       },
+      "MonitorAlertType": {
+        "type": "string",
+        "enum": [
+          "EMAIL",
+          "SMS",
+          "SLACK",
+          "DISCORD",
+          "MICROSOFT_TEAMS",
+          "PHONE_CALL",
+          "WEBHOOK"
+        ],
+        "description": "The type of message that will be sent when the monitor triggers an alert.\n* `EMAIL` - Email Alert\n* `SMS` - SMS Alert\n* `SLACK` - Slack Alert\n* `DISCORD` - Discord Alert\n* `MICROSOFT_TEAMS` - Microsoft Teams Alert\n* `PHONE_CALL` - Phone Call Alert\n* `WEBHOOK` - Webhook Alert"
+      },
+      "MonitorAlertRecipient": {
+        "type": "string",
+        "description": "The recipient of this alert, This depends on the type of alert. **For example:**\n* `EMAIL` - Email address\n* `SMS` and `PHONE_CALL` - Phone number\n* `SLACK`, `DISCORD`, and `WEBHOOK` - Webhook URL\n * `MICROSOFT_TEAMS` - Email address or webhook URL"
+      },
       "CreateMonitorGroupRequest": {
         "type": "object",
         "properties": {
           "pageId": {
-            "type": "string"
+            "type": "string",
+            "description": "The id of the status page of the monitor group to create the monitor group on."
           },
           "name": {
             "type": "string"
@@ -7324,6 +6970,7 @@
         "properties": {
           "routingRules": {
             "type": "array",
+            "description": "The routing rules for the page.",
             "items": {
               "$ref": "#/components/schemas/RoutingRule"
             }
@@ -7341,12 +6988,14 @@
           },
           "assertions": {
             "type": "array",
+            "description": "The assertions that if true will trigger the `actions` of the routing rule.",
             "items": {
               "$ref": "#/components/schemas/Assertion"
             }
           },
           "actions": {
             "type": "array",
+            "description": "The actions that will be triggered when the `assertions` of the routing rule are true.",
             "items": {
               "$ref": "#/components/schemas/Action"
             }
@@ -7360,6 +7009,7 @@
             "format": "date-time"
           },
           "order": {
+            "description": "The order of the routing rule in the list of routing rules the higher the number the later the routing rule will be triggered.",
             "type": "integer"
           }
         }
@@ -7380,6 +7030,7 @@
             "$ref": "#/components/schemas/ComparisonType"
           },
           "value": {
+            "description": "The value to compare the assertion to depending on the `type` of the assertion.\n* `IMPACT` - should be an impact level (e.g. `OPERATIONAL`, `UNDERMAINTENANCE`, `DEGRADEDPERFORMANCE`, `PARTIALOUTAGE`, `MAJOROUTAGE`)\n* `TITLE` - The title of the incident\n* `DESCRIPTION` - The description of the incident\n* `AFFECTED_COMPONENTS` - The affected component of the incident\n* `INCIDENT` - The incident itself, whether it be through workspace member or an external integration (e.g. Datadog), You can also use multiple values by separating them with a comma.\n**Available Options**: `WORKSPACEMEMBER`, `WEBHOOK`, `BETTERUPTIME`, `CHECKLY`, `DATADOG`, `DYNATRACE`, `FRESHPING`, `GRAFANA`, `HETRIXTOOLS`, `NEWRELIC`, `PAGERDUTY`, `PINGDOM`, `RUNSCOPE`, `SITE24X7`, `STATUSCAKE`, `UPTIMEROBOT`, `EMAIL`, `PROMETHEUS`, `UPDOWN`, `GOOGLECLOUDMONITORING`",
             "type": "string"
           }
         }
@@ -7397,7 +7048,8 @@
             "$ref": "#/components/schemas/ActionType"
           },
           "targetId": {
-            "type": "string"
+            "type": "string",
+            "description": "The id of the target to notify. Keep in mind in actions targetId can be a workspace member email or a team id depending on the `type` of the action."
           }
         }
       },
@@ -7409,21 +7061,25 @@
             "properties": {
               "assertions": {
                 "type": "array",
+                "description": "The assertions that if true will trigger the `actions` of the routing rule.",
                 "items": {
                   "$ref": "#/components/schemas/Assertion"
                 }
               },
               "actions": {
                 "type": "array",
+                "description": "The actions that will be triggered when the `assertions` of the routing rule are true.",
                 "items": {
                   "$ref": "#/components/schemas/Action"
                 }
               },
               "order": {
-                "type": "integer"
+                "type": "integer",
+                "description": "The order of the routing rule in the list of routing rules the higher the number the later the routing rule will be triggered."
               },
               "siteId": {
-                "type": "string"
+                "type": "string",
+                "description": "The id of the site the routing rule belongs to."
               }
             }
           }
@@ -7485,11 +7141,13 @@
       },
       "AssertionType": {
         "type": "string",
+        "description": "The type of assertion to use.\n* `IMPACT` - The impact of the incident\n* `TITLE` - The title of the incident\n* `DESCRIPTION` - The description of the incident\n* `AFFECTED_COMPONENTS` - The affected component of the incident\n* `INCIDENT` - Who/What generated the incident, whether it be through workspace member or an external integration (e.g. Datadog)",
         "enum": [
           "IMPACT",
           "TITLE",
           "DESCRIPTION",
-          "AFFECTED_COMPONENTS"
+          "AFFECTED_COMPONENTS",
+          "INCIDENT"
         ]
       },
       "ComparisonType": {
@@ -7536,9 +7194,11 @@
             "type": "string"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the escalation policy."
           },
           "description": {
+            "description": "The description of the escalation policy.",
             "type": "string"
           },
           "rules": {
@@ -7548,19 +7208,24 @@
             }
           },
           "repeat": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the escalation policy should repeat or not after the last rule is triggered."
           },
           "repeatCount": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The number of times the escalation policy should repeat."
           },
           "repeatDelay": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The delay in minutes between each repeat."
           },
           "revertAcknowledgement": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the escalation policy should revert the acknowledgement status of the incident after each repeat."
           },
           "autoResolveIncidentsAfterRepeat": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the escalation policy should auto resolve the incident after all the repeats are completed."
           },
           "createdAt": {
             "type": "string",
@@ -7579,19 +7244,19 @@
             "type": "string"
           },
           "escalationPolicyId": {
-            "type": "string"
-          },
-          "order": {
-            "type": "integer"
+            "type": "string",
+            "description": "The id of the escalation policy the escalation rule belongs to."
           },
           "condition": {
             "$ref": "#/components/schemas/EscalationRuleCondition"
           },
           "delayInMins": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The delay in minutes before the escalation rule is triggered."
           },
           "actions": {
             "type": "array",
+            "description": "The actions to take when the escalation rule is triggered.",
             "items": {
               "$ref": "#/components/schemas/EscalationAction"
             }
@@ -7612,7 +7277,8 @@
           },
           "targetId": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "The id of the target to notify. Keep in mind in actions targetId can be a workspace member id, a team id, or an on call schedule id depending on the `type` of the action."
           },
           "createdAt": {
             "type": "string",
@@ -7628,13 +7294,16 @@
         "type": "object",
         "properties": {
           "pageId": {
-            "type": "string"
+            "type": "string",
+            "description": "The id of the status page of the escalation policy to create the escalation policy on."
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the escalation policy."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "The description of the escalation policy."
           },
           "rules": {
             "type": "array",
@@ -7643,19 +7312,24 @@
             }
           },
           "repeat": {
-            "type": "boolean"
-          },
-          "repeatDelay": {
-            "type": "integer"
+            "type": "boolean",
+            "description": "Whether the escalation policy should repeat or not after the last rule is triggered."
           },
           "repeatCount": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The number of times the escalation policy should repeat."
           },
-          "autoResolveIncidentsAfterRepeat": {
-            "type": "boolean"
+          "repeatDelay": {
+            "type": "integer",
+            "description": "The delay in minutes between each repeat."
           },
           "revertAcknowledgement": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the escalation policy should revert the acknowledgement status of the incident after each repeat."
+          },
+          "autoResolveIncidentsAfterRepeat": {
+            "type": "boolean",
+            "description": "Whether the escalation policy should auto resolve the incident after all the repeats are completed."
           }
         }
       },
@@ -7663,13 +7337,15 @@
         "type": "object",
         "properties": {
           "delayInMins": {
-            "type": "integer"
+            "type": "integer",
+            "description": "The delay in minutes before the escalation rule is triggered."
           },
           "condition": {
             "$ref": "#/components/schemas/EscalationRuleCondition"
           },
           "actions": {
             "type": "array",
+            "description": "The actions to take when the escalation rule is triggered.",
             "items": {
               "$ref": "#/components/schemas/CreateEscalationAction"
             }
@@ -7680,7 +7356,8 @@
         "type": "object",
         "properties": {
           "targetId": {
-            "type": "string"
+            "type": "string",
+            "description": "The id of the target to notify. Keep in mind in actions targetId can be a workspace member id, a team id, or an on call schedule id depending on the type of the `action`."
           },
           "type": {
             "$ref": "#/components/schemas/EscalationActionType"
@@ -7711,12 +7388,11 @@
       },
       "EscalationRuleCondition": {
         "type": "string",
-        "enum": [
-          "NOT_ACKNOWLEDGED"
-        ]
+        "enum": ["NOT_ACKNOWLEDGED"]
       },
       "EscalationActionType": {
         "type": "string",
+        "description": "The type of escalation action to take.\n\n- `NOTIFY_TEAM`: Notify a team via an id.\n- `NOTIFY_WORKSPACE_MEMBER`: Notify the workspace member via an id.\n- `NOTIFY_CURRENT_ON_CALL_USER`: Notify the current on call user of a schedule.\n- `NOTIFY_NEXT_ON_CALL_USER`: Notify the next on call user of a schedule.\n- `NOTIFY_ALL_ON_CALL_MEMBERS`: Notify all on call members of a schedule.",
         "enum": [
           "NOTIFY_TEAM",
           "NOTIFY_WORKSPACE_MEMBER",
@@ -7727,12 +7403,19 @@
       },
       "CreateOnCallScheduleRequest": {
         "type": "object",
+        "required": ["name", "pageId", "onCallShifts"],
         "properties": {
           "name": {
+            "description": "The name of the on call schedule.",
             "type": "string"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "The description of the on call schedule."
+          },
+          "pageId": {
+            "type": "string",
+            "description": "The id of the page the on call schedule is created on."
           },
           "onCallShifts": {
             "type": "array",
@@ -7811,19 +7494,23 @@
           },
           "customRotationTypeValue": {
             "type": "integer",
-            "nullable": true
+            "nullable": true,
+            "description": "The value of the custom rotation type. This is used to determine the number of hours, days, or weeks between rotations."
           },
           "customRotationTypeUnit": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/CustomRotationTypeUnit",
+            "nullable": true,
+            "description": "The unit of time to use for the custom rotation type. This is used to determine the number of hours, days, or weeks between rotations."
           },
           "startDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The beginning date (UTC Format) of the on call shift."
           },
           "endDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The end date of the on call shift. If not provided, the on call shift will be active indefinitely."
           },
           "restrictionType": {
             "$ref": "#/components/schemas/RestrictionType"
@@ -7840,6 +7527,7 @@
           },
           "timeIntervals": {
             "type": "array",
+            "description": "The list of time intervals to use for the on call shift when the `restrictionType` is `TIMEINTERVALS`. This is used to restrict the on call shift to certain time intervals.",
             "items": {
               "$ref": "#/components/schemas/TimeInterval"
             }
@@ -7848,12 +7536,15 @@
       },
       "OnCallShiftRequest": {
         "type": "object",
+        "required": ["name", "members", "rotationType", "startDate"],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the on call shift."
           },
           "members": {
             "type": "array",
+            "description": "The list of teammates to add to the on call shift. Should have at least 1 workspace member.",
             "items": {
               "$ref": "#/components/schemas/ShiftMemberRequest"
             }
@@ -7863,19 +7554,22 @@
           },
           "customRotationTypeValue": {
             "type": "integer",
-            "nullable": true
+            "nullable": true,
+            "description": "The value of the custom rotation type. This is used to determine the number of hours, days, or weeks between rotations."
           },
           "customRotationTypeUnit": {
-            "type": "string",
+            "$ref": "#/components/schemas/CustomRotationTypeUnit",
             "nullable": true
           },
           "startDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The beginning date (UTC Format) of the on call shift."
           },
           "endDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "description": "The end date (UTC Format) of the on call shift. If not provided, the on call shift will be active indefinitely."
           },
           "restrictionType": {
             "$ref": "#/components/schemas/RestrictionType"
@@ -7883,15 +7577,18 @@
           "timeOfDayRestrictionStartTime": {
             "type": "string",
             "format": "time",
+            "description": "The start time of the time of day restriction. This is used to restrict the on call shift to certain time of day when the `restrictionType` is `TIMEOFDAY` (e.g `1970-01-01T21:00:00.000Z` for 9 PM UTC).",
             "nullable": true
           },
           "timeOfDayRestrictionEndTime": {
             "type": "string",
             "format": "time",
+            "description": "The end time of the time of day restriction. This is used to restrict the on call shift to certain time of day when the `restrictionType` is `TIMEOFDAY` (e.g `1970-01-01T03:00:00.000Z` for 3 AM UTC).",
             "nullable": true
           },
           "timeIntervals": {
             "type": "array",
+            "description": "The list of time intervals to use for the on call shift when the `restrictionType` is `TIMEINTERVALS`. This is used to restrict the on call shift to certain time intervals.",
             "items": {
               "$ref": "#/components/schemas/TimeInterval"
             }
@@ -7917,12 +7614,15 @@
       },
       "ShiftMemberRequest": {
         "type": "object",
+        "required": ["workspaceMemberId", "color"],
         "properties": {
           "workspaceMemberId": {
-            "type": "string"
+            "type": "string",
+            "description": "The id of the workspace member to add to the on call shift."
           },
           "color": {
-            "type": "string"
+            "type": "string",
+            "description": "The color of the teammate in the on call shift. This is used to display the teammate in the on call shift schedule in on the [dashboard](https://dashboard.instatus.com)."
           }
         }
       },
@@ -7944,36 +7644,39 @@
             "type": "string"
           },
           "startDay": {
-            "$ref": "#/components/schemas/DayOfWeek"
+            "$ref": "#/components/schemas/DayOfWeek",
+            "description": "The day of the week to start the time interval."
           },
           "startDayTime": {
             "type": "string",
-            "format": "time"
+            "format": "time",
+            "description": "The time to start the time interval. (e.g `1970-01-01T21:00:00.000Z` for 9 PM UTC)"
           },
           "endDay": {
-            "$ref": "#/components/schemas/DayOfWeek"
+            "$ref": "#/components/schemas/DayOfWeek",
+            "description": "The day of the week to end the time interval."
           },
           "endDayTime": {
             "type": "string",
-            "format": "time"
+            "format": "time",
+            "description": "The time to start the time interval. (e.g `1970-01-01T03:00:00.000Z` for 3 AM UTC)"
           }
         }
       },
       "RestrictionType": {
         "type": "string",
-        "enum": [
-          "NONE",
-          "TIMEOFDAY",
-          "TIMEINTERVALS"
-        ]
+        "description": "The type of restriction to use for the on call shift.\n\n- `NONE`: The on call shift will not have any time restrictions.\n- `TIMEOFDAY`: The on call shift will have a time of day restriction _(e.g. 9:00 AM to 5:00 PM)_.\n- `TIMEINTERVALS`: The on call shift will have time intervals restrictions _(e.g. Wednesday 9:00 AM to Friday 9:00 AM - 5:00 PM)_.",
+        "enum": ["NONE", "TIMEOFDAY", "TIMEINTERVALS"]
       },
       "RotationType": {
         "type": "string",
-        "enum": [
-          "DAILY",
-          "WEEKLY",
-          "CUSTOM"
-        ]
+        "description": "The type of rotation to use for the on call shift.\n\n- `DAILY`: The on call shift will rotate daily.\n- `WEEKLY`: The on call shift will rotate weekly.\n- `CUSTOM`: The on call shift will rotate based on the `customRotationTypeValue` and `customRotationTypeUnit`.",
+        "enum": ["DAILY", "WEEKLY", "CUSTOM"]
+      },
+      "CustomRotationTypeUnit": {
+        "type": "string",
+        "description": "The unit of time to use for the custom rotation type.\n\n- `HOURS`: The on call shift will rotate every `customRotationTypeValue` hours.\n- `DAYS`: The on call shift will rotate every `customRotationTypeValue` days.\n- `WEEKS`: The on call shift will rotate every `customRotationTypeValue` weeks.",
+        "enum": ["HOURS", "DAYS", "WEEKS"]
       },
       "DayOfWeek": {
         "type": "string",
@@ -7989,10 +7692,8 @@
       },
       "ScheduleStatus": {
         "type": "string",
-        "enum": [
-          "ACTIVE",
-          "INACTIVE"
-        ]
+        "enum": ["ACTIVE", "PAUSED"],
+        "description": "The status of the on call schedule.\n\n- `ACTIVE`: The on call schedule is active.\n- `PAUSED`: The on call schedule is paused."
       }
     }
   }
