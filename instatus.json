@@ -2702,6 +2702,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["parentId"],
                 "properties": {
                   "parentId": {
                     "type": "string",
@@ -3074,11 +3075,11 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["monitors"],
                 "properties": {
                   "monitors": {
                     "type": "array",
@@ -3755,7 +3756,7 @@
       },
       "CreateStatusPageRequest": {
         "type": "object",
-        "required": ["email", "name", "subdomain"],
+        "required": ["email", "name", "subdomain", "components"],
         "properties": {
           "email": {
             "type": "string",
@@ -3786,7 +3787,8 @@
           },
           "language": {
             "type": "string",
-            "description": "The language of the status page in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.)."
+            "description": "The language of the status page in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.).",
+            "default": "en"
           },
           "useLargeHeader": {
             "type": "boolean"
@@ -3902,6 +3904,10 @@
           "timeFormat": {
             "description": "Formats to display time on the page, please refer to [date-fns formatting](https://date-fns.org/docs/format)",
             "type": "string"
+          },
+          "workspace": {
+            "type": "string",
+            "description": "The workspace id to create the status page in, if not provided, a new workspace will be created."
           }
         }
       },
@@ -4341,6 +4347,7 @@
       },
       "CreateComponentRequest": {
         "type": "object",
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string"
@@ -4574,6 +4581,7 @@
       },
       "CreateIncidentRequest": {
         "type": "object",
+        "required": ["name", "status"],
         "properties": {
           "name": {
             "type": "string"
@@ -4832,6 +4840,7 @@
       },
       "CreateIncidentUpdateRequest": {
         "type": "object",
+        "required": ["status", "components", "statuses"],
         "properties": {
           "message": {
             "type": "string"
@@ -5056,6 +5065,20 @@
       },
       "CreateMaintenanceRequest": {
         "type": "object",
+        "required": [
+          "name",
+          "components",
+          "status",
+          "autoStart",
+          "autoEnd",
+          "notifyStart",
+          "notifyEnd",
+          "notifyEarly",
+          "notify",
+          "start",
+          "end"
+        ],
+
         "properties": {
           "name": {
             "type": "string"
@@ -5073,12 +5096,12 @@
           "start": {
             "type": "string",
             "format": "date-time",
-            "description": "The date and time the maintenance will start in ISO-8601 format (UTC Timezone), If left empty the time will be set to the current time."
+            "description": "The date and time the maintenance will start in ISO-8601 format (UTC Timezone)."
           },
           "end": {
             "type": "string",
             "format": "date-time",
-            "description": "The date and time the maintenance will end in ISO-8601 format (UTC Timezone), If left empty the time will be set to the current time."
+            "description": "The date and time the maintenance will end in ISO-8601 format (UTC Timezone)."
           },
           "status": {
             "$ref": "#/components/schemas/MaintenanceStatus",
@@ -5419,14 +5442,24 @@
       },
       "CreateTemplateRequest": {
         "type": "object",
+        "required": [
+          "status",
+          "components",
+          "type",
+          "subdomain",
+          "notify",
+          "name",
+          "message"
+        ],
         "properties": {
-          "subdomain": {
-            "type": "string"
-          },
           "type": {
             "type": "string",
             "description": "Whether this template is used to create incidents or maintenances.",
             "enum": ["INCIDENT", "MAINTENANCE"]
+          },
+          "subdomain": {
+            "type": "string",
+            "description": "The subdomain of the page to create the template in"
           },
           "name": {
             "description": "The name of the notice it creates.",
@@ -5571,6 +5604,7 @@
       },
       "AddTeammateRequest": {
         "type": "object",
+        "required": ["email", "permission"],
         "properties": {
           "email": {
             "type": "string",
@@ -5919,6 +5953,7 @@
       },
       "AddMetricRequest": {
         "type": "object",
+        "required": ["name", "suffix"],
         "properties": {
           "name": {
             "type": "string",
@@ -5945,6 +5980,7 @@
       },
       "AddDatapointRequest": {
         "type": "object",
+        "required": ["timestamp", "value"],
         "properties": {
           "timestamp": {
             "type": "integer",
@@ -6414,8 +6450,11 @@
         "enum": ["HTTP", "PING", "TCP", "DNS", "HTTP_API"]
       },
       "MonitorLocation": {
-        "type": "string",
-        "enum": ["US_EAST_1", "EU_CENTRAL_1", "AP_NORTHEAST_1"]
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["US_EAST_1", "EU_CENTRAL_1", "AP_NORTHEAST_1"]
+        }
       },
       "CreateMonitorRequest": {
         "type": "object",
@@ -6729,6 +6768,7 @@
       },
       "CreateMonitorAlertRequest": {
         "type": "object",
+        "required": ["type", "pageId", "recipient"],
         "properties": {
           "type": {
             "$ref": "#/components/schemas/MonitorAlertType"
@@ -6868,6 +6908,7 @@
       },
       "CreateMonitorGroupRequest": {
         "type": "object",
+        "required": ["name", "pageId"],
         "properties": {
           "pageId": {
             "type": "string",
@@ -7292,6 +7333,16 @@
       },
       "CreateEscalationPolicyRequest": {
         "type": "object",
+        "required": [
+          "name",
+          "pageId",
+          "rules",
+          "repeat",
+          "repeatCount",
+          "repeatDelay",
+          "revertAcknowledgement",
+          "autoResolveIncidentsAfterRepeat"
+        ],
         "properties": {
           "pageId": {
             "type": "string",
