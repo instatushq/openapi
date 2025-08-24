@@ -2,6 +2,13 @@
 
 This repository contains the [OpenAPI](https://www.openapis.org/) 3.0.3 specification for the [Instatus API](https://instatus.com/help/api).
 
+## What's Instatus?
+
+[Instatus](https://instatus.com) helps you:
+1. Monitor your services
+2. Fix incidents with your team
+3. Share your status with customers
+
 ## Specs
 
 - **Version**: 2.0.0
@@ -51,10 +58,3 @@ Authorization: Bearer <API_KEY>
 - Help: [instatus.com/help](https://instatus.com/help)
 - API docs: [instatus.com/help/api](https://instatus.com/help/api)
 - Support email: [support@instatus.com](mailto:support@instatus.com)
-
-## What's Instatus?
-
-[Instatus](https://instatus.com) helps you:
-1. Monitor your services
-2. Fix incidents with your team
-3. Share your status with customers
