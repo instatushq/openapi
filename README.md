@@ -55,6 +55,6 @@ Authorization: Bearer <API_KEY>
 ## What's Instatus?
 
 [Instatus](https://instatus.com) helps you:
-1. Monitor your services (soon)
-2. Fix incidents with your team (soon)
+1. Monitor your services
+2. Fix incidents with your team
 3. Share your status with customers
