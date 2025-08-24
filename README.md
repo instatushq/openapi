@@ -33,6 +33,12 @@ Authorization: Bearer <API_KEY>
 8. Teammates
 9. Subscribers
 10. Metrics
+11. Monitors
+12. Monitor Alerts
+13. Monitor Groups
+14. Routing Rules
+15. Escalation Policies
+16. On-call Schedules
 
 
 ## Files
