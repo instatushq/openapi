@@ -2361,6 +2361,24 @@ paths:
       responses:
         "204":
           description: No Content
+  /on-call-schedules/{id}/members:
+    get:
+      summary: Get On-call Schedule Members
+      tags:
+        - On Call Schedules
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetOnCallScheduleMembersResponse"
 components:
   securitySchemes:
     bearerAuth:
@@ -5890,3 +5908,34 @@ components:
 
         - `ACTIVE`: The on call schedule is active.
         - `PAUSED`: The on call schedule is paused.
+    OnCallScheduleMember:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          nullable: true
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        avatar:
+          type: string
+          nullable: true
+    GetOnCallScheduleMembersResponse:
+      type: object
+      properties:
+        currentMembers:
+          type: array
+          items:
+            $ref: "#/components/schemas/OnCallScheduleMember"
+        nextMembers:
+          type: array
+          items:
+            $ref: "#/components/schemas/OnCallScheduleMember"
+        allMembers:
+          type: array
+          items:
+            $ref: "#/components/schemas/OnCallScheduleMember"
