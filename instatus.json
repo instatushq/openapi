@@ -69,6 +69,9 @@
     },
     {
       "name": "On Call Schedules"
+    },
+    {
+      "name": "Workspaces"
     }
   ],
   "paths": {
@@ -3517,6 +3520,111 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetOnCallScheduleMembersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workspaces": {
+      "get": {
+        "summary": "Get your workspaces",
+        "description": "Retrieve a list of your workspaces.\n\nThe default page number is 1.\n\nThe default per_page number is 50 and the maximum is 100 items per page.",
+        "tags": ["Workspaces"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Workspace"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a workspace",
+        "description": "Create a new workspace",
+        "tags": ["Workspaces"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Workspace"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workspaces/{workspace_id}": {
+      "delete": {
+        "summary": "Delete a workspace",
+        "description": "Delete a workspace",
+        "tags": ["Workspaces"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "workspace_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The workspace ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -7813,6 +7921,152 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OnCallScheduleMember"
+            }
+          }
+        }
+      },
+      "Workspace": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "sites": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sso": {
+            "type": "boolean"
+          },
+          "organizationDomains": {
+            "type": "string",
+            "nullable": true
+          },
+          "allowDomainEmails": {
+            "type": "boolean"
+          },
+          "allowedDomainsDefaultPermission": {
+            "type": "string"
+          },
+          "ssoActive": {
+            "type": "boolean"
+          },
+          "directorySyncActive": {
+            "type": "boolean"
+          },
+          "enableMultipleOrgs": {
+            "type": "boolean"
+          },
+          "allowedDomains": {
+            "type": "string",
+            "nullable": true
+          },
+          "allowedEmailDomains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "referralId": {
+            "type": "string",
+            "nullable": true
+          },
+          "referralCoupon": {
+            "type": "string",
+            "nullable": true
+          },
+          "referralCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "sendNewWorkspaceMembersStatusPageUpdates": {
+            "type": "boolean"
+          },
+          "sendNewWorkspaceMembersAutomationIntegrationNotifications": {
+            "type": "boolean"
+          },
+          "sendNewWorkspaceMembersInvalidCustomDomainNotifications": {
+            "type": "boolean"
+          },
+          "sendNewWorkspaceMembersPhoneCallNotifications": {
+            "type": "boolean"
+          },
+          "sendNewWorkspaceMembersWeeklyReportsNotifications": {
+            "type": "boolean"
+          },
+          "longRunningIncidentNotificationSettings": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "default": [0.5, 1, 2, 3, 6, 12],
+            "example": [0.5, 1, 2, 3, 6, 12]
+          },
+          "useSSOLogin": {
+            "type": "boolean"
+          },
+          "useGoogleLogin": {
+            "type": "boolean"
+          },
+          "useMagiclinkLogin": {
+            "type": "boolean"
+          },
+          "usePasswordLogin": {
+            "type": "boolean"
+          },
+          "useGithubLogin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateWorkspaceRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "sendNewWorkspaceMembersStatusPageUpdates": {
+            "type": "boolean"
+          },
+          "sendNewWorkspaceMembersAutomationIntegrationNotifications": {
+            "type": "boolean"
+          },
+          "sendNewWorkspaceMembersInvalidCustomDomainNotifications": {
+            "type": "boolean"
+          },
+          "sendNewWorkspaceMembersPhoneCallNotifications": {
+            "type": "boolean"
+          },
+          "sendNewWorkspaceMembersWeeklyReportsNotifications": {
+            "type": "boolean"
+          },
+          "longRunningIncidentNotificationSettings": {
+            "type": "array",
+            "items": {
+              "type": "number"
             }
           }
         }
