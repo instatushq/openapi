@@ -4613,6 +4613,8 @@ components:
     PublicMaintenance:
       type: object
       properties:
+        id:
+          type: string
         name:
           type: string
         start:
@@ -4625,10 +4627,13 @@ components:
             - INPROGRESS
             - COMPLETED
         duration:
-          type: string
+          type: number
         url:
           type: string
           format: uri
+        updatedAt:
+          type: string
+          format: date-time
     AudienceGroup:
       type: object
       properties:
