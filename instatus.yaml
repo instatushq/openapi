@@ -1247,6 +1247,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriberDetail"
+  /v1/{page_id}/subscribers/bulk:
+    post:
+      summary: Add multiple subscribers
+      description: |
+        Add multiple subscribers to a specific status page in a single request.
+        Maximum 100 subscribers per request.
+        Partial success is supported - successfully created subscribers are returned even if some fail.
+      tags:
+        - Subscribers
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkAddSubscribersRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkAddSubscribersResponse"
   /v1/{page_id}/subscribers/{subscriber_id}:
     delete:
       summary: Remove a subscriber
@@ -4307,6 +4336,89 @@ components:
           description: >-
             The language of the subscriber in language code (e.g. `en` for
             English, `fr` for French, `de` for German, etc.).
+    BulkAddSubscribersRequest:
+      type: object
+      required:
+        - subscribers
+      properties:
+        subscribers:
+          type: array
+          description: Array of subscriber objects to create.
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/AddSubscriberRequest"
+        autoConfirm:
+          type: boolean
+          description: >-
+            Whether subscribers are automatically confirmed or will receive an
+            email to confirm their subscription. Applies to all subscribers in
+            the batch. This is a paid feature.
+    BulkAddSubscribersResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether all subscribers were created successfully.
+        created:
+          type: integer
+          description: Number of subscribers successfully created.
+        failed:
+          type: integer
+          description: Number of subscribers that failed to be created.
+        results:
+          type: object
+          properties:
+            created:
+              type: array
+              description: List of successfully created subscribers.
+              items:
+                $ref: "#/components/schemas/BulkCreatedSubscriber"
+            failed:
+              type: array
+              description: List of subscribers that failed to be created.
+              items:
+                $ref: "#/components/schemas/BulkFailedSubscriber"
+    BulkCreatedSubscriber:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        confirmed:
+          type: boolean
+        all:
+          type: boolean
+        site:
+          type: object
+          properties:
+            id:
+              type: string
+    BulkFailedSubscriber:
+      type: object
+      properties:
+        index:
+          type: integer
+          description: The index of the subscriber in the original request array.
+        subscriber:
+          type: object
+          description: The subscriber data that was submitted.
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code identifying the type of failure.
+            message:
+              type: string
+              description: Human-readable error message.
     SubscriberDetail:
       type: object
       properties:
