@@ -1293,6 +1293,9 @@ paths:
                           - too_many_subscribers
                       message:
                         type: string
+                    required:
+                      - code
+                      - message
               examples:
                 invalid_request:
                   value:
@@ -1318,6 +1321,9 @@ paths:
                         type: string
                       message:
                         type: string
+                    required:
+                      - code
+                      - message
         "404":
           description: Not found - invalid page_id
           content:
@@ -1332,6 +1338,9 @@ paths:
                         type: string
                       message:
                         type: string
+                    required:
+                      - code
+                      - message
   /v1/{page_id}/subscribers/{subscriber_id}:
     delete:
       summary: Remove a subscriber
@@ -4458,6 +4467,9 @@ components:
             message:
               type: string
               description: Human-readable error message.
+          required:
+            - code
+            - message
     SubscriberDetail:
       type: object
       properties:

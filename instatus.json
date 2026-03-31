@@ -1887,7 +1887,11 @@
                         "message": {
                           "type": "string"
                         }
-                      }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
                     }
                   }
                 }
@@ -1928,7 +1932,11 @@
                         "message": {
                           "type": "string"
                         }
-                      }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
                     }
                   }
                 }
@@ -1951,7 +1959,11 @@
                         "message": {
                           "type": "string"
                         }
-                      }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
                     }
                   }
                 }
@@ -6077,7 +6089,11 @@
                 "type": "string",
                 "description": "Human-readable error message."
               }
-            }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
           }
         }
       },
