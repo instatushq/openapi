@@ -5999,6 +5999,7 @@
           "subscribers": {
             "type": "array",
             "description": "Array of subscriber objects to create.",
+            "minItems": 1,
             "maxItems": 100,
             "items": {
               "$ref": "#/components/schemas/AddSubscriberRequest"
