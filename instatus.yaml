@@ -1276,6 +1276,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BulkAddSubscribersResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                        enum:
+                          - invalid_request
+                          - too_many_subscribers
+                      message:
+                        type: string
+              examples:
+                invalid_request:
+                  value:
+                    error:
+                      code: invalid_request
+                      message: Request body must contain a "subscribers" array with at least one subscriber.
+                too_many_subscribers:
+                  value:
+                    error:
+                      code: too_many_subscribers
+                      message: Cannot create more than 100 subscribers at once.
+        "401":
+          description: Unauthorized - missing or invalid API key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+        "404":
+          description: Not found - invalid page_id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
   /v1/{page_id}/subscribers/{subscriber_id}:
     delete:
       summary: Remove a subscriber
