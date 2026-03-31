@@ -6049,34 +6049,8 @@
       "BulkCreatedSubscriber": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "confirmed": {
-            "type": "boolean"
-          },
-          "all": {
-            "type": "boolean"
-          },
-          "site": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string"
-              }
-            }
+          "subscriber": {
+            "$ref": "#/components/schemas/SubscriberDetail"
           }
         }
       },

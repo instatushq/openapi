@@ -4437,26 +4437,8 @@ components:
     BulkCreatedSubscriber:
       type: object
       properties:
-        id:
-          type: string
-        email:
-          type: string
-          nullable: true
-        phone:
-          type: string
-          nullable: true
-        name:
-          type: string
-          nullable: true
-        confirmed:
-          type: boolean
-        all:
-          type: boolean
-        site:
-          type: object
-          properties:
-            id:
-              type: string
+        subscriber:
+          $ref: "#/components/schemas/SubscriberDetail"
     BulkFailedSubscriber:
       type: object
       properties:
@@ -4464,7 +4446,7 @@ components:
           type: integer
           description: The index of the subscriber in the original request array.
         subscriber:
-          type: object
+          $ref: "#/components/schemas/AddSubscriberRequest"
           description: The subscriber data that was submitted.
         error:
           type: object
