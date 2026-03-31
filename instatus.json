@@ -6063,7 +6063,7 @@
             "description": "The index of the subscriber in the original request array."
           },
           "subscriber": {
-            "type": "object",
+            "$ref": "#/components/schemas/AddSubscriberRequest",
             "description": "The subscriber data that was submitted."
           },
           "error": {
