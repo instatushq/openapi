@@ -4782,7 +4782,7 @@ components:
               selector:
                 type: string
                 nullable: true
-              value:
+              target:
                 type: string
         alerts:
           type: array
@@ -4908,7 +4908,7 @@ components:
               selector:
                 type: string
                 nullable: true
-              value:
+              target:
                 type: string
         alerts:
           type: array

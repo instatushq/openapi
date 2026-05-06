@@ -6510,7 +6510,7 @@
                   "type": "string",
                   "nullable": true
                 },
-                "value": {
+                "target": {
                   "type": "string"
                 }
               }
@@ -6665,7 +6665,7 @@
                   "type": "string",
                   "nullable": true
                 },
-                "value": {
+                "target": {
                   "type": "string"
                 }
               }
