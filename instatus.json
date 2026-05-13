@@ -1830,6 +1830,149 @@
         }
       }
     },
+    "/v1/{page_id}/subscribers/bulk": {
+      "post": {
+        "summary": "Add multiple subscribers",
+        "description": "Add multiple subscribers to a specific status page in a single request.\nMaximum 100 subscribers per request.\nPartial success is supported - successfully created subscribers are returned even if some fail.\n",
+        "tags": ["Subscribers"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkAddSubscribersRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkAddSubscribersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string",
+                          "enum": [
+                            "invalid_request",
+                            "too_many_subscribers"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "invalid_request": {
+                  "value": {
+                    "error": {
+                      "code": "invalid_request",
+                      "message": "Request body must contain a \"subscribers\" array with at least one subscriber."
+                    }
+                  }
+                },
+                "too_many_subscribers": {
+                  "value": {
+                    "error": {
+                      "code": "too_many_subscribers",
+                      "message": "Cannot create more than 100 subscribers at once."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found - invalid page_id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/{page_id}/subscribers/{subscriber_id}": {
       "delete": {
         "summary": "Remove a subscriber",
@@ -5858,6 +6001,99 @@
           "language": {
             "type": "string",
             "description": "The language of the subscriber in language code (e.g. `en` for English, `fr` for French, `de` for German, etc.)."
+          }
+        }
+      },
+      "BulkAddSubscribersRequest": {
+        "type": "object",
+        "required": ["subscribers"],
+        "properties": {
+          "subscribers": {
+            "type": "array",
+            "description": "Array of subscriber objects to create.",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/AddSubscriberRequest"
+            }
+          },
+          "autoConfirm": {
+            "type": "boolean",
+            "description": "Whether subscribers are automatically confirmed or will receive an email to confirm their subscription. Applies to all subscribers in the batch. This is a paid feature."
+          }
+        }
+      },
+      "BulkAddSubscribersResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether all subscribers were created successfully."
+          },
+          "created": {
+            "type": "integer",
+            "description": "Number of subscribers successfully created."
+          },
+          "failed": {
+            "type": "integer",
+            "description": "Number of subscribers that failed to be created."
+          },
+          "results": {
+            "type": "object",
+            "properties": {
+              "created": {
+                "type": "array",
+                "description": "List of successfully created subscribers.",
+                "items": {
+                  "$ref": "#/components/schemas/BulkCreatedSubscriber"
+                }
+              },
+              "failed": {
+                "type": "array",
+                "description": "List of subscribers that failed to be created.",
+                "items": {
+                  "$ref": "#/components/schemas/BulkFailedSubscriber"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BulkCreatedSubscriber": {
+        "type": "object",
+        "properties": {
+          "subscriber": {
+            "$ref": "#/components/schemas/SubscriberDetail"
+          }
+        }
+      },
+      "BulkFailedSubscriber": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The index of the subscriber in the original request array."
+          },
+          "subscriber": {
+            "$ref": "#/components/schemas/AddSubscriberRequest",
+            "description": "The subscriber data that was submitted."
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Error code identifying the type of failure."
+              },
+              "message": {
+                "type": "string",
+                "description": "Human-readable error message."
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
           }
         }
       },
