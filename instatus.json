@@ -670,9 +670,7 @@
             }
           }
         }
-      }
-    },
-    "/v1/{page_id}/incidents/{template}": {
+      },
       "post": {
         "summary": "Add an incident with a template",
         "description": "Create a new incident using a template",
@@ -689,12 +687,12 @@
           },
           {
             "in": "path",
-            "name": "template",
+            "name": "incident_id",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "description": "The ID or name of the template to use"
+            "description": "The ID of the template to use"
           }
         ],
         "responses": {
@@ -946,7 +944,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The ID or name of the template to use"
+            "description": "The ID of the template to use"
           }
         ],
         "responses": {
@@ -1732,6 +1730,140 @@
         }
       }
     },
+    "/v2/{page_id}/team-group": {
+      "get": {
+        "summary": "Get team group members",
+        "description": "Retrieve a list of team members for a specific status page, including team group assignments.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TeamGroupMember"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a team group member",
+        "description": "Add a new team member to a specific status page",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTeammateRequestV2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeamGroupMemberDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/{page_id}/team-group/{member_id}": {
+      "delete": {
+        "summary": "Delete a team group member",
+        "description": "Remove a team member from a specific status page",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "member_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the team member"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "memberId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/{page_id}/subscribers": {
       "get": {
         "summary": "Get subscribers",
@@ -1894,22 +2026,22 @@
                       ]
                     }
                   }
-                }
-              },
-              "examples": {
-                "invalid_request": {
-                  "value": {
-                    "error": {
-                      "code": "invalid_request",
-                      "message": "Request body must contain a \"subscribers\" array with at least one subscriber."
-                    }
-                  }
                 },
-                "too_many_subscribers": {
-                  "value": {
-                    "error": {
-                      "code": "too_many_subscribers",
-                      "message": "Cannot create more than 100 subscribers at once."
+                "examples": {
+                  "invalid_request": {
+                    "value": {
+                      "error": {
+                        "code": "invalid_request",
+                        "message": "Request body must contain a \"subscribers\" array with at least one subscriber."
+                      }
+                    }
+                  },
+                  "too_many_subscribers": {
+                    "value": {
+                      "error": {
+                        "code": "too_many_subscribers",
+                        "message": "Cannot create more than 100 subscribers at once."
+                      }
                     }
                   }
                 }
@@ -2948,6 +3080,587 @@
         }
       }
     },
+    "/{page_id}/monitors/cron": {
+      "get": {
+        "summary": "Get Cron Monitors",
+        "description": "Retrieve a list of cron monitors for a specific status page",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of cron monitors per page",
+            "schema": {
+              "type": "integer",
+              "default": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The page number",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "description": "Search term for filtering results by name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["UP", "DOWN", "UNKNOWN", "DEGRADED"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monitors/cron": {
+      "post": {
+        "summary": "Create a Cron Monitor",
+        "tags": ["Monitors"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCronMonitorRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Status page not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monitors/cron/{id}": {
+      "put": {
+        "summary": "Update a Cron Monitor",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the cron monitor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCronMonitorRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a Cron Monitor",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the cron monitor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Ping Cron Monitor Success",
+        "description": "Record a successful cron job run. Pass the monitor's ping slug as the path value. No authentication required — the slug acts as the secret. Also available at https://cron.instatus.com/{slug}",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ping slug of the cron monitor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorLog"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Monitor not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorPingNotFound"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Ping Cron Monitor Success",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ping slug of the cron monitor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorLog"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "summary": "Ping Cron Monitor Success",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ping slug of the cron monitor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/monitors/cron/{id}/logs": {
+      "get": {
+        "summary": "Get Cron Monitor Logs",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of logs per page",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "maximum": 127
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "The page number",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "maximum": 1000
+            }
+          },
+          {
+            "in": "query",
+            "name": "startDate",
+            "description": "ISO 8601 start date for the log range",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "description": "ISO 8601 end date for the log range",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "importance",
+            "schema": {
+              "type": "string",
+              "enum": ["all", "important"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorLogsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cron monitor not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monitors/cron/{id}/summary": {
+      "get": {
+        "summary": "Get Cron Monitor Summary",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorSummaryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monitors/cron/{slug}/fail": {
+      "get": {
+        "summary": "Ping Cron Monitor Failure",
+        "description": "Record an explicit cron job failure",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorLog"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Ping Cron Monitor Failure",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorLog"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "summary": "Ping Cron Monitor Failure",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/monitors/cron/{slug}/start": {
+      "get": {
+        "summary": "Ping Cron Monitor Start",
+        "description": "Record when a cron job starts running (for execution time tracking)",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorLog"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Ping Cron Monitor Start",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CronMonitorLog"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "summary": "Ping Cron Monitor Start",
+        "tags": ["Monitors"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
     "/monitor-alerts": {
       "post": {
         "summary": "Create Monitor Alert",
@@ -2986,7 +3699,7 @@
             "name": "id",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/MonitorAlertType"
+              "type": "string"
             }
           }
         ],
@@ -3274,8 +3987,7 @@
             "in": "query",
             "name": "location",
             "schema": {
-              "type": "string",
-              "$ref": "#/components/schemas/MonitorLocation"
+              "$ref": "#/components/schemas/MonitorLocationValue"
             }
           },
           {
@@ -3864,6 +4576,22 @@
                 "type": "string"
               }
             }
+          }
+        }
+      },
+      "CronMonitorPingNotFound": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "CronMonitorPingError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -5907,6 +6635,72 @@
           }
         }
       },
+      "AddTeammateRequestV2": {
+        "type": "object",
+        "required": ["email", "permission"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email of the teammate you wish to add."
+          },
+          "permission": {
+            "$ref": "#/components/schemas/TeammatePermission"
+          },
+          "audienceGroups": {
+            "type": "array",
+            "description": "The ids of the audience groups you wish to add the teammate to.",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "teamGroup": {
+            "type": "string",
+            "description": "The id of the team group you want to include the teammate in.",
+            "nullable": true
+          }
+        }
+      },
+      "TeamGroup": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "TeamGroupMember": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "teamGroup": {
+            "$ref": "#/components/schemas/TeamGroup"
+          }
+        }
+      },
+      "TeamGroupMemberDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "teamGroup": {
+            "$ref": "#/components/schemas/TeamGroup"
+          }
+        }
+      },
       "TeammateDetail": {
         "type": "object",
         "properties": {
@@ -6828,11 +7622,14 @@
         "type": "string",
         "enum": ["HTTP", "PING", "TCP", "DNS", "HTTP_API"]
       },
+      "MonitorLocationValue": {
+        "type": "string",
+        "enum": ["US_EAST_1", "EU_CENTRAL_1", "AP_NORTHEAST_1"]
+      },
       "MonitorLocation": {
         "type": "array",
         "items": {
-          "type": "string",
-          "enum": ["US_EAST_1", "EU_CENTRAL_1", "AP_NORTHEAST_1"]
+          "$ref": "#/components/schemas/MonitorLocationValue"
         }
       },
       "CreateMonitorRequest": {
@@ -6994,6 +7791,391 @@
           },
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "MonitorStatus": {
+        "type": "string",
+        "enum": ["UP", "DOWN", "DEGRADED", "UNKNOWN"]
+      },
+      "MonitorState": {
+        "type": "string",
+        "enum": ["ACTIVE", "PAUSED", "MUTED"]
+      },
+      "CronMonitor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique slug used for ping URLs"
+          },
+          "period": {
+            "type": "integer",
+            "description": "Expected interval between job runs, in seconds"
+          },
+          "grace": {
+            "type": "integer",
+            "description": "Grace period before the monitor is marked down, in seconds"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MonitorStatus"
+          },
+          "state": {
+            "$ref": "#/components/schemas/MonitorState"
+          },
+          "siteId": {
+            "type": "string"
+          },
+          "order": {
+            "type": "integer",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
+          },
+          "componentId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Id of the component this cron monitor was added as (see `createComponent` on create)."
+          },
+          "onFailCreateIncident": {
+            "type": "boolean"
+          },
+          "onFailCreateOutageDuration": {
+            "type": "boolean"
+          },
+          "onFailPublishIncident": {
+            "type": "boolean"
+          },
+          "onFailNotifySubscribers": {
+            "type": "boolean"
+          },
+          "onRecoverResolveIncident": {
+            "type": "boolean"
+          },
+          "onRecoverResolveOutageDuration": {
+            "type": "boolean"
+          },
+          "onRecoverPublishIncident": {
+            "type": "boolean"
+          },
+          "onRecoverNotifySubscribers": {
+            "type": "boolean"
+          },
+          "createTemplateId": {
+            "type": "string",
+            "nullable": true
+          },
+          "resolveTemplateId": {
+            "type": "string",
+            "nullable": true
+          },
+          "alerts": {
+            "type": "array",
+            "nullable": true,
+            "description": "Monitor alerts linked to this cron monitor.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "recipient": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateCronMonitorRequest": {
+        "type": "object",
+        "required": ["pageId", "name", "period", "grace"],
+        "properties": {
+          "pageId": {
+            "type": "string",
+            "description": "The id of the status page to create the cron monitor on"
+          },
+          "name": {
+            "type": "string"
+          },
+          "period": {
+            "type": "integer",
+            "description": "Expected interval between job runs, in seconds"
+          },
+          "grace": {
+            "type": "integer",
+            "description": "Grace period before the monitor is marked down, in seconds"
+          },
+          "alerts": {
+            "type": "array",
+            "description": "The ids of alerts to notify when the cron monitor triggers",
+            "items": {
+              "type": "string"
+            }
+          },
+          "createComponent": {
+            "type": "boolean",
+            "description": "Whether to create a component that will follow the status of the cron monitor on the status page."
+          },
+          "onFail": {
+            "type": "object",
+            "properties": {
+              "createIncident": {
+                "type": "boolean"
+              },
+              "createOutageDuration": {
+                "type": "boolean"
+              },
+              "publishIncident": {
+                "type": "boolean"
+              },
+              "notifySubscribers": {
+                "type": "boolean"
+              }
+            }
+          },
+          "onRecover": {
+            "type": "object",
+            "properties": {
+              "resolveIncident": {
+                "type": "boolean"
+              },
+              "resolveOutageDuration": {
+                "type": "boolean"
+              },
+              "publishIncident": {
+                "type": "boolean"
+              },
+              "notifySubscribers": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "UpdateCronMonitorRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "period": {
+            "type": "integer"
+          },
+          "grace": {
+            "type": "integer"
+          },
+          "state": {
+            "$ref": "#/components/schemas/MonitorState"
+          },
+          "alerts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "onFail": {
+            "type": "object",
+            "properties": {
+              "createIncident": {
+                "type": "boolean"
+              },
+              "createOutageDuration": {
+                "type": "boolean"
+              },
+              "publishIncident": {
+                "type": "boolean"
+              },
+              "notifySubscribers": {
+                "type": "boolean"
+              }
+            }
+          },
+          "onRecover": {
+            "type": "object",
+            "properties": {
+              "resolveIncident": {
+                "type": "boolean"
+              },
+              "resolveOutageDuration": {
+                "type": "boolean"
+              },
+              "publishIncident": {
+                "type": "boolean"
+              },
+              "notifySubscribers": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "CronMonitorResponse": {
+        "type": "object",
+        "properties": {
+          "cronMonitor": {
+            "$ref": "#/components/schemas/CronMonitor"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "CronMonitorListResponse": {
+        "type": "object",
+        "properties": {
+          "cronMonitors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CronMonitor"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          }
+        }
+      },
+      "CronMonitorLog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "monitorId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["SUCCESS", "FAILURE", "MISSED", "LATE", "STARTED"]
+          },
+          "requestType": {
+            "type": "string",
+            "enum": ["GET", "POST", "HEAD"]
+          },
+          "agent": {
+            "type": "string",
+            "nullable": true
+          },
+          "ipAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CronMonitorLogsResponse": {
+        "type": "object",
+        "properties": {
+          "logs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CronMonitorLog"
+            }
+          },
+          "page": {
+            "type": "integer"
+          }
+        }
+      },
+      "CronMonitorSummary": {
+        "type": "object",
+        "properties": {
+          "totalLogs": {
+            "type": "integer"
+          },
+          "totalFailedLogs": {
+            "type": "integer"
+          },
+          "availability": {
+            "type": "number"
+          },
+          "oneDayAvailability": {
+            "type": "number"
+          },
+          "previousDayAvailability": {
+            "type": "number"
+          },
+          "sevenDayAvailability": {
+            "type": "number"
+          },
+          "previousSevenDayAvailability": {
+            "type": "number"
+          },
+          "thirtyDayAvailability": {
+            "type": "number"
+          },
+          "previousThirtyDayAvailability": {
+            "type": "number"
+          },
+          "lastSuccess": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastFailure": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastStarted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "upSince": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "downSince": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CronMonitorSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/CronMonitorSummary"
           }
         }
       },
