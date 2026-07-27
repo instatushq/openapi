@@ -670,7 +670,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/v1/{page_id}/incidents/{template}": {
       "post": {
         "summary": "Add an incident with a template",
         "description": "Create a new incident using a template",
@@ -687,7 +689,7 @@
           },
           {
             "in": "path",
-            "name": "incident_id",
+            "name": "template",
             "required": true,
             "schema": {
               "type": "string"
