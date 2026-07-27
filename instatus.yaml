@@ -484,7 +484,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The ID or name of the template to use
+          description: The ID of the template to use
       responses:
         "200":
           description: Successful response
@@ -651,7 +651,7 @@ paths:
           required: true
           schema:
             type: string
-          description: The ID or name of the template to use
+          description: The ID of the template to use
       responses:
         "200":
           description: Successful response
@@ -1153,6 +1153,98 @@ paths:
   /v1/{page_id}/team/{member_id}:
     delete:
       summary: Delete a team member
+      description: Remove a team member from a specific status page
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - in: path
+          name: member_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the team member
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  memberId:
+                    type: string
+  /v2/{page_id}/team-group:
+    get:
+      summary: Get team group members
+      description: |
+        Retrieve a list of team members for a specific status page, including team group assignments.
+        The default page number is 1.
+        The default per_page number is 50 and the maximum is 100 items per page.
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+          description: Number of items per page
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamGroupMember"
+    post:
+      summary: Add a team group member
+      description: Add a new team member to a specific status page
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddTeammateRequestV2"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamGroupMemberDetail"
+  /v2/{page_id}/team-group/{member_id}:
+    delete:
+      summary: Delete a team group member
       description: Remove a team member from a specific status page
       tags:
         - Teammates
@@ -2009,6 +2101,549 @@ paths:
                 properties:
                   message:
                     type: string
+  /{page_id}/monitors/cron:
+    get:
+      summary: Get Cron Monitors
+      description: >-
+        Retrieve a paginated list of cron monitors for a specific status page.
+
+
+        The returned monitors do not include their linked alerts. Use Create or
+        Update Cron Monitor to get a monitor with its `alerts`.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          description: The ID of the status page the cron monitors belong to
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: The number of cron monitors per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 100
+        - in: query
+          name: page
+          description: The page number
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: search
+          description: Only return cron monitors whose name contains this term
+          schema:
+            type: string
+        - in: query
+          name: status
+          description: Only return cron monitors currently in this status
+          schema:
+            $ref: "#/components/schemas/MonitorStatus"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorListResponse"
+        "401":
+          description: You are not allowed to view monitors on this page
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /monitors/cron:
+    post:
+      summary: Create a Cron Monitor
+      description: >-
+        Create a cron monitor on a status page.
+
+
+        The response contains the generated `slug`, which is the secret used to
+        build the monitor's ping URLs (see Ping Cron Monitor Success).
+      tags:
+        - Monitors
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCronMonitorRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorResponse"
+        "401":
+          description: You are not allowed to create monitors for this page
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: There is no status page with this ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: >-
+            The request body failed validation, or the `onFail` / `onRecover`
+            combination is not allowed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+  /monitors/cron/{id}:
+    description: >-
+      This path serves two different kinds of operation, told apart by HTTP
+      method, and the `{id}` placeholder means something different for each.
+
+
+      `PUT` and `DELETE` manage the cron monitor and take its ID. `GET`, `POST`
+      and `HEAD` record a success ping and take the monitor's ping slug instead.
+      See each operation's path parameter for details.
+    put:
+      summary: Update a Cron Monitor
+      description: >-
+        Update a cron monitor. Only the fields you send are changed.
+
+
+        Use `state` to pause (`PAUSED`), mute (`MUTED`) or resume (`ACTIVE`) the
+        monitor — there is no separate pause endpoint. Changing `period`, `grace`
+        or `state` reschedules the monitor's missed-ping check.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the cron monitor, for example `cron-abc123`
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCronMonitorRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorResponse"
+        "401":
+          description: You are not allowed to update this monitor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: >-
+            The request body failed validation, the monitor does not exist, or
+            the resulting `onFail` / `onRecover` combination is not allowed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+    delete:
+      summary: Delete a Cron Monitor
+      description: >-
+        Permanently delete a cron monitor, its scheduled check and any incident
+        templates attached to it. The linked component, if any, is kept.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the cron monitor, for example `cron-abc123`
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteCronMonitorResponse"
+        "401":
+          description: You are not allowed to delete this monitor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: Ping Cron Monitor Success
+      description: >-
+        Record a successful cron job run and reset the monitor's missed-ping
+        timer. The created log has `status: SUCCESS`.
+
+
+        This operation takes the monitor's ping slug, not its ID. The slug is
+        the secret, so no authentication is required. The same ping is also
+        served from the shorter `https://cron.instatus.com/{slug}`, which is the
+        URL shown in the dashboard.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlugAsId"
+      responses:
+        "200":
+          description: The recorded ping log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorLog"
+        "404":
+          description: No cron monitor has this ping slug
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingNotFound"
+        "500":
+          description: The ping could not be recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingError"
+    post:
+      summary: Ping Cron Monitor Success
+      description: >-
+        Same as the `GET` variant. Any request body is ignored. The created log
+        has `status: SUCCESS`.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlugAsId"
+      responses:
+        "200":
+          description: The recorded ping log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorLog"
+        "404":
+          description: No cron monitor has this ping slug
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingNotFound"
+        "500":
+          description: The ping could not be recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingError"
+    head:
+      summary: Ping Cron Monitor Success
+      description: >-
+        Same as the `GET` variant, but the response has no body. The created log
+        has `status: SUCCESS`.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlugAsId"
+      responses:
+        "200":
+          description: The ping was recorded
+        "404":
+          description: No cron monitor has this ping slug
+        "500":
+          description: The ping could not be recorded
+  /monitors/cron/{id}/logs:
+    get:
+      summary: Get Cron Monitor Logs
+      description: >-
+        Retrieve a cron monitor's ping logs, most recent first.
+
+
+        How far back `startDate` may reach is capped by your plan's log
+        retention.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the cron monitor, for example `cron-abc123`
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: The number of logs per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 127
+            default: 100
+        - in: query
+          name: page
+          description: The page number
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 1
+        - in: query
+          name: startDate
+          description: >-
+            Start of the log range, as an ISO 8601 UTC timestamp ending in `Z`.
+            Numeric offsets such as `+02:00` are rejected. Defaults to one year
+            before now.
+          schema:
+            type: string
+            format: date-time
+            example: "2026-07-01T00:00:00Z"
+        - in: query
+          name: endDate
+          description: >-
+            End of the log range, as an ISO 8601 UTC timestamp ending in `Z`.
+            Numeric offsets such as `+02:00` are rejected. Defaults to now.
+          schema:
+            type: string
+            format: date-time
+            example: "2026-07-27T00:00:00Z"
+        - in: query
+          name: importance
+          description: >-
+            `all` returns every log except superseded `STARTED` pings.
+            `important` returns only `FAILURE`, `MISSED` and `LATE` logs, plus
+            the `SUCCESS` log that recovered from one of them.
+          schema:
+            type: string
+            enum:
+              - all
+              - important
+            default: all
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorLogsResponse"
+        "401":
+          description: You are not allowed to view logs for this monitor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Cron monitor not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /monitors/cron/{id}/summary:
+    get:
+      summary: Get Cron Monitor Summary
+      description: >-
+        Retrieve availability percentages and last-seen timestamps for a cron
+        monitor. A monitor that has never been pinged returns zeroed
+        availabilities and null timestamps.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the cron monitor, for example `cron-abc123`
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorSummaryResponse"
+        "401":
+          description: You are not allowed to view this cron monitor summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /monitors/cron/{slug}/fail:
+    get:
+      summary: Ping Cron Monitor Failure
+      description: >-
+        Report that the cron job failed. The monitor is marked `DOWN`
+        immediately, without waiting for the grace period, and the created log
+        has `status: FAILURE`.
+
+
+        This operation takes the monitor's ping slug, not its ID. The slug is
+        the secret, so no authentication is required. The same ping is also
+        served from the shorter `https://cron.instatus.com/{slug}/fail`, which
+        is the URL shown in the dashboard.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlug"
+      responses:
+        "200":
+          description: The recorded ping log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorLog"
+        "404":
+          description: No cron monitor has this ping slug
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingNotFound"
+        "500":
+          description: The ping could not be recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingError"
+    post:
+      summary: Ping Cron Monitor Failure
+      description: >-
+        Same as the `GET` variant. Any request body is ignored. The created log
+        has `status: FAILURE`.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlug"
+      responses:
+        "200":
+          description: The recorded ping log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorLog"
+        "404":
+          description: No cron monitor has this ping slug
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingNotFound"
+        "500":
+          description: The ping could not be recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingError"
+    head:
+      summary: Ping Cron Monitor Failure
+      description: >-
+        Same as the `GET` variant, but the response has no body. The created log
+        has `status: FAILURE`.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlug"
+      responses:
+        "200":
+          description: The ping was recorded
+        "404":
+          description: No cron monitor has this ping slug
+        "500":
+          description: The ping could not be recorded
+  /monitors/cron/{slug}/start:
+    get:
+      summary: Ping Cron Monitor Start
+      description: >-
+        Record that the cron job started running, so that Instatus can report
+        how long each run took. The created log has `status: STARTED`, and the
+        next success or failure ping carries this timestamp as its `startedAt`.
+
+
+        A start ping does not change the monitor's status and does not reset the
+        missed-ping timer. This operation takes the monitor's ping slug, not its
+        ID. The slug is the secret, so no authentication is required. The same
+        ping is also served from the shorter
+        `https://cron.instatus.com/{slug}/start`, which is the URL shown in the
+        dashboard.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlug"
+      responses:
+        "200":
+          description: The recorded ping log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorLog"
+        "404":
+          description: No cron monitor has this ping slug
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingNotFound"
+        "500":
+          description: The ping could not be recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingError"
+    post:
+      summary: Ping Cron Monitor Start
+      description: >-
+        Same as the `GET` variant. Any request body is ignored. The created log
+        has `status: STARTED`.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlug"
+      responses:
+        "200":
+          description: The recorded ping log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorLog"
+        "404":
+          description: No cron monitor has this ping slug
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingNotFound"
+        "500":
+          description: The ping could not be recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CronMonitorPingError"
+    head:
+      summary: Ping Cron Monitor Start
+      description: >-
+        Same as the `GET` variant, but the response has no body. The created log
+        has `status: STARTED`.
+      tags:
+        - Monitors
+      security: []
+      parameters:
+        - $ref: "#/components/parameters/CronMonitorSlug"
+      responses:
+        "200":
+          description: The ping was recorded
+        "404":
+          description: No cron monitor has this ping slug
+        "500":
+          description: The ping could not be recorded
   /monitor-alerts:
     post:
       summary: Create Monitor Alert
@@ -2037,7 +2672,7 @@ paths:
           name: id
           required: true
           schema:
-            $ref: "#/components/schemas/MonitorAlertType"
+            type: string
       requestBody:
         required: true
         content:
@@ -2221,8 +2856,7 @@ paths:
         - in: query
           name: location
           schema:
-            type: string
-            $ref: "#/components/schemas/MonitorLocation"
+            $ref: "#/components/schemas/MonitorLocationValue"
         - in: query
           name: retry
           schema:
@@ -2477,7 +3111,7 @@ paths:
   /v1/workspaces:
     get:
       summary: Get your workspaces
-      description: >
+      description: |-
         Retrieve a list of your workspaces.
 
         The default page number is 1.
@@ -2554,6 +3188,30 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
+  parameters:
+    CronMonitorSlug:
+      in: path
+      name: slug
+      required: true
+      description: >-
+        The cron monitor's ping slug, returned as `slug` when the monitor is
+        created. This is not the monitor's ID.
+      schema:
+        type: string
+      example: my-page-x7k2m9n4p1q8w3e5
+    CronMonitorSlugAsId:
+      in: path
+      name: id
+      required: true
+      description: >-
+        The cron monitor's ping slug, returned as `slug` when the monitor is
+        created — not the monitor's ID, despite the `{id}` placeholder. The
+        placeholder is named `{id}` because this path is shared with Update and
+        Delete Cron Monitor, which do take the monitor's ID. The API tells the
+        two apart by HTTP method.
+      schema:
+        type: string
+      example: my-page-x7k2m9n4p1q8w3e5
   schemas:
     PageStatus:
       type: string
@@ -2647,6 +3305,28 @@ components:
               type: string
             message:
               type: string
+    ValidationError:
+      type: object
+      description: >-
+        Returned when a request body fails validation or breaks a business rule.
+        Unlike `Error`, the `error` property is a plain message string.
+      properties:
+        error:
+          type: string
+      example:
+        error: Invalid settings when monitor fails
+    CronMonitorPingNotFound:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Monitor not found
+    CronMonitorPingError:
+      type: object
+      properties:
+        message:
+          type: string
     Translations:
       type: object
       description: >-
@@ -4309,6 +4989,53 @@ components:
           type: string
           description: The id of the team you want to include the teammate in.
           nullable: true
+    AddTeammateRequestV2:
+      type: object
+      required:
+        - email
+        - permission
+      properties:
+        email:
+          type: string
+          description: The email of the teammate you wish to add.
+        permission:
+          $ref: "#/components/schemas/TeammatePermission"
+        audienceGroups:
+          type: array
+          description: The ids of the audience groups you wish to add the teammate to.
+          items:
+            type: string
+          nullable: true
+        teamGroup:
+          type: string
+          description: The id of the team group you want to include the teammate in.
+          nullable: true
+    TeamGroup:
+      type: object
+      nullable: true
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    TeamGroupMember:
+      type: object
+      properties:
+        id:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+        teamGroup:
+          $ref: "#/components/schemas/TeamGroup"
+    TeamGroupMemberDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        teamGroup:
+          $ref: "#/components/schemas/TeamGroup"
     TeammateDetail:
       type: object
       properties:
@@ -5010,14 +5737,16 @@ components:
         - TCP
         - DNS
         - HTTP_API
+    MonitorLocationValue:
+      type: string
+      enum:
+        - US_EAST_1
+        - EU_CENTRAL_1
+        - AP_NORTHEAST_1
     MonitorLocation:
       type: array
       items:
-        type: string
-        enum:
-          - US_EAST_1
-          - EU_CENTRAL_1
-          - AP_NORTHEAST_1
+        $ref: "#/components/schemas/MonitorLocationValue"
     CreateMonitorRequest:
       type: object
       required:
@@ -5136,6 +5865,390 @@ components:
           $ref: "#/components/schemas/Monitor"
         message:
           type: string
+    MonitorStatus:
+      type: string
+      enum:
+        - UP
+        - DOWN
+        - DEGRADED
+        - UNKNOWN
+    MonitorState:
+      type: string
+      enum:
+        - ACTIVE
+        - PAUSED
+        - MUTED
+    CronMonitor:
+      type: object
+      description: >-
+        A cron monitor watches a scheduled job by waiting for it to ping
+        Instatus. If no ping arrives within `period` plus `grace`, the monitor
+        goes down.
+      properties:
+        id:
+          type: string
+          description: The ID of the cron monitor, prefixed with `cron-`
+        name:
+          type: string
+        slug:
+          type: string
+          description: >-
+            The secret ping slug. Ping URLs are built from it, for example
+            `https://cron.instatus.com/{slug}`.
+        period:
+          type: integer
+          description: Expected interval between job runs, in seconds
+        grace:
+          type: integer
+          description: >-
+            Extra time allowed after `period` elapses before the monitor is
+            marked down, in seconds
+        status:
+          $ref: "#/components/schemas/MonitorStatus"
+        state:
+          $ref: "#/components/schemas/MonitorState"
+        siteId:
+          type: string
+          description: The ID of the status page the cron monitor belongs to
+        order:
+          type: integer
+          nullable: true
+          description: Position of the monitor in the dashboard's monitor list
+        groupId:
+          type: string
+          nullable: true
+          description: The ID of the monitor group the cron monitor belongs to
+        componentId:
+          type: string
+          nullable: true
+          description: >-
+            The ID of the component that follows this cron monitor's status (see
+            `createComponent` on create)
+        onFailCreateIncident:
+          type: boolean
+        onFailCreateOutageDuration:
+          type: boolean
+        onFailPublishIncident:
+          type: boolean
+        onFailNotifySubscribers:
+          type: boolean
+        onRecoverResolveIncident:
+          type: boolean
+        onRecoverResolveOutageDuration:
+          type: boolean
+        onRecoverPublishIncident:
+          type: boolean
+        onRecoverNotifySubscribers:
+          type: boolean
+        createTemplateId:
+          type: string
+          nullable: true
+          description: The ID of the template used for the incident opened on failure
+        resolveTemplateId:
+          type: string
+          nullable: true
+          description: The ID of the template used for the update posted on recovery
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CronMonitorWithAlerts:
+      allOf:
+        - $ref: "#/components/schemas/CronMonitor"
+        - type: object
+          properties:
+            alerts:
+              type: array
+              description: The monitor alerts linked to this cron monitor
+              items:
+                $ref: "#/components/schemas/CronMonitorAlert"
+    CronMonitorAlert:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: "#/components/schemas/MonitorAlertType"
+        recipient:
+          type: string
+          nullable: true
+    CronMonitorOnFail:
+      type: object
+      description: >-
+        What happens when the monitor goes down. `createIncident` and
+        `createOutageDuration` are mutually exclusive, and
+        `createOutageDuration` requires `createComponent`. `publishIncident`
+        requires one of them, and `notifySubscribers` requires
+        `publishIncident`.
+      properties:
+        createIncident:
+          type: boolean
+          description: Open an incident on the status page. Defaults to `true`.
+        createOutageDuration:
+          type: boolean
+          description: >-
+            Mark the linked component as down without opening an incident.
+            Defaults to `false`.
+        publishIncident:
+          type: boolean
+          description: >-
+            Make the incident or outage visible to visitors. Defaults to
+            `false`.
+        notifySubscribers:
+          type: boolean
+          description: Notify the page's subscribers. Defaults to `false`.
+    CronMonitorOnRecover:
+      type: object
+      description: >-
+        What happens when the monitor comes back up. `resolveIncident` and
+        `resolveOutageDuration` are mutually exclusive, and must match the
+        corresponding `onFail` choice. `publishIncident` requires
+        `onFail.publishIncident`, and `notifySubscribers` requires
+        `publishIncident`.
+      properties:
+        resolveIncident:
+          type: boolean
+          description: Resolve the incident opened on failure. Defaults to `true`.
+        resolveOutageDuration:
+          type: boolean
+          description: >-
+            Mark the linked component as operational again. Defaults to `false`.
+        publishIncident:
+          type: boolean
+          description: Publish the resolving update. Defaults to `false`.
+        notifySubscribers:
+          type: boolean
+          description: Notify the page's subscribers. Defaults to `false`.
+    CreateCronMonitorRequest:
+      type: object
+      required:
+        - pageId
+        - name
+        - period
+        - grace
+      properties:
+        pageId:
+          type: string
+          description: The ID of the status page to create the cron monitor on
+        name:
+          type: string
+        period:
+          type: integer
+          description: Expected interval between job runs, in seconds
+        grace:
+          type: integer
+          description: >-
+            Extra time allowed after `period` elapses before the monitor is
+            marked down, in seconds
+        alerts:
+          type: array
+          description: The IDs of the monitor alerts to notify
+          items:
+            type: string
+        createComponent:
+          type: boolean
+          description: >-
+            Create a component on the status page that follows this monitor's
+            status. Required if you use `onFail.createOutageDuration` or
+            `onRecover.resolveOutageDuration`.
+        onFail:
+          $ref: "#/components/schemas/CronMonitorOnFail"
+        onRecover:
+          $ref: "#/components/schemas/CronMonitorOnRecover"
+      example:
+        pageId: page123
+        name: Nightly database backup
+        period: 86400
+        grace: 3600
+        alerts:
+          - alert123
+        createComponent: true
+        onFail:
+          createIncident: true
+          publishIncident: true
+        onRecover:
+          resolveIncident: true
+          publishIncident: true
+    UpdateCronMonitorRequest:
+      type: object
+      description: Only the fields you send are changed.
+      properties:
+        name:
+          type: string
+        period:
+          type: integer
+          description: Expected interval between job runs, in seconds
+        grace:
+          type: integer
+          description: >-
+            Extra time allowed after `period` elapses before the monitor is
+            marked down, in seconds
+        state:
+          $ref: "#/components/schemas/MonitorState"
+        alerts:
+          type: array
+          description: >-
+            The IDs of the monitor alerts to notify. Replaces the monitor's
+            existing alerts.
+          items:
+            type: string
+        onFail:
+          $ref: "#/components/schemas/CronMonitorOnFail"
+        onRecover:
+          $ref: "#/components/schemas/CronMonitorOnRecover"
+      example:
+        state: PAUSED
+    CronMonitorResponse:
+      type: object
+      properties:
+        cronMonitor:
+          $ref: "#/components/schemas/CronMonitorWithAlerts"
+        message:
+          type: string
+    DeleteCronMonitorResponse:
+      type: object
+      properties:
+        cronMonitor:
+          $ref: "#/components/schemas/CronMonitor"
+        message:
+          type: string
+    CronMonitorListResponse:
+      type: object
+      properties:
+        cronMonitors:
+          type: array
+          items:
+            $ref: "#/components/schemas/CronMonitor"
+        total:
+          type: integer
+          description: The total number of cron monitors matching the filters
+        page:
+          type: integer
+        totalPages:
+          type: integer
+        limit:
+          type: integer
+    CronMonitorLog:
+      type: object
+      description: A single entry in a cron monitor's ping history.
+      properties:
+        id:
+          type: string
+        monitorId:
+          type: string
+          description: The ID of the cron monitor this log belongs to
+        status:
+          type: string
+          enum:
+            - SUCCESS
+            - FAILURE
+            - MISSED
+            - LATE
+            - STARTED
+          description: |-
+            `SUCCESS` - The job reported a successful run
+            `FAILURE` - The job reported a failure
+            `MISSED` - No ping arrived within the period and grace window
+            `LATE` - A ping arrived after the period but within the grace window
+            `STARTED` - The job reported that it started running
+        requestType:
+          type: string
+          enum:
+            - GET
+            - POST
+            - HEAD
+          nullable: true
+          description: >-
+            The HTTP method used to ping. Absent on `MISSED` logs, which
+            Instatus creates itself.
+        agent:
+          type: string
+          nullable: true
+          description: The `User-Agent` header sent with the ping
+        ipAddress:
+          type: string
+          nullable: true
+          description: The IP address the ping came from
+        createdAt:
+          type: string
+          format: date-time
+        startedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: >-
+            When the run started, carried over from the preceding start ping.
+            Only set on `SUCCESS` and `FAILURE` logs.
+    CronMonitorLogsResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          description: The matching logs, most recent first
+          items:
+            $ref: "#/components/schemas/CronMonitorLog"
+        page:
+          type: integer
+    CronMonitorSummary:
+      type: object
+      description: >-
+        Availability is the share of successful pings, as a percentage from 0 to
+        100. Periods with no pings report `0`.
+      properties:
+        totalLogs:
+          type: integer
+        totalFailedLogs:
+          type: integer
+        availability:
+          type: number
+          description: Availability across the monitor's whole history
+        oneDayAvailability:
+          type: number
+          description: Availability over the last 24 hours
+        previousDayAvailability:
+          type: number
+          description: Availability over the 24 hours before that
+        sevenDayAvailability:
+          type: number
+          description: Availability over the last 7 days
+        previousSevenDayAvailability:
+          type: number
+          description: Availability over the 7 days before that
+        thirtyDayAvailability:
+          type: number
+          description: Availability over the last 30 days
+        previousThirtyDayAvailability:
+          type: number
+          description: Availability over the 30 days before that
+        lastSuccess:
+          type: string
+          format: date-time
+          nullable: true
+        lastFailure:
+          type: string
+          format: date-time
+          nullable: true
+        lastStarted:
+          type: string
+          format: date-time
+          nullable: true
+        upSince:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the monitor last became up, if it is currently up
+        downSince:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the monitor last went down, if it is currently down
+    CronMonitorSummaryResponse:
+      type: object
+      properties:
+        summary:
+          $ref: "#/components/schemas/CronMonitorSummary"
     MonitorLog:
       type: object
       properties:
