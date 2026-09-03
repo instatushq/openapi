@@ -1907,6 +1907,15 @@
               "type": "string"
             },
             "description": "Filter subscribers by email address or phone number"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["confirmed", "unconfirmed", "unapproved"]
+            },
+            "description": "Filter subscribers by subscription status"
           }
         ],
         "responses": {
@@ -2175,6 +2184,15 @@
               "type": "string"
             },
             "description": "Filter subscribers by email address or phone number"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["confirmed", "unconfirmed", "unapproved"]
+            },
+            "description": "Filter subscribers by subscription status"
           }
         ],
         "responses": {
