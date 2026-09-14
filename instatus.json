@@ -71,6 +71,9 @@
       "name": "On Call Schedules"
     },
     {
+      "name": "Teams"
+    },
+    {
       "name": "Workspaces"
     }
   ],
@@ -1591,6 +1594,140 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeletedTemplate"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/{page_id}/team-members": {
+      "get": {
+        "summary": "Get team members",
+        "description": "Retrieve a list of team members for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Teammate"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a team member",
+        "description": "Add a new team member to a specific status page",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTeammateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeammateDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/{page_id}/team-members/{member_id}": {
+      "delete": {
+        "summary": "Delete a team member",
+        "description": "Remove a team member from a specific status page",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "member_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the team member"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "memberId": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -4507,6 +4644,111 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GetOnCallScheduleMembersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/teams": {
+      "get": {
+        "summary": "Get your teams",
+        "description": "Retrieve a list of your teams.\n\nThe default page number is 1.\n\nThe default per_page number is 50 and the maximum is 100 items per page.",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a team",
+        "description": "Create a new team",
+        "tags": ["Teams"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/teams/{team_id}": {
+      "delete": {
+        "summary": "Delete a team",
+        "description": "Delete a team",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The team ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
@@ -8860,7 +9102,7 @@
             "$ref": "#/components/schemas/ComparisonType"
           },
           "value": {
-            "description": "The value to compare the assertion to depending on the `type` of the assertion.\n* `IMPACT` - should be an impact level (e.g. `OPERATIONAL`, `UNDERMAINTENANCE`, `DEGRADEDPERFORMANCE`, `PARTIALOUTAGE`, `MAJOROUTAGE`)\n* `TITLE` - The title of the incident\n* `DESCRIPTION` - The description of the incident\n* `AFFECTED_COMPONENTS` - The affected component of the incident\n* `INCIDENT` - The incident itself, whether it be through workspace member or an external integration (e.g. Datadog), You can also use multiple values by separating them with a comma.\n**Available Options**: `WORKSPACEMEMBER`, `WEBHOOK`, `BETTERUPTIME`, `CHECKLY`, `DATADOG`, `DYNATRACE`, `FRESHPING`, `GRAFANA`, `HETRIXTOOLS`, `NEWRELIC`, `PAGERDUTY`, `PINGDOM`, `RUNSCOPE`, `SITE24X7`, `STATUSCAKE`, `UPTIMEROBOT`, `EMAIL`, `PROMETHEUS`, `UPDOWN`, `GOOGLECLOUDMONITORING`",
+            "description": "The value to compare the assertion to depending on the `type` of the assertion.\n* `IMPACT` - should be an impact level (e.g. `OPERATIONAL`, `UNDERMAINTENANCE`, `DEGRADEDPERFORMANCE`, `PARTIALOUTAGE`, `MAJOROUTAGE`)\n* `TITLE` - The title of the incident\n* `DESCRIPTION` - The description of the incident\n* `AFFECTED_COMPONENTS` - The affected component of the incident\n* `INCIDENT` - The incident itself, whether it be through team member or an external integration (e.g. Datadog), You can also use multiple values by separating them with a comma.\n**Available Options**: `TEAMMEMBER`, `WEBHOOK`, `BETTERUPTIME`, `CHECKLY`, `DATADOG`, `DYNATRACE`, `FRESHPING`, `GRAFANA`, `HETRIXTOOLS`, `NEWRELIC`, `PAGERDUTY`, `PINGDOM`, `RUNSCOPE`, `SITE24X7`, `STATUSCAKE`, `UPTIMEROBOT`, `EMAIL`, `PROMETHEUS`, `UPDOWN`, `GOOGLECLOUDMONITORING`",
             "type": "string"
           }
         }
@@ -8963,7 +9205,7 @@
         "type": "string",
         "enum": [
           "NOTIFY_TEAM",
-          "NOTIFY_WORKSPACE_MEMBER",
+          "NOTIFY_TEAM_MEMBER",
           "NOTIFY_CURRENT_ON_CALL_USER",
           "NOTIFY_NEXT_ON_CALL_USER",
           "NOTIFY_ALL_ON_CALL_MEMBERS"
@@ -9232,10 +9474,10 @@
       },
       "EscalationActionType": {
         "type": "string",
-        "description": "The type of escalation action to take.\n\n- `NOTIFY_TEAM`: Notify a team via an id.\n- `NOTIFY_WORKSPACE_MEMBER`: Notify the workspace member via an id.\n- `NOTIFY_CURRENT_ON_CALL_USER`: Notify the current on call user of a schedule.\n- `NOTIFY_NEXT_ON_CALL_USER`: Notify the next on call user of a schedule.\n- `NOTIFY_ALL_ON_CALL_MEMBERS`: Notify all on call members of a schedule.",
+        "description": "The type of escalation action to take.\n\n- `NOTIFY_TEAM`: Notify a team via an id.\n- `NOTIFY_TEAM_MEMBER`: Notify the team member via an id.\n- `NOTIFY_CURRENT_ON_CALL_USER`: Notify the current on call user of a schedule.\n- `NOTIFY_NEXT_ON_CALL_USER`: Notify the next on call user of a schedule.\n- `NOTIFY_ALL_ON_CALL_MEMBERS`: Notify all on call members of a schedule.",
         "enum": [
           "NOTIFY_TEAM",
-          "NOTIFY_WORKSPACE_MEMBER",
+          "NOTIFY_TEAM_MEMBER",
           "NOTIFY_CURRENT_ON_CALL_USER",
           "NOTIFY_NEXT_ON_CALL_USER",
           "NOTIFY_ALL_ON_CALL_MEMBERS"
@@ -9444,18 +9686,18 @@
           "color": {
             "type": "string"
           },
-          "workspaceMember": {
-            "$ref": "#/components/schemas/WorkspaceMember"
+          "teamMember": {
+            "$ref": "#/components/schemas/TeamMember"
           }
         }
       },
       "ShiftMemberRequest": {
         "type": "object",
-        "required": ["workspaceMemberId", "color"],
+        "required": ["teamMemberId", "color"],
         "properties": {
-          "workspaceMemberId": {
+          "teamMemberId": {
             "type": "string",
-            "description": "The id of the workspace member to add to the on call shift."
+            "description": "The id of the team member to add to the on call shift. `workspaceMemberId` is accepted as a legacy alias."
           },
           "color": {
             "type": "string",
@@ -9463,7 +9705,7 @@
           }
         }
       },
-      "WorkspaceMember": {
+      "TeamMember": {
         "type": "object",
         "properties": {
           "id": {
@@ -9714,6 +9956,155 @@
             "type": "boolean"
           },
           "sendNewWorkspaceMembersWeeklyReportsNotifications": {
+            "type": "boolean"
+          },
+          "longRunningIncidentNotificationSettings": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "sites": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sso": {
+            "type": "boolean"
+          },
+          "organizationDomains": {
+            "type": "string",
+            "nullable": true
+          },
+          "allowDomainEmails": {
+            "type": "boolean"
+          },
+          "allowedDomainsDefaultPermission": {
+            "type": "string"
+          },
+          "ssoActive": {
+            "type": "boolean"
+          },
+          "directorySyncActive": {
+            "type": "boolean"
+          },
+          "enableMultipleOrgs": {
+            "type": "boolean"
+          },
+          "allowedDomains": {
+            "type": "string",
+            "nullable": true
+          },
+          "allowedEmailDomains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "referralId": {
+            "type": "string",
+            "nullable": true
+          },
+          "referralCoupon": {
+            "type": "string",
+            "nullable": true
+          },
+          "referralCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "sendNewTeamMembersStatusPageUpdates": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersAutomationIntegrationNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersInvalidCustomDomainNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersPhoneCallNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersWeeklyReportsNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersMonthlyProductUpdates": {
+            "type": "boolean"
+          },
+          "longRunningIncidentNotificationSettings": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "default": [0.5, 1, 2, 3, 6, 12],
+            "example": [0.5, 1, 2, 3, 6, 12]
+          },
+          "useSSOLogin": {
+            "type": "boolean"
+          },
+          "useGoogleLogin": {
+            "type": "boolean"
+          },
+          "useMagiclinkLogin": {
+            "type": "boolean"
+          },
+          "usePasswordLogin": {
+            "type": "boolean"
+          },
+          "useGithubLogin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateTeamRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "sendNewTeamMembersStatusPageUpdates": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersAutomationIntegrationNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersInvalidCustomDomainNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersPhoneCallNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersWeeklyReportsNotifications": {
             "type": "boolean"
           },
           "longRunningIncidentNotificationSettings": {
