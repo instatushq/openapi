@@ -7463,9 +7463,6 @@ components:
           nullable: true
         email:
           type: string
-        phone:
-          type: string
-          nullable: true
         avatar:
           type: string
           nullable: true
