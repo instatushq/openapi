@@ -42,6 +42,7 @@ tags:
   - name: Routing Rules
   - name: Escalation Policies
   - name: On Call Schedules
+  - name: Teams
   - name: Workspaces
 paths:
   /v2/pages:
@@ -1087,6 +1088,98 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedTemplate"
+  /v2/{page_id}/team-members:
+    get:
+      summary: Get team members
+      description: |
+        Retrieve a list of team members for a specific status page.
+        The default page number is 1.
+        The default per_page number is 50 and the maximum is 100 items per page.
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+          description: Number of items per page
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Teammate"
+    post:
+      summary: Add a team member
+      description: Add a new team member to a specific status page
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddTeammateRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeammateDetail"
+  /v2/{page_id}/team-members/{member_id}:
+    delete:
+      summary: Delete a team member
+      description: Remove a team member from a specific status page
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - in: path
+          name: member_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the team member
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  memberId:
+                    type: string
   /v1/{page_id}/team:
     get:
       summary: Get teammates
@@ -1305,6 +1398,15 @@ paths:
           schema:
             type: string
           description: Filter subscribers by email address or phone number
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - confirmed
+              - unconfirmed
+              - unapproved
+          description: Filter subscribers by subscription status
       responses:
         "200":
           description: Successful response
@@ -1493,6 +1595,15 @@ paths:
           schema:
             type: string
           description: Filter subscribers by email address or phone number
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - confirmed
+              - unconfirmed
+              - unapproved
+          description: Filter subscribers by subscription status
       responses:
         "200":
           description: Successful response
@@ -2055,6 +2166,54 @@ paths:
               schema:
                 type: object
                 properties:
+                  message:
+                    type: string
+  /monitors/{id}/state:
+    put:
+      summary: Update a Monitor's State
+      description: >-
+        Resume (`ACTIVE`), mute (`MUTED`) or pause (`PAUSED`) a monitor. A muted
+        monitor keeps running checks but sends no alerts; a paused monitor stops
+        running checks. Resuming a paused monitor schedules its checks again.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - state
+              properties:
+                state:
+                  $ref: "#/components/schemas/MonitorState"
+                forMinutes:
+                  type: integer
+                  minimum: 1
+                  maximum: 10080
+                  description: >-
+                    Only with `MUTED`. Unmutes the monitor automatically after
+                    this many minutes (up to 7 days). Leave it out to mute until
+                    you change the state again.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  state:
+                    $ref: "#/components/schemas/MonitorState"
                   message:
                     type: string
   /monitors/{id}:
@@ -3108,6 +3267,81 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetOnCallScheduleMembersResponse"
+  /v2/teams:
+    get:
+      summary: Get your teams
+      description: |-
+        Retrieve a list of your teams.
+
+        The default page number is 1.
+
+        The default per_page number is 50 and the maximum is 100 items per page.
+      tags:
+        - Teams
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+          description: Number of items per page
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+    post:
+      summary: Create a team
+      description: Create a new team
+      tags:
+        - Teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTeamRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+  /v2/teams/{team_id}:
+    delete:
+      summary: Delete a team
+      description: Delete a team
+      tags:
+        - Teams
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema:
+            type: string
+          description: The team ID
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
   /v1/workspaces:
     get:
       summary: Get your workspaces
@@ -6632,11 +6866,11 @@ components:
 
             * `AFFECTED_COMPONENTS` - The affected component of the incident
 
-            * `INCIDENT` - The incident itself, whether it be through workspace
+            * `INCIDENT` - The incident itself, whether it be through team
             member or an external integration (e.g. Datadog), You can also use
             multiple values by separating them with a comma.
 
-            **Available Options**: `WORKSPACEMEMBER`, `WEBHOOK`, `BETTERUPTIME`,
+            **Available Options**: `TEAMMEMBER`, `WEBHOOK`, `BETTERUPTIME`,
             `CHECKLY`, `DATADOG`, `DYNATRACE`, `FRESHPING`, `GRAFANA`,
             `HETRIXTOOLS`, `NEWRELIC`, `PAGERDUTY`, `PINGDOM`, `RUNSCOPE`,
             `SITE24X7`, `STATUSCAKE`, `UPTIMEROBOT`, `EMAIL`, `PROMETHEUS`,
@@ -6717,7 +6951,7 @@ components:
       type: string
       enum:
         - NOTIFY_TEAM
-        - NOTIFY_WORKSPACE_MEMBER
+        - NOTIFY_TEAM_MEMBER
         - NOTIFY_CURRENT_ON_CALL_USER
         - NOTIFY_NEXT_ON_CALL_USER
         - NOTIFY_ALL_ON_CALL_MEMBERS
@@ -6952,7 +7186,7 @@ components:
 
         - `NOTIFY_TEAM`: Notify a team via an id.
 
-        - `NOTIFY_WORKSPACE_MEMBER`: Notify the workspace member via an id.
+        - `NOTIFY_TEAM_MEMBER`: Notify the team member via an id.
 
         - `NOTIFY_CURRENT_ON_CALL_USER`: Notify the current on call user of a
         schedule.
@@ -6964,7 +7198,7 @@ components:
         schedule.
       enum:
         - NOTIFY_TEAM
-        - NOTIFY_WORKSPACE_MEMBER
+        - NOTIFY_TEAM_MEMBER
         - NOTIFY_CURRENT_ON_CALL_USER
         - NOTIFY_NEXT_ON_CALL_USER
         - NOTIFY_ALL_ON_CALL_MEMBERS
@@ -7147,24 +7381,26 @@ components:
           type: integer
         color:
           type: string
-        workspaceMember:
-          $ref: "#/components/schemas/WorkspaceMember"
+        teamMember:
+          $ref: "#/components/schemas/TeamMember"
     ShiftMemberRequest:
       type: object
       required:
-        - workspaceMemberId
+        - teamMemberId
         - color
       properties:
-        workspaceMemberId:
+        teamMemberId:
           type: string
-          description: The id of the workspace member to add to the on call shift.
+          description: >-
+            The id of the team member to add to the on call shift.
+            `workspaceMemberId` is accepted as a legacy alias.
         color:
           type: string
           description: >-
             The color of the teammate in the on call shift. This is used to
             display the teammate in the on call shift schedule in on the
             [dashboard](https://dashboard.instatus.com).
-    WorkspaceMember:
+    TeamMember:
       type: object
       properties:
         id:
@@ -7275,9 +7511,6 @@ components:
           nullable: true
         email:
           type: string
-        phone:
-          type: string
-          nullable: true
         avatar:
           type: string
           nullable: true
@@ -7391,6 +7624,108 @@ components:
         sendNewWorkspaceMembersPhoneCallNotifications:
           type: boolean
         sendNewWorkspaceMembersWeeklyReportsNotifications:
+          type: boolean
+        longRunningIncidentNotificationSettings:
+          type: array
+          items:
+            type: number
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        avatar:
+          type: string
+          nullable: true
+        sites:
+          type: array
+          items:
+            type: string
+        sso:
+          type: boolean
+        organizationDomains:
+          type: string
+          nullable: true
+        allowDomainEmails:
+          type: boolean
+        allowedDomainsDefaultPermission:
+          type: string
+        ssoActive:
+          type: boolean
+        directorySyncActive:
+          type: boolean
+        enableMultipleOrgs:
+          type: boolean
+        allowedDomains:
+          type: string
+          nullable: true
+        allowedEmailDomains:
+          type: array
+          items:
+            type: string
+        referralId:
+          type: string
+          nullable: true
+        referralCoupon:
+          type: string
+          nullable: true
+        referralCode:
+          type: string
+          nullable: true
+        sendNewTeamMembersStatusPageUpdates:
+          type: boolean
+        sendNewTeamMembersAutomationIntegrationNotifications:
+          type: boolean
+        sendNewTeamMembersInvalidCustomDomainNotifications:
+          type: boolean
+        sendNewTeamMembersPhoneCallNotifications:
+          type: boolean
+        sendNewTeamMembersWeeklyReportsNotifications:
+          type: boolean
+        sendNewTeamMembersMonthlyProductUpdates:
+          type: boolean
+        longRunningIncidentNotificationSettings:
+          type: array
+          items:
+            type: number
+          default: [0.5, 1, 2, 3, 6, 12]
+          example: [0.5, 1, 2, 3, 6, 12]
+        useSSOLogin:
+          type: boolean
+        useGoogleLogin:
+          type: boolean
+        useMagiclinkLogin:
+          type: boolean
+        usePasswordLogin:
+          type: boolean
+        useGithubLogin:
+          type: boolean
+    CreateTeamRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        sendNewTeamMembersStatusPageUpdates:
+          type: boolean
+        sendNewTeamMembersAutomationIntegrationNotifications:
+          type: boolean
+        sendNewTeamMembersInvalidCustomDomainNotifications:
+          type: boolean
+        sendNewTeamMembersPhoneCallNotifications:
+          type: boolean
+        sendNewTeamMembersWeeklyReportsNotifications:
           type: boolean
         longRunningIncidentNotificationSettings:
           type: array
