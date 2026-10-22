@@ -2168,6 +2168,54 @@ paths:
                 properties:
                   message:
                     type: string
+  /monitors/{id}/state:
+    put:
+      summary: Update a Monitor's State
+      description: >-
+        Resume (`ACTIVE`), mute (`MUTED`) or pause (`PAUSED`) a monitor. A muted
+        monitor keeps running checks but sends no alerts; a paused monitor stops
+        running checks. Resuming a paused monitor schedules its checks again.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - state
+              properties:
+                state:
+                  $ref: "#/components/schemas/MonitorState"
+                forMinutes:
+                  type: integer
+                  minimum: 1
+                  maximum: 10080
+                  description: >-
+                    Only with `MUTED`. Unmutes the monitor automatically after
+                    this many minutes (up to 7 days). Leave it out to mute until
+                    you change the state again.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  state:
+                    $ref: "#/components/schemas/MonitorState"
+                  message:
+                    type: string
   /monitors/{id}:
     put:
       summary: Update a Monitor
