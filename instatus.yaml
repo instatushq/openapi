@@ -3249,6 +3249,30 @@ paths:
       responses:
         "204":
           description: No Content
+  /{page_id}/on-call-schedules:
+    get:
+      summary: Get On-call Schedules
+      description: >-
+        Retrieve the on-call schedules of a status page, with who is on call now
+        and who is next on each.
+      tags:
+        - On Call Schedules
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          description: The ID of the status page
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OnCallScheduleSummary"
   /on-call-schedules/{id}/members:
     get:
       summary: Get On-call Schedule Members
@@ -4208,6 +4232,13 @@ components:
     UpdateComponentRequest:
       type: object
       properties:
+        groupId:
+          type: string
+          nullable: true
+          description: >-
+            The id of the group to move this component into. The group is
+            created by adding a component to it. Use `grouped: false` to take a
+            component out of its group.
         name:
           type: string
         description:
@@ -4404,6 +4435,11 @@ components:
     UpdateIncidentRequest:
       type: object
       properties:
+        shouldPublish:
+          type: boolean
+          description: >-
+            `true` publishes an unpublished incident, `false` unpublishes it.
+            Leave it out to keep the current visibility.
         name:
           type: string
         components:
@@ -4594,6 +4630,9 @@ components:
           $ref: "#/components/schemas/Translations"
     UpdateIncidentUpdateRequest:
       type: object
+      description: Leave out both components and statuses to change only the text.
+      required:
+        - message
       properties:
         message:
           type: string
@@ -4860,7 +4899,10 @@ components:
           type: string
         message:
           type: string
-          description: The message of the maintenance.
+          description: >-
+            The message of the maintenance. Only validated here: this does not
+            change the text of an existing update. Use Update Maintenance Update
+            for that.
         components:
           type: array
           description: The ids of the components that are affected by the maintenance.
@@ -4971,6 +5013,9 @@ components:
           $ref: "#/components/schemas/Translations"
     UpdateMaintenanceUpdateRequest:
       type: object
+      description: Leave out both components and statuses to change only the text.
+      required:
+        - message
       properties:
         message:
           type: string
@@ -5318,9 +5363,14 @@ components:
           type: boolean
         components:
           type: array
-          description: The ids of the components that the subscriber is subscribed to.
+          description: The components that the subscriber is subscribed to.
           items:
-            type: string
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
     AddSubscriberRequest:
       type: object
       properties:
@@ -5610,6 +5660,11 @@ components:
         - name
         - suffix
       properties:
+        active:
+          type: boolean
+          description: >-
+            Whether the metric is shown on the public status page. Off by
+            default, so a new metric stays hidden until this is set.
         name:
           type: string
           description: The name of the metric.
@@ -5622,6 +5677,9 @@ components:
     UpdateMetricRequest:
       type: object
       properties:
+        active:
+          type: boolean
+          description: Whether the metric is shown on the public status page.
         name:
           type: string
           description: The name of the metric.
@@ -5987,6 +6045,8 @@ components:
         - pageId
         - url
         - httpMethod
+        - assertions
+        - locations
       properties:
         pageId:
           type: string
@@ -7514,6 +7574,23 @@ components:
         avatar:
           type: string
           nullable: true
+    OnCallScheduleSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        currentMembers:
+          type: array
+          description: Who is on call right now.
+          items:
+            type: object
+        nextMembers:
+          type: array
+          description: Who is on call next.
+          items:
+            type: object
     GetOnCallScheduleMembersResponse:
       type: object
       properties:

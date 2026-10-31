@@ -4922,6 +4922,39 @@
           }
         }
       }
+    },
+    "/{page_id}/on-call-schedules": {
+      "get": {
+        "summary": "Get On-call Schedules",
+        "description": "Retrieve the on-call schedules of a status page, with who is on call now and who is next on each.",
+        "tags": ["On Call Schedules"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "description": "The ID of the status page",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OnCallScheduleSummary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -5891,6 +5924,11 @@
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The id of the group to move this component into. The group is created by adding a component to it. Use `grouped: false` to take a component out of its group."
           }
         }
       },
@@ -6131,6 +6169,10 @@
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
+          },
+          "shouldPublish": {
+            "type": "boolean",
+            "description": "`true` publishes an unpublished incident, `false` unpublishes it. Leave it out to keep the current visibility."
           }
         }
       },
@@ -6383,7 +6425,9 @@
           "translations": {
             "$ref": "#/components/schemas/Translations"
           }
-        }
+        },
+        "required": ["message"],
+        "description": "Leave out both components and statuses to change only the text."
       },
       "IncidentUpdateWithTemplate": {
         "type": "object",
@@ -6655,7 +6699,7 @@
           },
           "message": {
             "type": "string",
-            "description": "The message of the maintenance."
+            "description": "The message of the maintenance. Only validated here: this does not change the text of an existing update. Use Update Maintenance Update for that."
           },
           "components": {
             "type": "array",
@@ -6826,7 +6870,9 @@
           "translations": {
             "$ref": "#/components/schemas/Translations"
           }
-        }
+        },
+        "required": ["message"],
+        "description": "Leave out both components and statuses to change only the text."
       },
       "Template": {
         "type": "object",
@@ -7222,9 +7268,17 @@
           },
           "components": {
             "type": "array",
-            "description": "The ids of the components that the subscriber is subscribed to.",
+            "description": "The components that the subscriber is subscribed to.",
             "items": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
             }
           }
         }
@@ -7597,6 +7651,10 @@
           "suffix": {
             "type": "string",
             "description": "The suffix of the metric. This is used to display the metric value in the format of `value suffix` e.g. `100ms` where `ms` is the suffix."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the metric is shown on the public status page. Off by default, so a new metric stays hidden until this is set."
           }
         }
       },
@@ -7610,6 +7668,10 @@
           "suffix": {
             "type": "string",
             "description": "The suffix of the metric. This is used to display the metric value in the format of `value suffix` e.g. `100ms` where `ms` is the suffix."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the metric is shown on the public status page."
           }
         }
       },
@@ -8103,7 +8165,7 @@
       },
       "CreateMonitorRequest": {
         "type": "object",
-        "required": ["pageId", "url", "httpMethod"],
+        "required": ["pageId", "url", "httpMethod", "assertions", "locations"],
         "properties": {
           "pageId": {
             "type": "string",
@@ -10169,6 +10231,31 @@
             "type": "array",
             "items": {
               "type": "number"
+            }
+          }
+        }
+      },
+      "OnCallScheduleSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "currentMembers": {
+            "type": "array",
+            "description": "Who is on call right now.",
+            "items": {
+              "type": "object"
+            }
+          },
+          "nextMembers": {
+            "type": "array",
+            "description": "Who is on call next.",
+            "items": {
+              "type": "object"
             }
           }
         }
