@@ -71,7 +71,16 @@
       "name": "On Call Schedules"
     },
     {
+      "name": "Teams"
+    },
+    {
       "name": "Workspaces"
+    },
+    {
+      "name": "General Notices"
+    },
+    {
+      "name": "Outages"
     }
   ],
   "paths": {
@@ -1598,6 +1607,140 @@
         }
       }
     },
+    "/v2/{page_id}/team-members": {
+      "get": {
+        "summary": "Get team members",
+        "description": "Retrieve a list of team members for a specific status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Teammate"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a team member",
+        "description": "Add a new team member to a specific status page",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddTeammateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeammateDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/{page_id}/team-members/{member_id}": {
+      "delete": {
+        "summary": "Delete a team member",
+        "description": "Remove a team member from a specific status page",
+        "tags": ["Teammates"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "member_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the team member"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "memberId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/{page_id}/team": {
       "get": {
         "summary": "Get teammates",
@@ -1907,6 +2050,15 @@
               "type": "string"
             },
             "description": "Filter subscribers by email address or phone number"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["confirmed", "unconfirmed", "unapproved"]
+            },
+            "description": "Filter subscribers by subscription status"
           }
         ],
         "responses": {
@@ -2175,6 +2327,15 @@
               "type": "string"
             },
             "description": "Filter subscribers by email address or phone number"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["confirmed", "unconfirmed", "unapproved"]
+            },
+            "description": "Filter subscribers by subscription status"
           }
         ],
         "responses": {
@@ -2990,6 +3151,68 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monitors/{id}/state": {
+      "put": {
+        "summary": "Update a Monitor's State",
+        "description": "Resume (`ACTIVE`), mute (`MUTED`) or pause (`PAUSED`) a monitor. A muted monitor keeps running checks but sends no alerts; a paused monitor stops running checks. Resuming a paused monitor schedules its checks again.",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["state"],
+                "properties": {
+                  "state": {
+                    "$ref": "#/components/schemas/MonitorState"
+                  },
+                  "forMinutes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10080,
+                    "description": "Only with `MUTED`. Unmutes the monitor automatically after this many minutes (up to 7 days). Leave it out to mute until you change the state again."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "$ref": "#/components/schemas/MonitorState"
+                    },
                     "message": {
                       "type": "string"
                     }
@@ -4496,6 +4719,111 @@
         }
       }
     },
+    "/v2/teams": {
+      "get": {
+        "summary": "Get your teams",
+        "description": "Retrieve a list of your teams.\n\nThe default page number is 1.\n\nThe default per_page number is 50 and the maximum is 100 items per page.",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Team"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a team",
+        "description": "Create a new team",
+        "tags": ["Teams"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Team"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/teams/{team_id}": {
+      "delete": {
+        "summary": "Delete a team",
+        "description": "Delete a team",
+        "tags": ["Teams"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "team_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The team ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/workspaces": {
       "get": {
         "summary": "Get your workspaces",
@@ -4594,6 +4922,576 @@
                       "type": "string"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{page_id}/on-call-schedules": {
+      "get": {
+        "summary": "Get On-call Schedules",
+        "description": "Retrieve the on-call schedules of a status page, with who is on call now and who is next on each.",
+        "tags": ["On Call Schedules"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "description": "The ID of the status page",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OnCallScheduleSummary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monitors/{id}/logs": {
+      "get": {
+        "summary": "Get monitor check results",
+        "description": "Retrieve the check results of a monitor, newest first, from the last year.\nThe default limit is 100 and the maximum is 1000.\n",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the monitor"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "maximum": 1000
+            },
+            "description": "Number of results per page"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Only results at or after this time (ISO 8601). At most a year back."
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Only results at or before this time (ISO 8601)."
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["UP", "DOWN", "DEGRADED", "UNKNOWN"]
+            },
+            "description": "Only results with this status."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "logs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MonitorLog"
+                      }
+                    },
+                    "page": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monitors/{id}/summary": {
+      "get": {
+        "summary": "Get monitor uptime",
+        "description": "Retrieve availability and response times of a monitor over a range, with a daily breakdown.\nThe range defaults to the last 30 days and can be at most 395 days.\n",
+        "tags": ["Monitors"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the monitor"
+          },
+          {
+            "in": "query",
+            "name": "start",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Start of the range (ISO 8601). Defaults to 30 days before end."
+          },
+          {
+            "in": "query",
+            "name": "end",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "End of the range (ISO 8601). Defaults to now."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonitorUptime"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{page_id}/incidents/{incident_id}/responders": {
+      "get": {
+        "summary": "Get incident responders",
+        "description": "Retrieve who was paged for an incident and who has acknowledged it.",
+        "tags": ["Incidents"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the incident"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentResponders"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{page_id}/incidents/{incident_id}/acknowledge": {
+      "post": {
+        "summary": "Acknowledge an incident",
+        "description": "Acknowledge an incident as the API key's user. The first acknowledgement stops the escalation policy and makes that person the incident lead if there is none.",
+        "tags": ["Incidents"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "incident_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the incident"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/IncidentResponders"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "alreadyAcknowledged": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{page_id}/generic-notices": {
+      "get": {
+        "summary": "Get all general notices",
+        "description": "Retrieve the general notices of a status page.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
+        "tags": ["General Notices"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GenericNotice"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a general notice",
+        "description": "Show a general notice on a status page.",
+        "tags": ["General Notices"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGenericNoticeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericNotice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{page_id}/generic-notices/{generic_notice_id}": {
+      "get": {
+        "summary": "Get a general notice",
+        "tags": ["General Notices"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "generic_notice_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the general notice"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericNotice"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a general notice",
+        "description": "Only the fields you send are updated.",
+        "tags": ["General Notices"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "generic_notice_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the general notice"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGenericNoticeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericNotice"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a general notice",
+        "description": "Remove a general notice from the status page.",
+        "tags": ["General Notices"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "generic_notice_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the general notice"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericNotice"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{page_id}/outages": {
+      "get": {
+        "summary": "Get all outages",
+        "description": "Retrieve the periods when components of a status page were not operational, newest first.\nThe default page number is 1.\nThe default per_page number is 50 and the maximum is 100 items per page.\n",
+        "tags": ["Outages"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            },
+            "description": "Number of items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Outage"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{page_id}/outages/{outage_id}": {
+      "get": {
+        "summary": "Get an outage",
+        "tags": ["Outages"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "path",
+            "name": "outage_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the outage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Outage"
                 }
               }
             }
@@ -5569,6 +6467,11 @@
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true,
+            "description": "The id of the group to move this component into. The group is created by adding a component to it. Use `grouped: false` to take a component out of its group."
           }
         }
       },
@@ -5809,6 +6712,10 @@
           },
           "translations": {
             "$ref": "#/components/schemas/Translations"
+          },
+          "shouldPublish": {
+            "type": "boolean",
+            "description": "`true` publishes an unpublished incident, `false` unpublishes it. Leave it out to keep the current visibility."
           }
         }
       },
@@ -6061,7 +6968,9 @@
           "translations": {
             "$ref": "#/components/schemas/Translations"
           }
-        }
+        },
+        "required": ["message"],
+        "description": "Leave out both components and statuses to change only the text."
       },
       "IncidentUpdateWithTemplate": {
         "type": "object",
@@ -6333,7 +7242,7 @@
           },
           "message": {
             "type": "string",
-            "description": "The message of the maintenance."
+            "description": "The message of the maintenance. Only validated here: this does not change the text of an existing update. Use Update Maintenance Update for that."
           },
           "components": {
             "type": "array",
@@ -6504,7 +7413,9 @@
           "translations": {
             "$ref": "#/components/schemas/Translations"
           }
-        }
+        },
+        "required": ["message"],
+        "description": "Leave out both components and statuses to change only the text."
       },
       "Template": {
         "type": "object",
@@ -6900,9 +7811,17 @@
           },
           "components": {
             "type": "array",
-            "description": "The ids of the components that the subscriber is subscribed to.",
+            "description": "The components that the subscriber is subscribed to.",
             "items": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
             }
           }
         }
@@ -7275,6 +8194,10 @@
           "suffix": {
             "type": "string",
             "description": "The suffix of the metric. This is used to display the metric value in the format of `value suffix` e.g. `100ms` where `ms` is the suffix."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the metric is shown on the public status page. Off by default, so a new metric stays hidden until this is set."
           }
         }
       },
@@ -7288,6 +8211,10 @@
           "suffix": {
             "type": "string",
             "description": "The suffix of the metric. This is used to display the metric value in the format of `value suffix` e.g. `100ms` where `ms` is the suffix."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether the metric is shown on the public status page."
           }
         }
       },
@@ -7393,6 +8320,12 @@
             "items": {
               "$ref": "#/components/schemas/PublicMaintenance"
             }
+          },
+          "generalNotices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicGeneralNotice"
+            }
           }
         }
       },
@@ -7457,6 +8390,33 @@
           "url": {
             "type": "string",
             "format": "uri"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PublicGeneralNotice": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Plain text, without formatting."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           },
           "updatedAt": {
             "type": "string",
@@ -7781,7 +8741,7 @@
       },
       "CreateMonitorRequest": {
         "type": "object",
-        "required": ["pageId", "url", "httpMethod"],
+        "required": ["pageId", "url", "httpMethod", "assertions", "locations"],
         "properties": {
           "pageId": {
             "type": "string",
@@ -8842,7 +9802,7 @@
             "$ref": "#/components/schemas/ComparisonType"
           },
           "value": {
-            "description": "The value to compare the assertion to depending on the `type` of the assertion.\n* `IMPACT` - should be an impact level (e.g. `OPERATIONAL`, `UNDERMAINTENANCE`, `DEGRADEDPERFORMANCE`, `PARTIALOUTAGE`, `MAJOROUTAGE`)\n* `TITLE` - The title of the incident\n* `DESCRIPTION` - The description of the incident\n* `AFFECTED_COMPONENTS` - The affected component of the incident\n* `INCIDENT` - The incident itself, whether it be through workspace member or an external integration (e.g. Datadog), You can also use multiple values by separating them with a comma.\n**Available Options**: `WORKSPACEMEMBER`, `WEBHOOK`, `BETTERUPTIME`, `CHECKLY`, `DATADOG`, `DYNATRACE`, `FRESHPING`, `GRAFANA`, `HETRIXTOOLS`, `NEWRELIC`, `PAGERDUTY`, `PINGDOM`, `RUNSCOPE`, `SITE24X7`, `STATUSCAKE`, `UPTIMEROBOT`, `EMAIL`, `PROMETHEUS`, `UPDOWN`, `GOOGLECLOUDMONITORING`",
+            "description": "The value to compare the assertion to depending on the `type` of the assertion.\n* `IMPACT` - should be an impact level (e.g. `OPERATIONAL`, `UNDERMAINTENANCE`, `DEGRADEDPERFORMANCE`, `PARTIALOUTAGE`, `MAJOROUTAGE`)\n* `TITLE` - The title of the incident\n* `DESCRIPTION` - The description of the incident\n* `AFFECTED_COMPONENTS` - The affected component of the incident\n* `INCIDENT` - The incident itself, whether it be through team member or an external integration (e.g. Datadog), You can also use multiple values by separating them with a comma.\n**Available Options**: `TEAMMEMBER`, `WEBHOOK`, `BETTERUPTIME`, `CHECKLY`, `DATADOG`, `DYNATRACE`, `FRESHPING`, `GRAFANA`, `HETRIXTOOLS`, `NEWRELIC`, `PAGERDUTY`, `PINGDOM`, `RUNSCOPE`, `SITE24X7`, `STATUSCAKE`, `UPTIMEROBOT`, `EMAIL`, `PROMETHEUS`, `UPDOWN`, `GOOGLECLOUDMONITORING`",
             "type": "string"
           }
         }
@@ -8945,7 +9905,7 @@
         "type": "string",
         "enum": [
           "NOTIFY_TEAM",
-          "NOTIFY_WORKSPACE_MEMBER",
+          "NOTIFY_TEAM_MEMBER",
           "NOTIFY_CURRENT_ON_CALL_USER",
           "NOTIFY_NEXT_ON_CALL_USER",
           "NOTIFY_ALL_ON_CALL_MEMBERS"
@@ -9214,10 +10174,10 @@
       },
       "EscalationActionType": {
         "type": "string",
-        "description": "The type of escalation action to take.\n\n- `NOTIFY_TEAM`: Notify a team via an id.\n- `NOTIFY_WORKSPACE_MEMBER`: Notify the workspace member via an id.\n- `NOTIFY_CURRENT_ON_CALL_USER`: Notify the current on call user of a schedule.\n- `NOTIFY_NEXT_ON_CALL_USER`: Notify the next on call user of a schedule.\n- `NOTIFY_ALL_ON_CALL_MEMBERS`: Notify all on call members of a schedule.",
+        "description": "The type of escalation action to take.\n\n- `NOTIFY_TEAM`: Notify a team via an id.\n- `NOTIFY_TEAM_MEMBER`: Notify the team member via an id.\n- `NOTIFY_CURRENT_ON_CALL_USER`: Notify the current on call user of a schedule.\n- `NOTIFY_NEXT_ON_CALL_USER`: Notify the next on call user of a schedule.\n- `NOTIFY_ALL_ON_CALL_MEMBERS`: Notify all on call members of a schedule.",
         "enum": [
           "NOTIFY_TEAM",
-          "NOTIFY_WORKSPACE_MEMBER",
+          "NOTIFY_TEAM_MEMBER",
           "NOTIFY_CURRENT_ON_CALL_USER",
           "NOTIFY_NEXT_ON_CALL_USER",
           "NOTIFY_ALL_ON_CALL_MEMBERS"
@@ -9426,18 +10386,18 @@
           "color": {
             "type": "string"
           },
-          "workspaceMember": {
-            "$ref": "#/components/schemas/WorkspaceMember"
+          "teamMember": {
+            "$ref": "#/components/schemas/TeamMember"
           }
         }
       },
       "ShiftMemberRequest": {
         "type": "object",
-        "required": ["workspaceMemberId", "color"],
+        "required": ["teamMemberId", "color"],
         "properties": {
-          "workspaceMemberId": {
+          "teamMemberId": {
             "type": "string",
-            "description": "The id of the workspace member to add to the on call shift."
+            "description": "The id of the team member to add to the on call shift. `workspaceMemberId` is accepted as a legacy alias."
           },
           "color": {
             "type": "string",
@@ -9445,7 +10405,7 @@
           }
         }
       },
-      "WorkspaceMember": {
+      "TeamMember": {
         "type": "object",
         "properties": {
           "id": {
@@ -9526,10 +10486,6 @@
           },
           "email": {
             "type": "string"
-          },
-          "phone": {
-            "type": "string",
-            "nullable": true
           },
           "avatar": {
             "type": "string",
@@ -9702,6 +10658,552 @@
             "type": "array",
             "items": {
               "type": "number"
+            }
+          }
+        }
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true
+          },
+          "sites": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sso": {
+            "type": "boolean"
+          },
+          "organizationDomains": {
+            "type": "string",
+            "nullable": true
+          },
+          "allowDomainEmails": {
+            "type": "boolean"
+          },
+          "allowedDomainsDefaultPermission": {
+            "type": "string"
+          },
+          "ssoActive": {
+            "type": "boolean"
+          },
+          "directorySyncActive": {
+            "type": "boolean"
+          },
+          "enableMultipleOrgs": {
+            "type": "boolean"
+          },
+          "allowedDomains": {
+            "type": "string",
+            "nullable": true
+          },
+          "allowedEmailDomains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "referralId": {
+            "type": "string",
+            "nullable": true
+          },
+          "referralCoupon": {
+            "type": "string",
+            "nullable": true
+          },
+          "referralCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "sendNewTeamMembersStatusPageUpdates": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersAutomationIntegrationNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersInvalidCustomDomainNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersPhoneCallNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersWeeklyReportsNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersMonthlyProductUpdates": {
+            "type": "boolean"
+          },
+          "longRunningIncidentNotificationSettings": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "default": [0.5, 1, 2, 3, 6, 12],
+            "example": [0.5, 1, 2, 3, 6, 12]
+          },
+          "useSSOLogin": {
+            "type": "boolean"
+          },
+          "useGoogleLogin": {
+            "type": "boolean"
+          },
+          "useMagiclinkLogin": {
+            "type": "boolean"
+          },
+          "usePasswordLogin": {
+            "type": "boolean"
+          },
+          "useGithubLogin": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateTeamRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "sendNewTeamMembersStatusPageUpdates": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersAutomationIntegrationNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersInvalidCustomDomainNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersPhoneCallNotifications": {
+            "type": "boolean"
+          },
+          "sendNewTeamMembersWeeklyReportsNotifications": {
+            "type": "boolean"
+          },
+          "longRunningIncidentNotificationSettings": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "OnCallScheduleSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "currentMembers": {
+            "type": "array",
+            "description": "Who is on call right now.",
+            "items": {
+              "type": "object"
+            }
+          },
+          "nextMembers": {
+            "type": "array",
+            "description": "Who is on call next.",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "MonitorUptimeDay": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "availability": {
+            "type": "number",
+            "description": "Percentage of successful checks that day"
+          },
+          "checks": {
+            "type": "integer"
+          },
+          "failedChecks": {
+            "type": "integer"
+          },
+          "avgResponseTime": {
+            "type": "integer",
+            "description": "Milliseconds"
+          },
+          "partial": {
+            "type": "boolean",
+            "description": "true when the range starts or ends during this day, so it only counts the checks inside the range"
+          }
+        }
+      },
+      "MonitorUptime": {
+        "type": "object",
+        "properties": {
+          "monitorId": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start of the measured range. Past five days it is widened to whole days."
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End of the measured range. Past five days an end at midnight stops the day before."
+          },
+          "firstCheckDay": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "First day the monitor has any checks for, so a range starting earlier is not fully covered"
+          },
+          "availability": {
+            "type": "number",
+            "nullable": true,
+            "description": "Percentage of successful checks in the range; null when there were no checks"
+          },
+          "checks": {
+            "type": "integer"
+          },
+          "failedChecks": {
+            "type": "integer"
+          },
+          "downtimeSeconds": {
+            "type": "integer",
+            "description": "Failed checks multiplied by the check interval"
+          },
+          "avgResponseTime": {
+            "type": "integer",
+            "description": "Milliseconds"
+          },
+          "response95": {
+            "type": "integer",
+            "nullable": true,
+            "description": "95th percentile response time in milliseconds, for ranges of five days or less"
+          },
+          "avgDailyResponse95": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Average of the daily 95th percentile response times, for ranges over five days, where only daily figures are stored"
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonitorUptimeDay"
+            },
+            "description": "One entry per day that had checks"
+          }
+        }
+      },
+      "IncidentResponder": {
+        "type": "object",
+        "properties": {
+          "teamMemberId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACKNOWLEDGED", "NOT_ACKNOWLEDGED", "DECLINED"]
+          },
+          "acknowledgedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "declinedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "IncidentResponders": {
+        "type": "object",
+        "properties": {
+          "incidentId": {
+            "type": "string"
+          },
+          "paged": {
+            "type": "boolean",
+            "description": "Whether on-call paged anyone for this incident"
+          },
+          "acknowledged": {
+            "type": "boolean",
+            "description": "Whether anyone has acknowledged the page"
+          },
+          "lead": {
+            "type": "object",
+            "nullable": true,
+            "description": "The incident lead",
+            "properties": {
+              "teamMemberId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "email": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          },
+          "pages": {
+            "type": "array",
+            "description": "Who on-call paged, and when",
+            "items": {
+              "type": "object",
+              "properties": {
+                "teamMemberId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "email": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "pagedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          "responders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncidentResponder"
+            }
+          }
+        }
+      },
+      "GenericNotice": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "messageHtml": {
+            "type": "string"
+          },
+          "notify": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isCollapsed": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "siteId": {
+            "type": "string"
+          },
+          "translations": {
+            "type": "object",
+            "description": "Translations for name and message, keyed by language code",
+            "properties": {
+              "name": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "message": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateGenericNoticeRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The title of the notice"
+          },
+          "message": {
+            "type": "string",
+            "description": "The body of the notice. HTML is supported."
+          },
+          "notify": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether to notify subscribers"
+          },
+          "isCollapsed": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the notice is collapsed by default"
+          },
+          "translations": {
+            "type": "object",
+            "description": "Translations for name and message, keyed by language code",
+            "properties": {
+              "name": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "message": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UpdateGenericNoticeRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "notify": {
+            "type": "boolean"
+          },
+          "isCollapsed": {
+            "type": "boolean"
+          },
+          "translations": {
+            "type": "object",
+            "description": "Translations for name and message, keyed by language code",
+            "properties": {
+              "name": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "message": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Outage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "null while the outage is ongoing"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ComponentStatus"
+          },
+          "visibilityState": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "component": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "incident": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "createdByType": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              }
             }
           }
         }

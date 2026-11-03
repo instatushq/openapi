@@ -42,7 +42,10 @@ tags:
   - name: Routing Rules
   - name: Escalation Policies
   - name: On Call Schedules
+  - name: Teams
   - name: Workspaces
+  - name: General Notices
+  - name: Outages
 paths:
   /v2/pages:
     get:
@@ -1087,6 +1090,98 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletedTemplate"
+  /v2/{page_id}/team-members:
+    get:
+      summary: Get team members
+      description: |
+        Retrieve a list of team members for a specific status page.
+        The default page number is 1.
+        The default per_page number is 50 and the maximum is 100 items per page.
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+          description: Number of items per page
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Teammate"
+    post:
+      summary: Add a team member
+      description: Add a new team member to a specific status page
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddTeammateRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeammateDetail"
+  /v2/{page_id}/team-members/{member_id}:
+    delete:
+      summary: Delete a team member
+      description: Remove a team member from a specific status page
+      tags:
+        - Teammates
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - in: path
+          name: member_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the team member
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  memberId:
+                    type: string
   /v1/{page_id}/team:
     get:
       summary: Get teammates
@@ -1305,6 +1400,15 @@ paths:
           schema:
             type: string
           description: Filter subscribers by email address or phone number
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - confirmed
+              - unconfirmed
+              - unapproved
+          description: Filter subscribers by subscription status
       responses:
         "200":
           description: Successful response
@@ -1493,6 +1597,15 @@ paths:
           schema:
             type: string
           description: Filter subscribers by email address or phone number
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - confirmed
+              - unconfirmed
+              - unapproved
+          description: Filter subscribers by subscription status
       responses:
         "200":
           description: Successful response
@@ -2055,6 +2168,54 @@ paths:
               schema:
                 type: object
                 properties:
+                  message:
+                    type: string
+  /monitors/{id}/state:
+    put:
+      summary: Update a Monitor's State
+      description: >-
+        Resume (`ACTIVE`), mute (`MUTED`) or pause (`PAUSED`) a monitor. A muted
+        monitor keeps running checks but sends no alerts; a paused monitor stops
+        running checks. Resuming a paused monitor schedules its checks again.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - state
+              properties:
+                state:
+                  $ref: "#/components/schemas/MonitorState"
+                forMinutes:
+                  type: integer
+                  minimum: 1
+                  maximum: 10080
+                  description: >-
+                    Only with `MUTED`. Unmutes the monitor automatically after
+                    this many minutes (up to 7 days). Leave it out to mute until
+                    you change the state again.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  state:
+                    $ref: "#/components/schemas/MonitorState"
                   message:
                     type: string
   /monitors/{id}:
@@ -3090,6 +3251,30 @@ paths:
       responses:
         "204":
           description: No Content
+  /{page_id}/on-call-schedules:
+    get:
+      summary: Get On-call Schedules
+      description: >-
+        Retrieve the on-call schedules of a status page, with who is on call now
+        and who is next on each.
+      tags:
+        - On Call Schedules
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          description: The ID of the status page
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OnCallScheduleSummary"
   /on-call-schedules/{id}/members:
     get:
       summary: Get On-call Schedule Members
@@ -3108,6 +3293,81 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetOnCallScheduleMembersResponse"
+  /v2/teams:
+    get:
+      summary: Get your teams
+      description: |-
+        Retrieve a list of your teams.
+
+        The default page number is 1.
+
+        The default per_page number is 50 and the maximum is 100 items per page.
+      tags:
+        - Teams
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+          description: Number of items per page
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+    post:
+      summary: Create a team
+      description: Create a new team
+      tags:
+        - Teams
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTeamRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+  /v2/teams/{team_id}:
+    delete:
+      summary: Delete a team
+      description: Delete a team
+      tags:
+        - Teams
+      parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema:
+            type: string
+          description: The team ID
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
   /v1/workspaces:
     get:
       summary: Get your workspaces
@@ -3183,6 +3443,313 @@ paths:
                 properties:
                   id:
                     type: string
+  /monitors/{id}/logs:
+    get:
+      summary: Get monitor check results
+      description: |
+        Retrieve the check results of a monitor, newest first, from the last year.
+        The default limit is 100 and the maximum is 1000.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the monitor
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 100
+            maximum: 1000
+          description: Number of results per page
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - in: query
+          name: from
+          schema:
+            type: string
+            format: date-time
+          description: Only results at or after this time (ISO 8601). At most a year back.
+        - in: query
+          name: to
+          schema:
+            type: string
+            format: date-time
+          description: Only results at or before this time (ISO 8601).
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - UP
+              - DOWN
+              - DEGRADED
+              - UNKNOWN
+          description: Only results with this status.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logs:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MonitorLog"
+                  page:
+                    type: integer
+  /monitors/{id}/summary:
+    get:
+      summary: Get monitor uptime
+      description: |
+        Retrieve availability and response times of a monitor over a range, with a daily breakdown.
+        The range defaults to the last 30 days and can be at most 395 days.
+      tags:
+        - Monitors
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The ID of the monitor
+        - in: query
+          name: start
+          schema:
+            type: string
+            format: date-time
+          description: Start of the range (ISO 8601). Defaults to 30 days before end.
+        - in: query
+          name: end
+          schema:
+            type: string
+            format: date-time
+          description: End of the range (ISO 8601). Defaults to now.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonitorUptime"
+        "400":
+          description: Invalid range
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /v1/{page_id}/incidents/{incident_id}/responders:
+    get:
+      summary: Get incident responders
+      description: Retrieve who was paged for an incident and who has acknowledged it.
+      tags:
+        - Incidents
+      parameters:
+        - &a1
+          in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - &a2
+          in: path
+          name: incident_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the incident
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IncidentResponders"
+  /v1/{page_id}/incidents/{incident_id}/acknowledge:
+    post:
+      summary: Acknowledge an incident
+      description: Acknowledge an incident as the API key's user. The first acknowledgement stops the escalation policy and makes that person the incident lead if there is none.
+      tags:
+        - Incidents
+      parameters:
+        - *a1
+        - *a2
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/IncidentResponders"
+                  - type: object
+                    properties:
+                      alreadyAcknowledged:
+                        type: boolean
+  /v1/{page_id}/generic-notices:
+    get:
+      summary: Get all general notices
+      description: |
+        Retrieve the general notices of a status page.
+        The default page number is 1.
+        The default per_page number is 50 and the maximum is 100 items per page.
+      tags:
+        - General Notices
+      parameters:
+        - *a1
+        - &a4
+          in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number for pagination
+        - &a5
+          in: query
+          name: per_page
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+          description: Number of items per page
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GenericNotice"
+    post:
+      summary: Add a general notice
+      description: Show a general notice on a status page.
+      tags:
+        - General Notices
+      parameters:
+        - *a1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGenericNoticeRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericNotice"
+  /v1/{page_id}/generic-notices/{generic_notice_id}:
+    get:
+      summary: Get a general notice
+      tags:
+        - General Notices
+      parameters:
+        - *a1
+        - &a3
+          in: path
+          name: generic_notice_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the general notice
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericNotice"
+    put:
+      summary: Update a general notice
+      description: Only the fields you send are updated.
+      tags:
+        - General Notices
+      parameters:
+        - *a1
+        - *a3
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGenericNoticeRequest"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericNotice"
+    delete:
+      summary: Delete a general notice
+      description: Remove a general notice from the status page.
+      tags:
+        - General Notices
+      parameters:
+        - *a1
+        - *a3
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenericNotice"
+  /v1/{page_id}/outages:
+    get:
+      summary: Get all outages
+      description: |
+        Retrieve the periods when components of a status page were not operational, newest first.
+        The default page number is 1.
+        The default per_page number is 50 and the maximum is 100 items per page.
+      tags:
+        - Outages
+      parameters:
+        - *a1
+        - *a4
+        - *a5
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Outage"
+  /v1/{page_id}/outages/{outage_id}:
+    get:
+      summary: Get an outage
+      tags:
+        - Outages
+      parameters:
+        - *a1
+        - in: path
+          name: outage_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the outage
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Outage"
 components:
   securitySchemes:
     bearerAuth:
@@ -3974,6 +4541,13 @@ components:
     UpdateComponentRequest:
       type: object
       properties:
+        groupId:
+          type: string
+          nullable: true
+          description: >-
+            The id of the group to move this component into. The group is
+            created by adding a component to it. Use `grouped: false` to take a
+            component out of its group.
         name:
           type: string
         description:
@@ -4170,6 +4744,11 @@ components:
     UpdateIncidentRequest:
       type: object
       properties:
+        shouldPublish:
+          type: boolean
+          description: >-
+            `true` publishes an unpublished incident, `false` unpublishes it.
+            Leave it out to keep the current visibility.
         name:
           type: string
         components:
@@ -4360,6 +4939,9 @@ components:
           $ref: "#/components/schemas/Translations"
     UpdateIncidentUpdateRequest:
       type: object
+      description: Leave out both components and statuses to change only the text.
+      required:
+        - message
       properties:
         message:
           type: string
@@ -4626,7 +5208,10 @@ components:
           type: string
         message:
           type: string
-          description: The message of the maintenance.
+          description: >-
+            The message of the maintenance. Only validated here: this does not
+            change the text of an existing update. Use Update Maintenance Update
+            for that.
         components:
           type: array
           description: The ids of the components that are affected by the maintenance.
@@ -4737,6 +5322,9 @@ components:
           $ref: "#/components/schemas/Translations"
     UpdateMaintenanceUpdateRequest:
       type: object
+      description: Leave out both components and statuses to change only the text.
+      required:
+        - message
       properties:
         message:
           type: string
@@ -5084,9 +5672,14 @@ components:
           type: boolean
         components:
           type: array
-          description: The ids of the components that the subscriber is subscribed to.
+          description: The components that the subscriber is subscribed to.
           items:
-            type: string
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
     AddSubscriberRequest:
       type: object
       properties:
@@ -5376,6 +5969,11 @@ components:
         - name
         - suffix
       properties:
+        active:
+          type: boolean
+          description: >-
+            Whether the metric is shown on the public status page. Off by
+            default, so a new metric stays hidden until this is set.
         name:
           type: string
           description: The name of the metric.
@@ -5388,6 +5986,9 @@ components:
     UpdateMetricRequest:
       type: object
       properties:
+        active:
+          type: boolean
+          description: Whether the metric is shown on the public status page.
         name:
           type: string
           description: The name of the metric.
@@ -5471,6 +6072,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PublicMaintenance"
+        generalNotices:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicGeneralNotice"
     PublicPageInfo:
       type: object
       properties:
@@ -5521,6 +6126,25 @@ components:
         url:
           type: string
           format: uri
+        updatedAt:
+          type: string
+          format: date-time
+    PublicGeneralNotice:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+          description: Plain text, without formatting.
+        url:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
         updatedAt:
           type: string
           format: date-time
@@ -5753,6 +6377,8 @@ components:
         - pageId
         - url
         - httpMethod
+        - assertions
+        - locations
       properties:
         pageId:
           type: string
@@ -6632,11 +7258,11 @@ components:
 
             * `AFFECTED_COMPONENTS` - The affected component of the incident
 
-            * `INCIDENT` - The incident itself, whether it be through workspace
+            * `INCIDENT` - The incident itself, whether it be through team
             member or an external integration (e.g. Datadog), You can also use
             multiple values by separating them with a comma.
 
-            **Available Options**: `WORKSPACEMEMBER`, `WEBHOOK`, `BETTERUPTIME`,
+            **Available Options**: `TEAMMEMBER`, `WEBHOOK`, `BETTERUPTIME`,
             `CHECKLY`, `DATADOG`, `DYNATRACE`, `FRESHPING`, `GRAFANA`,
             `HETRIXTOOLS`, `NEWRELIC`, `PAGERDUTY`, `PINGDOM`, `RUNSCOPE`,
             `SITE24X7`, `STATUSCAKE`, `UPTIMEROBOT`, `EMAIL`, `PROMETHEUS`,
@@ -6717,7 +7343,7 @@ components:
       type: string
       enum:
         - NOTIFY_TEAM
-        - NOTIFY_WORKSPACE_MEMBER
+        - NOTIFY_TEAM_MEMBER
         - NOTIFY_CURRENT_ON_CALL_USER
         - NOTIFY_NEXT_ON_CALL_USER
         - NOTIFY_ALL_ON_CALL_MEMBERS
@@ -6952,7 +7578,7 @@ components:
 
         - `NOTIFY_TEAM`: Notify a team via an id.
 
-        - `NOTIFY_WORKSPACE_MEMBER`: Notify the workspace member via an id.
+        - `NOTIFY_TEAM_MEMBER`: Notify the team member via an id.
 
         - `NOTIFY_CURRENT_ON_CALL_USER`: Notify the current on call user of a
         schedule.
@@ -6964,7 +7590,7 @@ components:
         schedule.
       enum:
         - NOTIFY_TEAM
-        - NOTIFY_WORKSPACE_MEMBER
+        - NOTIFY_TEAM_MEMBER
         - NOTIFY_CURRENT_ON_CALL_USER
         - NOTIFY_NEXT_ON_CALL_USER
         - NOTIFY_ALL_ON_CALL_MEMBERS
@@ -7147,24 +7773,26 @@ components:
           type: integer
         color:
           type: string
-        workspaceMember:
-          $ref: "#/components/schemas/WorkspaceMember"
+        teamMember:
+          $ref: "#/components/schemas/TeamMember"
     ShiftMemberRequest:
       type: object
       required:
-        - workspaceMemberId
+        - teamMemberId
         - color
       properties:
-        workspaceMemberId:
+        teamMemberId:
           type: string
-          description: The id of the workspace member to add to the on call shift.
+          description: >-
+            The id of the team member to add to the on call shift.
+            `workspaceMemberId` is accepted as a legacy alias.
         color:
           type: string
           description: >-
             The color of the teammate in the on call shift. This is used to
             display the teammate in the on call shift schedule in on the
             [dashboard](https://dashboard.instatus.com).
-    WorkspaceMember:
+    TeamMember:
       type: object
       properties:
         id:
@@ -7275,12 +7903,26 @@ components:
           nullable: true
         email:
           type: string
-        phone:
-          type: string
-          nullable: true
         avatar:
           type: string
           nullable: true
+    OnCallScheduleSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        currentMembers:
+          type: array
+          description: Who is on call right now.
+          items:
+            type: object
+        nextMembers:
+          type: array
+          description: Who is on call next.
+          items:
+            type: object
     GetOnCallScheduleMembersResponse:
       type: object
       properties:
@@ -7396,3 +8038,349 @@ components:
           type: array
           items:
             type: number
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        slug:
+          type: string
+        avatar:
+          type: string
+          nullable: true
+        sites:
+          type: array
+          items:
+            type: string
+        sso:
+          type: boolean
+        organizationDomains:
+          type: string
+          nullable: true
+        allowDomainEmails:
+          type: boolean
+        allowedDomainsDefaultPermission:
+          type: string
+        ssoActive:
+          type: boolean
+        directorySyncActive:
+          type: boolean
+        enableMultipleOrgs:
+          type: boolean
+        allowedDomains:
+          type: string
+          nullable: true
+        allowedEmailDomains:
+          type: array
+          items:
+            type: string
+        referralId:
+          type: string
+          nullable: true
+        referralCoupon:
+          type: string
+          nullable: true
+        referralCode:
+          type: string
+          nullable: true
+        sendNewTeamMembersStatusPageUpdates:
+          type: boolean
+        sendNewTeamMembersAutomationIntegrationNotifications:
+          type: boolean
+        sendNewTeamMembersInvalidCustomDomainNotifications:
+          type: boolean
+        sendNewTeamMembersPhoneCallNotifications:
+          type: boolean
+        sendNewTeamMembersWeeklyReportsNotifications:
+          type: boolean
+        sendNewTeamMembersMonthlyProductUpdates:
+          type: boolean
+        longRunningIncidentNotificationSettings:
+          type: array
+          items:
+            type: number
+          default: [0.5, 1, 2, 3, 6, 12]
+          example: [0.5, 1, 2, 3, 6, 12]
+        useSSOLogin:
+          type: boolean
+        useGoogleLogin:
+          type: boolean
+        useMagiclinkLogin:
+          type: boolean
+        usePasswordLogin:
+          type: boolean
+        useGithubLogin:
+          type: boolean
+    CreateTeamRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        sendNewTeamMembersStatusPageUpdates:
+          type: boolean
+        sendNewTeamMembersAutomationIntegrationNotifications:
+          type: boolean
+        sendNewTeamMembersInvalidCustomDomainNotifications:
+          type: boolean
+        sendNewTeamMembersPhoneCallNotifications:
+          type: boolean
+        sendNewTeamMembersWeeklyReportsNotifications:
+          type: boolean
+        longRunningIncidentNotificationSettings:
+          type: array
+          items:
+            type: number
+    MonitorUptimeDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        availability:
+          type: number
+          description: Percentage of successful checks that day
+        checks:
+          type: integer
+        failedChecks:
+          type: integer
+        avgResponseTime:
+          type: integer
+          description: Milliseconds
+        partial:
+          type: boolean
+          description: true when the range starts or ends during this day, so it only counts the checks inside the range
+    MonitorUptime:
+      type: object
+      properties:
+        monitorId:
+          type: string
+        start:
+          type: string
+          format: date-time
+          description: Start of the measured range. Past five days it is widened to whole days.
+        end:
+          type: string
+          format: date-time
+          description: End of the measured range. Past five days an end at midnight stops the day before.
+        firstCheckDay:
+          type: string
+          format: date
+          nullable: true
+          description: First day the monitor has any checks for, so a range starting earlier is not fully covered
+        availability:
+          type: number
+          nullable: true
+          description: Percentage of successful checks in the range; null when there were no checks
+        checks:
+          type: integer
+        failedChecks:
+          type: integer
+        downtimeSeconds:
+          type: integer
+          description: Failed checks multiplied by the check interval
+        avgResponseTime:
+          type: integer
+          description: Milliseconds
+        response95:
+          type: integer
+          nullable: true
+          description: 95th percentile response time in milliseconds, for ranges of five days or less
+        avgDailyResponse95:
+          type: integer
+          nullable: true
+          description: Average of the daily 95th percentile response times, for ranges over five days, where only daily figures are stored
+        days:
+          type: array
+          items:
+            $ref: "#/components/schemas/MonitorUptimeDay"
+          description: One entry per day that had checks
+    IncidentResponder:
+      type: object
+      properties:
+        teamMemberId:
+          type: string
+        name:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum:
+            - ACKNOWLEDGED
+            - NOT_ACKNOWLEDGED
+            - DECLINED
+        acknowledgedAt:
+          type: string
+          format: date-time
+          nullable: true
+        declinedAt:
+          type: string
+          format: date-time
+          nullable: true
+    IncidentResponders:
+      type: object
+      properties:
+        incidentId:
+          type: string
+        paged:
+          type: boolean
+          description: Whether on-call paged anyone for this incident
+        acknowledged:
+          type: boolean
+          description: Whether anyone has acknowledged the page
+        lead:
+          type: object
+          nullable: true
+          description: The incident lead
+          properties:
+            teamMemberId:
+              type: string
+            name:
+              type: string
+              nullable: true
+            email:
+              type: string
+              nullable: true
+        pages:
+          type: array
+          description: Who on-call paged, and when
+          items:
+            type: object
+            properties:
+              teamMemberId:
+                type: string
+              name:
+                type: string
+                nullable: true
+              email:
+                type: string
+                nullable: true
+              pagedAt:
+                type: string
+                format: date-time
+        responders:
+          type: array
+          items:
+            $ref: "#/components/schemas/IncidentResponder"
+    GenericNotice:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+        messageHtml:
+          type: string
+        notify:
+          type: boolean
+          nullable: true
+        isCollapsed:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        siteId:
+          type: string
+        translations: &a1
+          type: object
+          description: Translations for name and message, keyed by language code
+          properties:
+            name:
+              type: object
+              additionalProperties:
+                type: string
+            message:
+              type: object
+              additionalProperties:
+                type: string
+    CreateGenericNoticeRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The title of the notice
+        message:
+          type: string
+          description: The body of the notice. HTML is supported.
+        notify:
+          type: boolean
+          default: false
+          description: Whether to notify subscribers
+        isCollapsed:
+          type: boolean
+          default: false
+          description: Whether the notice is collapsed by default
+        translations: *a1
+    UpdateGenericNoticeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string
+        notify:
+          type: boolean
+        isCollapsed:
+          type: boolean
+        translations: *a1
+    Outage:
+      type: object
+      properties:
+        id:
+          type: string
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+          nullable: true
+          description: null while the outage is ongoing
+        status:
+          $ref: "#/components/schemas/ComponentStatus"
+        visibilityState:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        component:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+        incident:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            createdByType:
+              type: string
+            status:
+              type: string
