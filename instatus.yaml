@@ -6072,6 +6072,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PublicMaintenance"
+        generalNotices:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicGeneralNotice"
     PublicPageInfo:
       type: object
       properties:
@@ -6122,6 +6126,25 @@ components:
         url:
           type: string
           format: uri
+        updatedAt:
+          type: string
+          format: date-time
+    PublicGeneralNotice:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        message:
+          type: string
+          description: Plain text, without formatting.
+        url:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
         updatedAt:
           type: string
           format: date-time
