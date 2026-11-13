@@ -303,6 +303,53 @@ paths:
                 properties:
                   id:
                     type: string
+  /v2/{page_id}/uptime:
+    get:
+      summary: Get status page uptime
+      description: |
+        Retrieve the uptime of a status page, of each group and of each component over a range.
+        The range defaults to the last 30 days and can be at most 395 days.
+        Only published outages count, as on the status page.
+      tags:
+        - Components
+      parameters:
+        - in: path
+          name: page_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the status page
+        - in: query
+          name: start
+          schema:
+            type: string
+            format: date-time
+          description: Start of the range (ISO 8601). Defaults to 30 days before end.
+        - in: query
+          name: end
+          schema:
+            type: string
+            format: date-time
+          description: End of the range (ISO 8601). Defaults to now.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageUptime"
+        "400":
+          description: Invalid range
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Status page not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /v1/{page_id}/incidents:
     get:
       summary: Get all page incidents
@@ -8140,6 +8187,45 @@ components:
           type: array
           items:
             type: number
+    PageUptime:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: Start of the measured range
+        end:
+          type: string
+          format: date-time
+          description: End of the measured range
+        uptime:
+          type: number
+          nullable: true
+          description: "Uptime percentage of the whole page: the average of every component, worked out like a group's uptime. Null when the page has no components"
+        components:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentUptime"
+          description: Top-level components and groups in status page order, with grouped components under children
+    ComponentUptime:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        uptime:
+          type: number
+          nullable: true
+          description: Uptime percentage over the range, rounded to the page's uptime decimals
+        isParent:
+          type: boolean
+          description: True for a group
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/ComponentUptime"
+          description: Components in the group; empty for a component
     MonitorUptimeDay:
       type: object
       properties:
