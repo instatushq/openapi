@@ -47,6 +47,9 @@
       "name": "Metrics"
     },
     {
+      "name": "Observability"
+    },
+    {
       "name": "User Profile"
     },
     {
@@ -2417,6 +2420,85 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Subscriber"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{page_id}/sourcemaps": {
+      "post": {
+        "summary": "Upload source maps",
+        "description": "Upload the source maps of one browser build so Instatus can show browser errors with the original code. Send the build output folder as a gzipped tar; Instatus keeps every version 3 .map file and matches it to its script by the sourceMappingURL comment or file name. Uploading the same release again replaces its maps. Maps are kept as long as your plan keeps observability data.\n",
+        "tags": ["Observability"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          },
+          {
+            "in": "query",
+            "name": "release",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The release the build belongs to, the same value the browser snippet sends as data-release (usually the git commit SHA)"
+          },
+          {
+            "in": "query",
+            "name": "service",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The service the build belongs to, the same value as data-service on the snippet or service.name. Leave it out to share the maps across services"
+          },
+          {
+            "in": "query",
+            "name": "file",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "When the body is a single .map file, the path of the script it belongs to, like assets/app.js"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/gzip": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The maps were stored",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "release": {
+                      "type": "string"
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
                   }
                 }
               }
