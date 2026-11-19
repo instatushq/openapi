@@ -84,6 +84,9 @@
     },
     {
       "name": "Outages"
+    },
+    {
+      "name": "Deploys"
     }
   ],
   "paths": {
@@ -2500,6 +2503,53 @@
                       }
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/{page_id}/deploys": {
+      "post": {
+        "summary": "Record a deploy",
+        "description": "Record a deploy of one of your services, usually as the last step of a CI job. Observability already notices a new `service.version` on its own; this adds the commit, author and link, and marks the deploy on logs, traces, metrics and dashboard charts. Calling it again for the same service, environment and version updates that deploy. Send the same version your app reports as the `service.version` resource attribute.",
+        "tags": [
+          "Deploys"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "page_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the status page"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordDeployRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordDeployRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deploy"
                 }
               }
             }
@@ -8332,6 +8382,113 @@
           "value": {
             "type": "number",
             "description": "The value of the datapoint, during the time of the `timestamp`."
+          }
+        }
+      },
+      "RecordDeployRequest": {
+        "type": "object",
+        "required": [
+          "service",
+          "version"
+        ],
+        "properties": {
+          "service": {
+            "type": "string",
+            "description": "The service name, matching the `service.name` your app sends."
+          },
+          "version": {
+            "type": "string",
+            "description": "The version that was deployed, matching the `service.version` your app sends (often the git SHA)."
+          },
+          "environment": {
+            "type": "string",
+            "description": "The environment, matching `deployment.environment.name`, e.g. `production`."
+          },
+          "commit": {
+            "type": "string",
+            "description": "The commit SHA that was deployed."
+          },
+          "ref": {
+            "type": "string",
+            "description": "The branch or tag that was deployed."
+          },
+          "author": {
+            "type": "string",
+            "description": "Who made or shipped the change."
+          },
+          "message": {
+            "type": "string",
+            "description": "The commit message or a short description. Only the first line is kept."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "A link to the commit, pull request or CI run."
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the deploy started. Defaults to when the version was first seen, or now."
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the deploy finished. Defaults to now when neither time is sent."
+          }
+        }
+      },
+      "Deploy": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "service": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "environment": {
+            "type": "string",
+            "nullable": true
+          },
+          "commit": {
+            "type": "string",
+            "nullable": true
+          },
+          "ref": {
+            "type": "string",
+            "nullable": true
+          },
+          "author": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "detected",
+              "api"
+            ],
+            "description": "`detected` when the version was first seen in telemetry and not reported since."
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },
